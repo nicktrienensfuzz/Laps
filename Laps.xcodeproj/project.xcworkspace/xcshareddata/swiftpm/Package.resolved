@@ -1,0 +1,50 @@
+{
+  "pins" : [
+    {
+      "identity" : "asynclocationkit",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/AsyncSwift/AsyncLocationKit.git",
+      "state" : {
+        "revision" : "973a0a5ee72b7d714dedf8aeee54fb91638fdf82",
+        "version" : "1.0.5"
+      }
+    },
+    {
+      "identity" : "fancyscrollview",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:nerdsupremacist/FancyScrollView.git",
+      "state" : {
+        "revision" : "7f8194b23dc209cdb5b0ebc9799a8de487166fdf",
+        "version" : "0.1.4"
+      }
+    },
+    {
+      "identity" : "fuzz-combine-iosmodule",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git",
+      "state" : {
+        "revision" : "02d4909294034450ba300e02b32a7daaf3649476",
+        "version" : "0.1.23"
+      }
+    },
+    {
+      "identity" : "musadorakit",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:rryam/MusadoraKit.git",
+      "state" : {
+        "revision" : "bc6bab6f5926297e61f4a686a76d5bf8d7865df2",
+        "version" : "1.3.2"
+      }
+    },
+    {
+      "identity" : "tuva-core-iosmodule",
+      "kind" : "remoteSourceControl",
+      "location" : "git@github.com:fuzz-productions/tuva-core-iosmodule.git",
+      "state" : {
+        "revision" : "c2c764a48f8c73688e4d0cc110e6b2b8f6f72fcf",
+        "version" : "0.0.15"
+      }
+    }
+  ],
+  "version" : 2
+}
