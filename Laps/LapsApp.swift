@@ -6,12 +6,19 @@
 //
 
 import SwiftUI
-
+import Base
+import DependencyContainer
 @main
 struct LapsApp: App {
+    
+    init() {
+        ContainerKeys.start()
+
+    }
     var body: some Scene {
         WindowGroup {
             ContentView()
         }
+        
     }
 }

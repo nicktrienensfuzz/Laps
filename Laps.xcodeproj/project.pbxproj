@@ -38,6 +38,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C0A8159728617FC6004DF61F /* Laps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A8159A28617FC6004DF61F /* LapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsApp.swift; sourceTree = "<group>"; };
 		C0A8159C28617FC6004DF61F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -105,11 +106,11 @@
 		C0A8159928617FC6004DF61F /* Laps */ = {
 			isa = PBXGroup;
 			children = (
-				C0A815D02862C597004DF61F /* Maps */,
+				C046D5662867529D0056B7E8 /* Info.plist */,
 				C0A8159A28617FC6004DF61F /* LapsApp.swift */,
-				C0A815CA286208B0004DF61F /* PlaylistView.swift */,
-				C0A815CC28625A5B004DF61F /* PlaylistDetailsView.swift */,
 				C0A8159C28617FC6004DF61F /* ContentView.swift */,
+				C0A815D128636191004DF61F /* Music */,
+				C0A815D02862C597004DF61F /* Maps */,
 				C0A8159E28617FC8004DF61F /* Assets.xcassets */,
 				C0A815A028617FC8004DF61F /* Preview Content */,
 			);
@@ -154,6 +155,15 @@
 				C0A815CE2862C47A004DF61F /* MapView.swift */,
 			);
 			path = Maps;
+			sourceTree = "<group>";
+		};
+		C0A815D128636191004DF61F /* Music */ = {
+			isa = PBXGroup;
+			children = (
+				C0A815CA286208B0004DF61F /* PlaylistView.swift */,
+				C0A815CC28625A5B004DF61F /* PlaylistDetailsView.swift */,
+			);
+			path = Music;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -456,6 +466,7 @@
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Laps/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "start a song";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
@@ -490,6 +501,7 @@
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Laps/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "start a song";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;

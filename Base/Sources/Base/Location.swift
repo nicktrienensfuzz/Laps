@@ -7,6 +7,19 @@
 
 import Foundation
 import AsyncLocationKit
+import DependencyContainer
+
+public extension ContainerKeys {
+    static let location = KeyedDependency("Location", type: Location.self)
+
+    static func start() {
+        DependencyContainer.register(Location(), key: ContainerKeys.location)
+        DependencyContainer.register(AppDatabase(), key: ContainerKeys.database)
+        DependencyContainer.register(Music(), key: ContainerKeys.music)
+
+    }
+}
+
 
 public actor Location {
     

@@ -10,6 +10,10 @@ let package = Package(
         .library(
             name: "Base",
             targets: ["Base"]),
+        .library(
+            name: "DependencyContainer",
+            targets: ["DependencyContainer"]
+        ),
     ],
     dependencies: [
         .package(url: "git@github.com:rryam/MusadoraKit.git", from: "1.3.0"),
@@ -17,15 +21,26 @@ let package = Package(
         .package(url: "https://github.com/AsyncSwift/AsyncLocationKit.git", from: "1.0.5"),
         .package(url: "git@github.com:fuzz-productions/tuva-core-iosmodule.git", from: "0.0.5"),
         .package(url: "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git", from: "0.0.5"),
+        .package(url: "https://github.com/groue/GRDB.swift.git", from: "5.13.0"),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.37.0")
+       
+ 
     ],
     targets: [
+        .target(
+            name: "DependencyContainer"
+        ),
         .target(
             name: "Base",
             dependencies: [
                 "MusadoraKit",
                 "FancyScrollView",
                 "AsyncLocationKit",
-                .product(name: "TuvaCore", package: "tuva-core-iosmodule")
+                .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
+                .product(name: "GRDB", package: "GRDB.swift"),
+                .product(name:"FuzzCombine", package: "fuzz-combine-iosmodule"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                "DependencyContainer"
                 ]
         ),
         .testTarget(

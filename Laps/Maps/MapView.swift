@@ -8,17 +8,21 @@
 import SwiftUI
 import MapKit
 import CoreLocation
+import Base
 
 struct MapView: UIViewRepresentable {
     
     let region: MKCoordinateRegion
-    let lineCoordinates: [CLLocationCoordinate2D]
+    var lineCoordinates: [CLLocationCoordinate2D]
     
     // Create the MKMapView using UIKit.
     func makeUIView(context: Context) -> MKMapView {
         let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.region = region
+        mapView.showsBuildings = true
+        mapView.showsCompass = true
+        mapView.showsUserLocation = true
         
         let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
         mapView.addOverlay(polyline)
@@ -26,8 +30,19 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
     
-    // We don't need to worry about this as the view will never be updated.
-    func updateUIView(_ view: MKMapView, context: Context) {}
+    func updateUIView(_ view: MKMapView, context: Context) {
+       // osLog(context)
+        //osLog(lineCoordinates.count)
+        DispatchQueue.main.async {
+            for overlay in view.overlays {
+                view.removeOverlay(overlay)
+            }
+            let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
+            view.addOverlay(polyline)
+        }
+        
+        
+    }
     
     // Link it to the coordinator which is defined below.
     func makeCoordinator() -> Coordinator {
@@ -53,7 +68,7 @@ class Coordinator: NSObject, MKMapViewDelegate {
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
+struct MapView_Previews: PreviewProvider {
     static var previews: some View {
         MapView(
             region: MKCoordinateRegion(

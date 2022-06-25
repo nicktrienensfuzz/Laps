@@ -8,9 +8,13 @@
 import Foundation
 import MusadoraKit
 import MusicKit
+import DependencyContainer
 
 public typealias Playlists = MusicItemCollection<Playlist>
 
+public extension ContainerKeys {
+    static let music = KeyedDependency("Music", type: Music.self)
+}
 public actor Music {
     
     public static let shared = Music()
@@ -19,21 +23,32 @@ public actor Music {
         
     }
     
-    public func search(_ query: String) async throws -> [Song] {
+    public func search(_ query: String) async throws -> MusicItemCollection<Song> {
         let _ = await MusicAuthorization.request()
         let searchResponse = try await MusadoraKit.librarySearch(for: query, types: [Song.self])
-        let playLists = try await MusadoraKit.libraryPlaylists()
-        
-        
-        print(playLists)
-        return searchResponse.songs.reversed().reversed()
+        return searchResponse.songs
     }
+    
     public func playlists() async throws -> MusicItemCollection<Playlist> {
         let _ = await MusicAuthorization.request()
 
         let playLists = try await MusadoraKit.libraryPlaylists()
+        osLog(playLists.hasNextBatch)
         
-        print(playLists)
+        osLog( try await playLists.last?.catalog)
+        
+        
+        if let first = playLists.last {
+            let rptracks = try await MusadoraKit.recentlyPlayedTracks()
+            osLog(rptracks)
+            //let tracks = try await first.catalog
+            let ptrack = try await MusadoraKit.libraryPlaylist(id: first.id)
+            
+            osLog(ptrack.kind)
+            osLog(first)
+            osLog(ptrack.tracks)
+        }
+        osLog(playLists)
         return playLists
     }
 }
