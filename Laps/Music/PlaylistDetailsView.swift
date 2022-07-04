@@ -5,51 +5,49 @@
 //  Created by Nicholas Trienens on 6/21/22.
 //
 
-import SwiftUI
-import MusicKit
 import Base
 import MediaPlayer
+import MusicKit
+import SwiftUI
 
 struct PlaylistDetailsView: View {
     var playlist: Playlist
     @State private var songs: MPMediaItemCollection?
     @State private var showingSongPicker = false
     var body: some View {
-        VStack{
+        VStack {
             if let tracks = playlist.tracks {
                 ForEach(tracks) { track in
                     Text("\(track.artistName) - \(track.title)")
                 }
             } else {
                 Button(action: {
-                      self.showingSongPicker = true
-                  }
-                  ){
-                      Text("Edit Test Song")
-                  }
-                  .sheet(isPresented: $showingSongPicker) {
-                      MusicPicker(songs: self.$songs)
-                  }
+                    self.showingSongPicker = true
+                }
+                ) {
+                    Text("Edit Test Song")
+                }
+                .sheet(isPresented: $showingSongPicker) {
+                    MusicPicker(songs: self.$songs)
+                }
                 if let songs = songs {
                     Text("Playing")
                         .task {
-                            do{
-                                
-                            let player = MPMusicPlayerController.applicationMusicPlayer
-                                //osLog(songs.id.rawValue)
-                            /// Set the queue
+                            do {
+                                let player = MPMusicPlayerController.applicationMusicPlayer
+                                // osLog(songs.id.rawValue)
+                                /// Set the queue
                                 player.setQueue(with: songs)
-                            try await player.prepareToPlay()
-                            /// Finally, play the album!
-                            player.play()
-                          } catch {
-                            osLog(error)
-                          }
+                                try await player.prepareToPlay()
+                                /// Finally, play the album!
+                                player.play()
+                            } catch {
+                                osLog(error)
+                            }
                         }
                 }
-                 
+
                 Text("empty")
-                    
             }
         }
     }
@@ -57,12 +55,11 @@ struct PlaylistDetailsView: View {
 
 struct PlaylistDetailsView_Previews: PreviewProvider {
     static var previews: some View {
-        VStack{
-        //PlaylistDetailsView()
+        VStack {
+            // PlaylistDetailsView()
         }
     }
 }
-
 
 struct MusicPicker: UIViewControllerRepresentable {
     @Environment(\.presentationMode) var presentationMode
@@ -74,7 +71,8 @@ struct MusicPicker: UIViewControllerRepresentable {
         init(_ parent: MusicPicker) {
             self.parent = parent
         }
-        func mediaPicker(_ mediaPicker: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
+
+        func mediaPicker(_: MPMediaPickerController, didPickMediaItems mediaItemCollection: MPMediaItemCollection) {
             osLog(mediaItemCollection.items.first?.title)
             parent.songs = mediaItemCollection
         }
@@ -86,12 +84,10 @@ struct MusicPicker: UIViewControllerRepresentable {
 
     func makeUIViewController(context: UIViewControllerRepresentableContext<MusicPicker>) -> MPMediaPickerController {
         let picker = MPMediaPickerController(mediaTypes: .music)
-        
+
         picker.delegate = context.coordinator
         return picker
     }
 
-    func updateUIViewController(_ uiViewController: MPMediaPickerController, context: UIViewControllerRepresentableContext<MusicPicker>) {
-
-    }
+    func updateUIViewController(_: MPMediaPickerController, context _: UIViewControllerRepresentableContext<MusicPicker>) {}
 }

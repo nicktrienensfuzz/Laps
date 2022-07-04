@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
+		C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D56A2867571B0056B7E8 /* Throttler.swift */; };
 		C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159A28617FC6004DF61F /* LapsApp.swift */; };
 		C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159C28617FC6004DF61F /* ContentView.swift */; };
 		C0A8159F28617FC8004DF61F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A8159E28617FC8004DF61F /* Assets.xcassets */; };
@@ -39,6 +41,8 @@
 
 /* Begin PBXFileReference section */
 		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C046D5672867549D0056B7E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		C046D56A2867571B0056B7E8 /* Throttler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		C0A8159728617FC6004DF61F /* Laps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A8159A28617FC6004DF61F /* LapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsApp.swift; sourceTree = "<group>"; };
 		C0A8159C28617FC6004DF61F /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -81,6 +85,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C046D5692867570B0056B7E8 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				C046D56A2867571B0056B7E8 /* Throttler.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
 		C0A8158E28617FC6004DF61F = {
 			isa = PBXGroup;
 			children = (
@@ -106,8 +118,10 @@
 		C0A8159928617FC6004DF61F /* Laps */ = {
 			isa = PBXGroup;
 			children = (
+				C046D5692867570B0056B7E8 /* Helpers */,
 				C046D5662867529D0056B7E8 /* Info.plist */,
 				C0A8159A28617FC6004DF61F /* LapsApp.swift */,
+				C046D5672867549D0056B7E8 /* AppDelegate.swift */,
 				C0A8159C28617FC6004DF61F /* ContentView.swift */,
 				C0A815D128636191004DF61F /* Music */,
 				C0A815D02862C597004DF61F /* Maps */,
@@ -176,6 +190,7 @@
 				C0A8159328617FC6004DF61F /* Sources */,
 				C0A8159428617FC6004DF61F /* Frameworks */,
 				C0A8159528617FC6004DF61F /* Resources */,
+				C00D229D286F5E1000B9A65F /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -294,12 +309,34 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		C00D229D286F5E1000B9A65F /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/opt/homebrew/bin/swiftformat Laps --swiftversion 5.6\n/opt/homebrew/bin/swiftformat Base --swiftversion 5.6\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		C0A8159328617FC6004DF61F /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */,
 				C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */,
+				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,
 				C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */,
 				C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */,

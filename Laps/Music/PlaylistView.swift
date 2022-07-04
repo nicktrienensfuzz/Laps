@@ -5,21 +5,19 @@
 //  Created by Nicholas Trienens on 6/21/22.
 //
 
-import SwiftUI
-import MusicKit
 import Base
-
+import MusicKit
+import SwiftUI
 
 struct PlaylistView: View {
     @State var playlists: MusicItemCollection<Playlist>? = nil
-    
+
     var body: some View {
         VStack {
             if let playlists = playlists {
                 VStack {
-                    
                     ForEach(playlists) { playlist in
-                        
+
                         NavigationLink {
                             PlaylistDetailsView(playlist: playlist)
                         } label: {
@@ -28,7 +26,7 @@ struct PlaylistView: View {
                         }
                     }
                 }
-            }else {
+            } else {
                 Text("loading")
             }
         }

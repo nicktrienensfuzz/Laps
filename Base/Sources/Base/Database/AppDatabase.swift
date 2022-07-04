@@ -7,7 +7,6 @@ import GRDB
 
 public extension ContainerKeys {
     static let database = KeyedDependency("database", type: AppDatabaseInterface.self)
-
 }
 
 public typealias ValueObservation = GRDB.ValueObservation
@@ -18,7 +17,7 @@ class AppDatabase: AppDatabaseInterface, AppDatabaseSynchronousInterface {
     var tableList: [TableCreator.Type] {
         [
             TrackPoint.self,
-            Track.self
+            Track.self,
         ]
     }
 
@@ -150,7 +149,7 @@ class AppDatabase: AppDatabaseInterface, AppDatabaseSynchronousInterface {
         )
     }
 
-    func asyncWrite<T>(updates: @escaping (Database) async throws -> T) async throws {
+    func asyncWrite<T>(updates _: @escaping (Database) async throws -> T) async throws {
         try await dbPool.write { _ in
             // return try await updates(db)
         }

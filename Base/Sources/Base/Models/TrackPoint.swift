@@ -1,25 +1,24 @@
 
+import CoreLocation
 import Foundation
 import GRDB
-import CoreLocation
 
-extension TrackPointInterface {
-    public var coordinate: CLLocationCoordinate2D {
+public extension TrackPointInterface {
+    var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
 
 // protocol
 public protocol TrackPointInterface {
-    
     var id: String { get }
     var latitude: Double { get }
     var longitude: Double { get }
     var timestamp: Date { get }
     var trackId: String? { get }
 }
+
 public class TrackPoint: Record, TableCreator, TrackPointInterface, CustomStringConvertible {
-    
     public let id: String
     public let latitude: Double
     public let longitude: Double
@@ -29,72 +28,64 @@ public class TrackPoint: Record, TableCreator, TrackPointInterface, CustomString
     public var description: String {
         "\(latitude), \(longitude) - \(id) \(trackId ?? "")"
     }
-    
-    
+
     public init(
         id: String = UUID().uuidString,
         latitude: Double,
         longitude: Double,
         timestamp: Date,
         trackId: String? = nil
-    ){
+    ) {
         self.id = id
         self.latitude = latitude
         self.longitude = longitude
         self.timestamp = timestamp
         self.trackId = trackId
-                super.init()
-    }
-    // protocol based initializer
-    public init(from: TrackPointInterface){
-        self.id = from.id
-        self.latitude = from.latitude
-        self.longitude = from.longitude
-        self.timestamp = from.timestamp
-        self.trackId = from.trackId
         super.init()
     }
-    
-    
+
+    // protocol based initializer
+    public init(from: TrackPointInterface) {
+        id = from.id
+        latitude = from.latitude
+        longitude = from.longitude
+        timestamp = from.timestamp
+        trackId = from.trackId
+        super.init()
+    }
 
     public func toSwift() -> String {
-            """
-            TrackPoint(
-                id: "\(id)"
-                ,
-                latitude: \(latitude),
-                longitude: \(longitude),
-                timestamp:  Date(timeIntervalSince1970: \(timestamp.timeIntervalSince1970))
-                ,
-                trackId: \(trackId != nil ? "\"\(trackId!)\"" : "nil")
-                )
-            """
+        """
+        TrackPoint(
+            id: "\(id)"
+            ,
+            latitude: \(latitude),
+            longitude: \(longitude),
+            timestamp:  Date(timeIntervalSince1970: \(timestamp.timeIntervalSince1970))
+            ,
+            trackId: \(trackId != nil ? "\"\(trackId!)\"" : "nil")
+            )
+        """
     }
-    
 
-                
-        public func updated(
-            id: String? = nil,
-            latitude: Double? = nil,
-            longitude: Double? = nil,
-            timestamp: Date? = nil,
-            trackId: String? = nil
-        ) -> TrackPoint {
-            return TrackPoint(
-                id: id ?? self.id,
-                latitude: latitude ?? self.latitude,
-                longitude: longitude ?? self.longitude,
-                timestamp: timestamp ?? self.timestamp,
-                trackId: trackId ?? self.trackId)
-                
-            
-        }
-        
-    
-
-
+    public func updated(
+        id: String? = nil,
+        latitude: Double? = nil,
+        longitude: Double? = nil,
+        timestamp: Date? = nil,
+        trackId: String? = nil
+    ) -> TrackPoint {
+        TrackPoint(
+            id: id ?? self.id,
+            latitude: latitude ?? self.latitude,
+            longitude: longitude ?? self.longitude,
+            timestamp: timestamp ?? self.timestamp,
+            trackId: trackId ?? self.trackId
+        )
+    }
 
     // MARK: - GRDB.Record
+
     /// The table name
     override public class var databaseTableName: String { "TrackPoint_table" }
 
@@ -127,6 +118,7 @@ public class TrackPoint: Record, TableCreator, TrackPointInterface, CustomString
     }
 
     // MARK: - Table Creation
+
     class func createTable(db: Database) throws {
         try db.create(table: databaseTableName) { t in
             t.primaryKey(["id"])
@@ -137,5 +129,4 @@ public class TrackPoint: Record, TableCreator, TrackPointInterface, CustomString
             t.column("trackId", .text)
         }
     }
-
 }

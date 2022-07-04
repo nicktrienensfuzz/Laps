@@ -23,6 +23,7 @@ struct DatabaseError: Error, CustomDebugStringConvertible, CustomStringConvertib
     var debugDescription: String { "\(filename):\(line) - \(method) => \(message)" }
     var description: String { "\(filename):\(line) - \(method) => \(message)" }
     var errorDescription: String? { debugDescription }
+
     // MARK: Common errors
 
     static func deinitedSelf(path: String = #file, function: String = #function, line: Int = #line) -> DatabaseError {
@@ -35,6 +36,7 @@ struct DatabaseError: Error, CustomDebugStringConvertible, CustomStringConvertib
 }
 
 // MARK: - Substring Extension
+
 extension Substring {
     var asString: String {
         String(self)

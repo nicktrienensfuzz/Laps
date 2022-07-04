@@ -1,6 +1,6 @@
 //
 //  File.swift
-//  
+//
 //
 //  Created by Nicholas Trienens on 6/22/22.
 //
@@ -11,14 +11,13 @@ import Foundation
 import GRDB
 // protocol
 public protocol TrackInterface {
-    
     var id: String { get }
     var startTime: Date { get }
     var endTime: Date? { get }
     var name: String? { get }
 }
+
 public class Track: Record, TableCreator, TrackInterface {
-    
     public let id: String
     public let startTime: Date
     public let endTime: Date?
@@ -29,60 +28,53 @@ public class Track: Record, TableCreator, TrackInterface {
         startTime: Date,
         endTime: Date? = nil,
         name: String? = nil
-    ){
+    ) {
         self.id = id
         self.startTime = startTime
         self.endTime = endTime
         self.name = name
-                super.init()
-    }
-    // protocol based initializer
-    public init(from: TrackInterface){
-        self.id = from.id
-        self.startTime = from.startTime
-        self.endTime = from.endTime
-        self.name = from.name
         super.init()
     }
-    
-    
+
+    // protocol based initializer
+    public init(from: TrackInterface) {
+        id = from.id
+        startTime = from.startTime
+        endTime = from.endTime
+        name = from.name
+        super.init()
+    }
 
     public func toSwift() -> String {
-            """
-            Track(
-                id: "\(id)"
-                ,
-                startTime:  Date(timeIntervalSince1970: \(startTime.timeIntervalSince1970))
-                ,
-                endTime:  \(endTime != nil ? "Date(timeIntervalSince1970: \(endTime!.timeIntervalSince1970))" : "nil")
-                ,
-                name: \(name != nil ? "\"\(name!)\"" : "nil")
-                )
-            """
+        """
+        Track(
+            id: "\(id)"
+            ,
+            startTime:  Date(timeIntervalSince1970: \(startTime.timeIntervalSince1970))
+            ,
+            endTime:  \(endTime != nil ? "Date(timeIntervalSince1970: \(endTime!.timeIntervalSince1970))" : "nil")
+            ,
+            name: \(name != nil ? "\"\(name!)\"" : "nil")
+            )
+        """
     }
-    
 
-                
-        public func updated(
-            id: String? = nil,
-            startTime: Date? = nil,
-            endTime: Date? = nil,
-            name: String? = nil
-        ) -> Track {
-            return Track(
-                id: id ?? self.id,
-                startTime: startTime ?? self.startTime,
-                endTime: endTime ?? self.endTime,
-                name: name ?? self.name)
-                
-            
-        }
-        
-    
-
-
+    public func updated(
+        id: String? = nil,
+        startTime: Date? = nil,
+        endTime: Date? = nil,
+        name: String? = nil
+    ) -> Track {
+        Track(
+            id: id ?? self.id,
+            startTime: startTime ?? self.startTime,
+            endTime: endTime ?? self.endTime,
+            name: name ?? self.name
+        )
+    }
 
     // MARK: - GRDB.Record
+
     /// The table name
     override public class var databaseTableName: String { "Track_table" }
 
@@ -112,6 +104,7 @@ public class Track: Record, TableCreator, TrackInterface {
     }
 
     // MARK: - Table Creation
+
     class func createTable(db: Database) throws {
         try db.create(table: databaseTableName) { t in
             t.primaryKey(["id"])
@@ -121,5 +114,4 @@ public class Track: Record, TableCreator, TrackInterface {
             t.column("name", .text)
         }
     }
-
 }
