@@ -32,9 +32,7 @@ extension PlayParameters {
 public actor Music {
     public static let shared = Music()
 
-    public init() {
-        
-    }
+    public init() {}
 
     public func play(playParameters: PlayParameters) async throws {
         let playParameters = try playParameters.toMPPlayParameters()

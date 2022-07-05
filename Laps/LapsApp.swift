@@ -20,7 +20,11 @@ struct LapsApp: App {
         WindowGroup {
             ContentView()
                 .task {
-                    await Music.shared.test()
+//                    await Music.shared.test()
+                    WorkoutTracking.shared.authorizeHealthKit()
+                    if WorkoutTracking.shared.isHealthDataAvailable() {
+                        WorkoutTracking.shared.observerHeartRateSamples()
+                    }
                 }
         }
     }

@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C00D22A1287352EE00B9A65F /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C00D22A0287352EE00B9A65F /* HealthKit.framework */; };
+		C00D22A32873584300B9A65F /* IntervalBuilderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00D22A22873584300B9A65F /* IntervalBuilderView.swift */; };
 		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
 		C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D56A2867571B0056B7E8 /* Throttler.swift */; };
 		C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159A28617FC6004DF61F /* LapsApp.swift */; };
@@ -40,6 +42,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C00D229F287352EE00B9A65F /* Laps.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Laps.entitlements; sourceTree = "<group>"; };
+		C00D22A0287352EE00B9A65F /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = System/Library/Frameworks/HealthKit.framework; sourceTree = SDKROOT; };
+		C00D22A22873584300B9A65F /* IntervalBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalBuilderView.swift; sourceTree = "<group>"; };
 		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C046D5672867549D0056B7E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C046D56A2867571B0056B7E8 /* Throttler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
@@ -65,6 +70,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0A815C9286187CD004DF61F /* Base in Frameworks */,
+				C00D22A1287352EE00B9A65F /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -118,6 +124,7 @@
 		C0A8159928617FC6004DF61F /* Laps */ = {
 			isa = PBXGroup;
 			children = (
+				C00D229F287352EE00B9A65F /* Laps.entitlements */,
 				C046D5692867570B0056B7E8 /* Helpers */,
 				C046D5662867529D0056B7E8 /* Info.plist */,
 				C0A8159A28617FC6004DF61F /* LapsApp.swift */,
@@ -127,6 +134,7 @@
 				C0A815D02862C597004DF61F /* Maps */,
 				C0A8159E28617FC8004DF61F /* Assets.xcassets */,
 				C0A815A028617FC8004DF61F /* Preview Content */,
+				C00D22A22873584300B9A65F /* IntervalBuilderView.swift */,
 			);
 			path = Laps;
 			sourceTree = "<group>";
@@ -159,6 +167,7 @@
 		C0A815C7286187CD004DF61F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C00D22A0287352EE00B9A65F /* HealthKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -337,6 +346,7 @@
 				C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */,
 				C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */,
 				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,
+				C00D22A32873584300B9A65F /* IntervalBuilderView.swift in Sources */,
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,
 				C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */,
 				C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */,
@@ -496,8 +506,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = Laps/Laps.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Laps/Preview Content\"";
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
@@ -505,6 +516,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Laps/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "start a song";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -519,7 +532,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Laps Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -531,8 +544,9 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_ENTITLEMENTS = Laps/Laps.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"Laps/Preview Content\"";
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
@@ -540,6 +554,8 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Laps/Info.plist;
 				INFOPLIST_KEY_NSAppleMusicUsageDescription = "start a song";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSLocationAlwaysAndWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -554,7 +570,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "Laps Dev";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
