@@ -5,8 +5,11 @@
 //  Created by Nicholas Trienens on 6/20/22.
 //
 
+import Combine
 import DependencyContainer
+import Drops
 import Foundation
+import GRDB
 import MediaPlayer
 import MusadoraKit
 import MusicKit
@@ -38,7 +41,21 @@ public actor Music {
         let playParameters = try playParameters.toMPPlayParameters()
         let queue = MPMusicPlayerPlayParametersQueueDescriptor(playParametersQueue: [playParameters])
 
-        let player = MPMusicPlayerController.applicationMusicPlayer
+        let player = MPMusicPlayerController.systemMusicPlayer
+
+        /// Set the queue
+        player.setQueue(with: queue)
+        try await player.prepareToPlay()
+
+        /// Finally, play the album!
+        player.play()
+    }
+
+    public func play(playParameters: [PlayParameters]) async throws {
+        let playParameters = try playParameters.map { try $0.toMPPlayParameters() }
+        let queue = MPMusicPlayerPlayParametersQueueDescriptor(playParametersQueue: playParameters)
+
+        let player = MPMusicPlayerController.systemMusicPlayer
 
         /// Set the queue
         player.setQueue(with: queue)
@@ -61,112 +78,140 @@ public actor Music {
         player.play()
     }
 
-    public func search(_ query: String) async throws -> MusicItemCollection<Song> {
+//    public func search(_ query: String) async throws -> MusicItemCollection<Song> {
+//        _ = await MusicAuthorization.request()
+//        let searchResponse = try await MusadoraKit.librarySearch(for: query, types: [Song.self])
+//        return searchResponse.songs
+//    }
+
+    public func observablePlaylists() -> AnyPublisher<[PlaylistRecord], Never> {
+        try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(
+                PlaylistRecord.all()
+                    .order(PlaylistRecord.Columns.name)
+                    .limit(10)
+            )
+            .catch { error -> AnyPublisher<[PlaylistRecord], Never> in
+                osLog(error)
+                return Just.any([PlaylistRecord]())
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+
+    public func favorite(_ playlist: PlaylistRecord) async throws {
+        try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+
+            for p in try PlaylistRecord.fetchAll(db) {
+                p.selected = false
+                try p.save(db)
+            }
+
+            playlist.selected = true
+            try playlist.save(db)
+        }
+    }
+
+    public func playlist(id: String) async throws -> Playlist {
         _ = await MusicAuthorization.request()
-        let searchResponse = try await MusadoraKit.librarySearch(for: query, types: [Song.self])
-        return searchResponse.songs
+        let playlists = try await MusadoraKit.libraryPlaylists(ids: [MusicItemID(id)])
+        return try playlists.first.unwrapped("no playlists found")
     }
 
     public func playlists() async throws -> MusicItemCollection<Playlist> {
         _ = await MusicAuthorization.request()
 
         let playLists = try await MusadoraKit.libraryPlaylists()
-        // osLog(playLists.hasNextBatch)
+        Task {
+            try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+                for playlist in playLists {
+                    if let existing = try PlaylistRecord.fetchOne(db, id: playlist.id.rawValue) {
+                        existing.name = playlist.name
+                        existing.timestamp = playlist.lastModifiedDate ?? existing.timestamp
+                        try existing.save(db)
+                    } else {
+                        let newPlaylist = PlaylistRecord(id: playlist.id.rawValue,
+                                                         name: playlist.name,
+                                                         tracks: 0,
+                                                         selected: nil,
+                                                         timestamp: playlist.lastModifiedDate ?? .now)
 
-        // osLog( try await playLists.last?.catalog)
-
-        if let first = playLists.last {
-            // let tracks = try await first.catalog
-            // let ptrack = try await MusadoraKit.libraryPlaylist(id: first.id)
-
-            osLog(first.kind)
-            osLog(first)
-            osLog(first.tracks)
+                        try newPlaylist.save(db)
+                    }
+                }
+            }
         }
-        osLog(playLists)
         return playLists
     }
 
-    public func test() async {
-        do {
-            /// First request to get the heavy rotation albums
-            let rptracks = try await MusadoraKit.recentlyPlayed()
-            // osLog(rptracks)
-            if let userItem = rptracks.randomElement() {
-                switch userItem {
-                case let .station(station):
-                    osLog(station)
-                    if let playParameters = station.playParameters {
-                        try await play(playParameters: playParameters)
+    var track: MusicKit.Track?
 
-                        return
-                    }
-                default: osLog("nope")
+    public func isPlaying() -> Bool {
+        let player = MPMusicPlayerController.systemMusicPlayer
+        osLog(player.playbackState.asString)
+        return player.playbackState == .playing
+    }
+
+    public func test() async {
+        _ = await MusicAuthorization.request()
+
+        do {
+            Drops.show(.init(title: "playing"))
+            // try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.read
+
+            let selected = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> PlaylistRecord? in
+                try PlaylistRecord.fetchOne(db, PlaylistRecord.all().filter(PlaylistRecord.Columns.selected == true)) // ?? try PlaylistRecord.fetchOne(db)
+            }
+
+            if let selected = selected, let playlist = try await selected.playlistWithTracks() {
+                Drops.show(.init(title: "playing: \(selected.name)"))
+                if let t = playlist.tracks?.compactMap(\.playParameters) {
+                    osLog(t)
+                    // try await Music.shared.play(playParameters: t)
                 }
             }
-
-            let playLists = try await MusadoraKit.libraryPlaylists()
-            if let first = playLists.last, let mkPlayParameters: PlayParameters = first.playParameters {
-                try await play(playParameters: mkPlayParameters)
-                return
-            }
-
-//            guard let url = URL(string: "https://api.music.apple.com/v1/me/") else { return }
 //
-//            osLog("Making request")
+//            /// First request to get the heavy rotation albums
+//            let rptracks = try await MusadoraKit.recentlyPlayedTracks()
+//            track = rptracks.randomElement()
+//            // osLog(rptracks)
+//            if let userItem = track {
+//                if let playParameters = userItem.playParameters {
+//                    try await play(playParameters: playParameters)
 //
-//            let request = MusicDataRequest(urlRequest: URLRequest(url: url))
-//            let response = try await request.response()
-//            osLog("Decoding")
-//            let heavyRotationAlbums = try JSONDecoder().decode(MusicItemCollection<Album>.self, from: response.data)
-//            osLog("Decoded")
-//            osLog("Decoding: count \(response.data.count)")
-//            osLog(String( data:response.data, encoding: .utf8))
-//            /// Get the first album
-//            guard let album = heavyRotationAlbums.first else {
-//                osLog("no album ")
-//                return
-//
+//                    return
+//                }
 //            }
-//            osLog("Got an Album")
-//            osLog(album)
-//            /// Get the local album ID
-//            let albumID = album.id
 //
-//            osLog("Making request")
-//            /// Another request to get the album from Apple Music Catalog
-//            guard let catalogURL = URL(string: "https://api.music.apple.com/v1/me/library/albums/\(albumID)/catalog") else {
-//                osLog("no url ")
-//                return }
-//
-//            let catalogRequest = MusicDataRequest(urlRequest: URLRequest(url: catalogURL))
-//            let catalogResponse = try await catalogRequest.response()
-//            osLog("Decoding: count \(catalogResponse.data.count)")
-//            osLog(String( data:catalogResponse.data, encoding: .utf8))
-//            let albums = try JSONDecoder().decode(MusicItemCollection<Album>.self, from: catalogResponse.data)
-//
-//            /// Get the same album, but with the catalog ID
-//            guard let catalogAlbum = albums.first else { return }
-//
-//            /// Encode the parameters
-//            let data = try JSONEncoder().encode(catalogAlbum.playParameters)
-//
-//            /// Decode the parameters to `MPMusicPlayerPlayParameters`
-//            let playParameters = try JSONDecoder().decode(MPMusicPlayerPlayParameters.self, from: data)
-//
-//            // Create the queue
-//            let queue = MPMusicPlayerPlayParametersQueueDescriptor(playParametersQueue: [playParameters])
-//
-//            let player = MPMusicPlayerController.applicationMusicPlayer
-//
-//            /// Set the queue
-//            player.setQueue(with: queue)
-//            try await player.prepareToPlay()
-//
-//            /// Finally, play the album!
-//            player.play()
+//            let playLists = try await MusadoraKit.libraryPlaylists()
+//            if let first = playLists.last, let mkPlayParameters: PlayParameters = first.playParameters {
+//                try await play(playParameters: mkPlayParameters)
+//                return
+//            }
+
         } catch {
             osLog(error)
+        }
+    }
+}
+
+public extension MPMusicPlaybackState {
+    var asString: String {
+        switch self {
+        case .stopped:
+            return "stopped"
+        case .playing:
+            return "playing"
+        case .paused:
+            return "paused"
+        case .interrupted:
+            return "interrupted"
+        case .seekingForward:
+            return "seekingForward"
+        case .seekingBackward:
+            return "seekingBackward"
+        @unknown default:
+            return "@unknown"
         }
     }
 }

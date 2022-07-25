@@ -1,4 +1,5 @@
 
+import Drops
 import HealthKit
 
 public protocol WorkoutTrackingProtocol {
@@ -36,8 +37,9 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
             healthStore.requestAuthorization(toShare: infoToShare, read: infoToRead) { success, error in
                 if success {
                     osLog("Authorization HealthKit success")
+                    self.observerHeartRateSamples()
                 } else if let error = error {
-                    print(error)
+                    osLog(error)
                 }
             }
         } else {
@@ -69,7 +71,9 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                     let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
                     let heartRate = sample.quantity.doubleValue(for: heartRateUnit)
                     osLog("Heart Rate Sample: \(heartRate)")
-                    LocalNotificationHelper.fireHeartRate(heartRate)
+                    LocalNotificationHelper.shared.fireHeartRate(heartRate)
+                    let drop = Drop(title: "Heart Rate Sample", subtitle: "\(heartRate)", duration: 5.0)
+                    Drops.show(drop)
                 }
             }
         }
@@ -103,7 +107,7 @@ extension WorkoutTracking {
                 return
             }
 
-            completionHandler(results?[0] as? HKQuantitySample)
+            completionHandler(results?.first as? HKQuantitySample)
         }
 
         healthStore.execute(query)

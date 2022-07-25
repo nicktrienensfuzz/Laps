@@ -12,6 +12,7 @@ import DependencyContainer
 import Foundation
 import FuzzCombine
 import GRDB
+import MapKit
 
 public extension ContainerKeys {
     static let location = KeyedDependency("Location", type: Location.self)
@@ -30,6 +31,17 @@ public class Location {
 
     public var location = Reference<CLLocation?>(value: nil)
     public var track = Reference<Track?>(value: nil)
+
+    public func tracks() -> AnyPublisher<[Track], Never> {
+        try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(Track.all().order(Track.Columns.startTime).reversed().limit(10))
+            .catch { error -> AnyPublisher<[Track], Never> in
+                osLog(error)
+                return Just.any([Track]())
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
 
     public func points() -> AnyPublisher<[TrackPoint], Never> {
         track.didUpdate
@@ -72,6 +84,14 @@ public class Location {
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
         locationManager.activityType = CLActivityType.fitness
         locationManager.delegate = del
+
+        Task {
+            do {
+                try await request()
+            } catch {
+                osLog(error)
+            }
+        }
     }
 
     let asyncLocationManager = AsyncLocationManager(desiredAccuracy: .bestAccuracy)
@@ -105,17 +125,27 @@ public class Location {
         await asyncLocationManager.startUpdatingLocation()
     }
 
-    public func monitorRegionAtLocation(center: CLLocationCoordinate2D, radius _: Double, identifier: String) {
+    public func monitorRegionAtLocation(center: CLLocationCoordinate2D, radius: Double, identifier: String) {
+        locationManager.monitoredRegions.forEach { r in
+            locationManager.stopMonitoring(for: r)
+        }
         // Make sure the devices supports region monitoring.
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             // Register the region.
             let region = CLCircularRegion(center: center,
-                                          radius: 300,
+                                          radius: radius,
                                           identifier: identifier)
             region.notifyOnEntry = true
             region.notifyOnExit = true
             locationManager.startMonitoring(for: region)
+
+        } else {
+            osLog("Error")
         }
+    }
+
+    public func stopMonitoringRegion(region: CLRegion) {
+        locationManager.stopMonitoring(for: region)
     }
 }
 
@@ -129,6 +159,14 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
         super.init()
         Task {
             track.value = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> Track in
+//                if let track = try? Track.fetchOne(db, Track.filter(
+//                    Track.Columns.id == "2AA56534-14A7-4DCE-8071-7A907DBAAC02"))
+//                {
+//                    try? osLog("Track Points: \(TrackPoint.filter(TrackPoint.Columns.trackId == track.id).fetchCount(db))")
+//
+//                    return track
+//                }
+
                 let track = Track(startTime: Date())
                 try track.save(db)
 
@@ -147,15 +185,25 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
         // Hit api to update location
         if let location = locations.last {
             self.location.value = location
-            let trackId = track.value?.id ?? "-1"
-            Task {
-                try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+            if track.value?.live == .some(true) {
+                let trackId = track.value?.id ?? "-1"
+                Task {
+                    try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
 
-                    let point = TrackPoint(latitude: location.coordinate.latitude,
-                                           longitude: location.coordinate.longitude,
-                                           timestamp: location.timestamp,
-                                           trackId: trackId)
-                    try point.save(db)
+                        let point = TrackPoint(
+                            latitude: location.coordinate.latitude,
+                            longitude: location.coordinate.longitude,
+                            elevation: location.altitude,
+                            horizontalAccuracy: location.horizontalAccuracy,
+                            speed: location.speed,
+                            speedAccuracy: location.speedAccuracy,
+                            course: location.course,
+                            courseAccuracy: location.courseAccuracy,
+                            timestamp: location.timestamp,
+                            trackId: trackId
+                        )
+                        try point.save(db)
+                    }
                 }
             }
         }
@@ -164,18 +212,20 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
     var triggered = [String]()
     var hasFired = false
     func locationManager(_: CLLocationManager, didEnterRegion region: CLRegion) {
-        DispatchQueue(label: "background").sync {
-            // if !triggered.contains(region.identifier) {
-            if !self.hasFired {
-                self.hasFired = true
-                osLog("enter:")
-                osLog(region)
-                // triggered.append(region.identifier)
-                Task {
-                    await Music.shared.test()
+        signPost()
+        DispatchQueue(label: "background")
+            .sync {
+                // if !triggered.contains(region.identifier) {
+                if !self.hasFired {
+                    self.hasFired = true
+                    osLog("enter:")
+                    osLog(region)
+                    // triggered.append(region.identifier)
+                    Task {
+                        await Music.shared.test()
+                    }
                 }
             }
-        }
     }
 
     func locationManager(_: CLLocationManager, didExitRegion region: CLRegion) {
@@ -184,7 +234,10 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
     }
 
     func locationManager(_: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-        osLog(error)
+        dump(error)
         osLog(region)
+        if let region = region {
+            Location.shared.stopMonitoringRegion(region: region)
+        }
     }
 }

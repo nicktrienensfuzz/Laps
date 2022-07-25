@@ -13,11 +13,13 @@ public typealias ValueObservation = GRDB.ValueObservation
 public typealias Column = GRDB.Column
 
 class AppDatabase: AppDatabaseInterface, AppDatabaseSynchronousInterface {
-    static let schemaVersion = 2
+    static let schemaVersion = 3
     var tableList: [TableCreator.Type] {
         [
             TrackPoint.self,
             Track.self,
+            CircularPOI.self,
+            PlaylistRecord.self,
         ]
     }
 
@@ -92,9 +94,9 @@ class AppDatabase: AppDatabaseInterface, AppDatabaseSynchronousInterface {
             migrator.eraseDatabaseOnSchemaChange = true
         #endif
         tableList.forEach { t in
-            osLog("Queuing Migration: \(t.databaseTableName)")
+            // osLog("Queuing Migration: \(t.databaseTableName)")
             migrator.registerMigration("create table: " + t.databaseTableName) { db in
-                osLog("running migration \(t.databaseTableName)")
+                osLog("Queuing migration \(t.databaseTableName)")
                 do {
                     try t.createTable(db: db)
                 } catch {

@@ -1,14 +1,15 @@
 //
-//  File.swift
+//  Track.swift
 //
 //
 //  Created by Nicholas Trienens on 6/22/22.
 //
 
-import Foundation
-
+import Combine
+import DependencyContainer
 import Foundation
 import GRDB
+
 // protocol
 public protocol TrackInterface {
     var id: String { get }
@@ -17,11 +18,19 @@ public protocol TrackInterface {
     var name: String? { get }
 }
 
-public class Track: Record, TableCreator, TrackInterface {
+public class Track: GRDB.Record, TableCreator, TrackInterface, Equatable {
+    public static func == (lhs: Track, rhs: Track) -> Bool {
+        lhs.id == rhs.id
+    }
+
     public let id: String
     public let startTime: Date
     public let endTime: Date?
     public let name: String?
+
+    public var live: Bool {
+        true
+    }
 
     public init(
         id: String = UUID().uuidString,
@@ -113,5 +122,19 @@ public class Track: Record, TableCreator, TrackInterface {
             t.column("endTime", .text)
             t.column("name", .text)
         }
+    }
+}
+
+public extension Track {
+    var points: AnyPublisher<[TrackPoint], Never> {
+        let query = TrackPoint.filter(sql: "trackId = '\(id)'")
+
+        return try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(query)
+            .catch { error -> AnyPublisher<[TrackPoint], Never> in
+                osLog(error)
+                return Just.any([TrackPoint]())
+            }
+            .eraseToAnyPublisher()
     }
 }

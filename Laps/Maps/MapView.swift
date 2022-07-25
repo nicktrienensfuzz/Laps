@@ -13,11 +13,12 @@ import SwiftUI
 struct MapView: UIViewRepresentable {
     let region: MKCoordinateRegion
     var lineCoordinates: [CLLocationCoordinate2D]
-    let circleTriggerRegion: MKCircle?
+    let circleTriggerRegions: [MKCircle]
+    let mapView = MKMapView()
+    let tappedAt: (CLLocationCoordinate2D) -> Void
 
     // Create the MKMapView using UIKit.
     func makeUIView(context: Context) -> MKMapView {
-        let mapView = MKMapView()
         mapView.delegate = context.coordinator
         mapView.region = region
         mapView.showsBuildings = true
@@ -33,17 +34,21 @@ struct MapView: UIViewRepresentable {
         let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
         mapView.addOverlay(polyline)
 
-        if let circleTriggerRegion = circleTriggerRegion {
-            mapView.addOverlay(circleTriggerRegion)
+        circleTriggerRegions.forEach { region in
+            mapView.addOverlay(region)
         }
+
+        let gRecognizer = UITapGestureRecognizer(target: context.coordinator,
+                                                 action: #selector(Coordinator.tapHandler(_:)))
+        mapView.addGestureRecognizer(gRecognizer)
 
         return mapView
     }
 
-    let act = Throttler(interval: 0.2)
+    let act = Throttler(interval: 0.5)
     func updateUIView(_ view: MKMapView, context _: Context) {
         // osLog(context)
-        // osLog(lineCoordinates.count)
+        // osLog("draw line: \(lineCoordinates.count)")
         if act.canPerform() {
             DispatchQueue.main.async {
                 for overlay in view.overlays {
@@ -52,8 +57,8 @@ struct MapView: UIViewRepresentable {
                 let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
                 view.addOverlay(polyline)
 
-                if let circleTriggerRegion = circleTriggerRegion {
-                    view.addOverlay(circleTriggerRegion)
+                circleTriggerRegions.forEach { region in
+                    view.addOverlay(region)
                 }
             }
         }
@@ -72,6 +77,15 @@ class Coordinator: NSObject, MKMapViewDelegate {
         self.parent = parent
     }
 
+    @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
+        signPost()
+        let location = gRecognizer.location(in: parent.mapView)
+        // position on the map, CLLocationCoordinate2D
+        let coordinate = parent.mapView.convert(location, toCoordinateFrom: parent.mapView)
+        osLog(coordinate)
+        parent.tappedAt(coordinate)
+    }
+
     func mapView(_: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let circle = overlay as? MKCircle {
             let renderer = MKCircleRenderer(circle: circle)
@@ -86,6 +100,26 @@ class Coordinator: NSObject, MKMapViewDelegate {
             return renderer
         }
         return MKOverlayRenderer()
+    }
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        // If the annotation is the user blue dot, return nil
+        if annotation is MKUserLocation {
+            return nil
+        }
+        // Check if there's a reusable annotation view first
+        var annotationView = mapView.dequeueReusableAnnotationView(withIdentifier: "Constants.annotationReuseId")
+        if annotationView == nil {
+            // Create a new one
+            annotationView = MKMarkerAnnotationView(annotation: annotation, reuseIdentifier: "Constants.annotationReuseId")
+            annotationView!.canShowCallout = true
+            annotationView!.rightCalloutAccessoryView = UIButton(type: .detailDisclosure)
+        } else {
+            // We got a reusable one
+            annotationView!.annotation = annotation
+        }
+        // Return it
+        return annotationView
     }
 }
 
@@ -102,7 +136,9 @@ struct MapView_Previews: PreviewProvider {
                               CLLocationCoordinate2D(latitude: 37.336083, longitude: -122.007356),
                               // Apple wellness center
                               CLLocationCoordinate2D(latitude: 37.336901, longitude: -122.012345)],
-            circleTriggerRegion: nil
-        )
+            circleTriggerRegions: []
+        ) { location in
+            print(location)
+        }
     }
 }

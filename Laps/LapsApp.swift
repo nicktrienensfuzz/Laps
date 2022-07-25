@@ -8,6 +8,7 @@
 import Base
 import DependencyContainer
 import SwiftUI
+
 @main
 struct LapsApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
@@ -20,7 +21,12 @@ struct LapsApp: App {
         WindowGroup {
             ContentView()
                 .task {
-//                    await Music.shared.test()
+                    if await !Music.shared.isPlaying() {
+                        await Music.shared.test()
+                    }
+                    _ = try? await Music.shared.playlists()
+
+                    LocalNotificationHelper.shared.requestPermission()
                     WorkoutTracking.shared.authorizeHealthKit()
                     if WorkoutTracking.shared.isHealthDataAvailable() {
                         WorkoutTracking.shared.observerHeartRateSamples()
