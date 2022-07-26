@@ -9,6 +9,7 @@ import AsyncLocationKit
 import Combine
 import CoreLocation
 import DependencyContainer
+import Drops
 import Foundation
 import FuzzCombine
 import GRDB
@@ -38,6 +39,17 @@ public class Location {
             .catch { error -> AnyPublisher<[Track], Never> in
                 osLog(error)
                 return Just.any([Track]())
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+
+    public func regions() -> AnyPublisher<[CircularPOI], Never> {
+        try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(CircularPOI.all().order(CircularPOI.Columns.radius).reversed())
+            .catch { error -> AnyPublisher<[CircularPOI], Never> in
+                osLog(error)
+                return Just.any([CircularPOI]())
             }
             .removeDuplicates()
             .eraseToAnyPublisher()
@@ -75,10 +87,11 @@ public class Location {
     public init() {
         del = LocationDelegate(location: location, track: track)
         locationManager.startUpdatingLocation()
-        // locationManager.startMonitoringSignificantLocationChanges()
-        locationManager.stopMonitoringSignificantLocationChanges()
+        locationManager.startMonitoringVisits()
+        locationManager.startMonitoringSignificantLocationChanges()
+        // locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.pausesLocationUpdatesAutomatically = false
-        locationManager.allowsBackgroundLocationUpdates = false
+        locationManager.allowsBackgroundLocationUpdates = true
         locationManager.showsBackgroundLocationIndicator = true
 
         locationManager.desiredAccuracy = kCLLocationAccuracyBest
@@ -92,6 +105,14 @@ public class Location {
                 osLog(error)
             }
         }
+    }
+
+    public func startMonitoringSignificantLocationChanges() {
+        locationManager.startMonitoringSignificantLocationChanges()
+    }
+
+    public func stopMonitoringSignificantLocationChanges() {
+        locationManager.stopMonitoringSignificantLocationChanges()
     }
 
     let asyncLocationManager = AsyncLocationManager(desiredAccuracy: .bestAccuracy)
@@ -119,17 +140,16 @@ public class Location {
         default:
             osLog("authorized")
         }
+        locationManager.delegate = del
     }
 
-    public func startUpdatingLocation() async -> LocationStream {
-        await asyncLocationManager.startUpdatingLocation()
-    }
+//    public func startUpdatingLocation() async -> LocationStream {
+//        await asyncLocationManager.startUpdatingLocation()
+//        locationManager.delegate = del
+//
+//    }
 
     public func monitorRegionAtLocation(center: CLLocationCoordinate2D, radius: Double, identifier: String) {
-        locationManager.monitoredRegions.forEach { r in
-            locationManager.stopMonitoring(for: r)
-        }
-        // Make sure the devices supports region monitoring.
         if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
             // Register the region.
             let region = CLCircularRegion(center: center,
@@ -138,14 +158,55 @@ public class Location {
             region.notifyOnEntry = true
             region.notifyOnExit = true
             locationManager.startMonitoring(for: region)
-
         } else {
             osLog("Error")
         }
     }
 
+    public func stopMonitoringAllRegions() {
+        locationManager.monitoredRegions.forEach { r in
+            locationManager.stopMonitoring(for: r)
+        }
+    }
+
     public func stopMonitoringRegion(region: CLRegion) {
         locationManager.stopMonitoring(for: region)
+        Task {
+            try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+                if let record = try CircularPOI.fetchOne(db, CircularPOI.filter(CircularPOI.Columns.id == region.identifier)) {
+                    try record.delete(db)
+                }
+            }
+        }
+    }
+
+    @discardableResult
+    public func allRegions() -> Set<CLRegion> {
+        Task {
+            for r in locationManager.monitoredRegions {
+                osLog(r)
+
+                if let record = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write({ db -> CircularPOI? in
+                    try CircularPOI.fetchOne(db, CircularPOI.filter(CircularPOI.Columns.id == r.identifier))
+                }) {
+                    self.locationManager.startMonitoring(for: r)
+                } else {
+                    self.locationManager.stopMonitoring(for: r)
+                }
+            }
+
+            let trackedIds = self.locationManager.monitoredRegions.map(\.identifier)
+            try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+                let deadRegions = try CircularPOI.fetchAll(db).filter { region in
+                    !trackedIds.contains(region.id)
+                }
+                for region in deadRegions {
+                    osLog("deleting")
+                    try region.delete(db)
+                }
+            }
+        }
+        return locationManager.monitoredRegions
     }
 }
 
@@ -159,6 +220,7 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
         super.init()
         Task {
             track.value = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> Track in
+                // try CircularPOI.deleteAll(db)
 //                if let track = try? Track.fetchOne(db, Track.filter(
 //                    Track.Columns.id == "2AA56534-14A7-4DCE-8071-7A907DBAAC02"))
 //                {
@@ -213,6 +275,8 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
     var hasFired = false
     func locationManager(_: CLLocationManager, didEnterRegion region: CLRegion) {
         signPost()
+        Drops.show(.init(title: "Entered Region"))
+
         DispatchQueue(label: "background")
             .sync {
                 // if !triggered.contains(region.identifier) {

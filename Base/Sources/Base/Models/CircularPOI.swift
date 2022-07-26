@@ -5,11 +5,16 @@
 //  Created by Nicholas Trienens on 7/22/22.
 //
 
-import Foundation
-
+import CoreLocation
 import Foundation
 import GRDB
 import OrderedCollections
+
+public extension CircularPOIInterface {
+    var coordinate: CLLocationCoordinate2D {
+        CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
 
 // MARK: - Input
 

@@ -24,6 +24,7 @@ struct MapView: UIViewRepresentable {
         mapView.showsBuildings = true
         mapView.showsCompass = true
         mapView.showsUserLocation = true
+        mapView.mapType = .hybrid
 
         #if targetEnvironment(simulator)
             mapView.showsTraffic = false

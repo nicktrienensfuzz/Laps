@@ -7,6 +7,7 @@
 
 import Base
 import Combine
+import FuzzCombine
 import MediaPlayer
 import MusicKit
 import SwiftUI
@@ -73,8 +74,10 @@ struct PlaylistDetailsView: View {
 
             if let tracks = viewModel.playlistWithTracks.value?.tracks {
                 ScrollView {
-                    ForEach(tracks) { track in
-                        Text("\(track.artistName) - \(track.title)")
+                    VStack(alignment: .leading) {
+                        ForEach(tracks) { track in
+                            Text("\(track.artistName) - \(track.title)")
+                        }
                     }
                 }
                 .frame(minHeight: 250)

@@ -156,7 +156,7 @@ public actor Music {
         _ = await MusicAuthorization.request()
 
         do {
-            Drops.show(.init(title: "playing"))
+            Drops.show(.init(title: "Playing"))
             // try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.read
 
             let selected = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> PlaylistRecord? in
@@ -164,10 +164,10 @@ public actor Music {
             }
 
             if let selected = selected, let playlist = try await selected.playlistWithTracks() {
-                Drops.show(.init(title: "playing: \(selected.name)"))
-                if let t = playlist.tracks?.compactMap(\.playParameters) {
+                Drops.show(.init(title: "Playing: \(selected.name)"))
+                if let t = playlist.tracks?.compactMap(\.playParameters).shuffled() {
                     osLog(t)
-                    // try await Music.shared.play(playParameters: t)
+                    try await Music.shared.play(playParameters: t)
                 }
             }
 //

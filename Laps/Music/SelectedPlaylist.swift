@@ -7,6 +7,7 @@
 
 import Base
 import Combine
+import FuzzCombine
 import SwiftUI
 
 extension SelectedPlaylist {
@@ -43,7 +44,7 @@ struct SelectedPlaylist: View {
         HStack {
             VStack(alignment: .leading) {
                 Text("Selected Playlist")
-                    .padding([.top, .leading])
+                    .padding([.top, .leading], 5)
 
                 VStack(alignment: .leading) {
                     ForEach(viewModel.playlists.value) { playlist in

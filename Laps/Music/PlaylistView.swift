@@ -6,6 +6,7 @@
 //
 
 import Base
+import FuzzCombine
 import MusicKit
 import SwiftUI
 

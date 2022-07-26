@@ -21,9 +21,9 @@ struct LapsApp: App {
         WindowGroup {
             ContentView()
                 .task {
-                    if await !Music.shared.isPlaying() {
-                        await Music.shared.test()
-                    }
+//                    if await !Music.shared.isPlaying() {
+//                        await Music.shared.test()
+//                    }
                     _ = try? await Music.shared.playlists()
 
                     LocalNotificationHelper.shared.requestPermission()

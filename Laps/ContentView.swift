@@ -13,23 +13,68 @@ import FuzzCombine
 import MapKit
 import SwiftUI
 
-open class BoundReference<Value>: Reference<Value> {
-    private var publisherStorage = Set<AnyCancellable>()
-    open func bind(to: AnyPublisher<Value, Never>) {
-        to.assign(to: \.value, on: self)
-            .store(in: &publisherStorage)
-    }
+extension ContentView {
+    class ViewModel: ObservableObject {
+        private var publisherStorage = Set<AnyCancellable>()
 
-    open func drive(on subject: PassthroughSubject<Value, Never>) {
-        didUpdate.bind(to: subject)
-            .store(in: &publisherStorage)
+        @ObservedObject var sliderValue = BoundReference<Double>(value: 0.5)
+        @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
+        @ObservedObject var regions = BoundReference<[CircularPOI]>(value: [])
+
+        var objectWillChange: AnyPublisher<Void, Never> {
+            circleTriggerRegions.objectWillChange
+                .receive(on: RunLoop.main)
+                .eraseToAnyPublisher()
+        }
+
+        init() {
+            Location.shared.allRegions()
+
+            regions.didUpdate
+                .sink { r in
+                    self.circleTriggerRegions.value = r.map {
+                        MKCircle(center: $0.coordinate, radius: $0.radius)
+                    }
+                }
+                .store(in: &publisherStorage)
+
+            regions.bind(to: Location.shared.regions())
+        }
+
+//        func addRegion(_ location: CLLocationCoordinate2D) {
+//            let radius = 30.0 * sliderValue.value
+//
+//            Task {
+//                do {
+//                    try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+//
+//                        let point = CircularPOI(
+//                            latitude: location.latitude,
+//                            longitude: location.longitude,
+//                            radius: radius,
+//                            trackId: nil,
+//                            timestamp: Date()
+//                        )
+//                        try point.save(db)
+//
+//                        Location.shared.monitorRegionAtLocation(center:
+//                            location,
+//                            radius: radius,
+//                            identifier: point.id)
+//                    }
+//                } catch {
+//                    osLog(error)
+//                }
+//            }
+//        }
     }
 }
 
 struct ContentView: View {
+    @StateObject private var viewModel = ViewModel()
+
     @ObservedObject var location: Reference<CLLocation?>
     @ObservedObject var points = BoundReference<[TrackPoint]>(value: [])
-    @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
 
     init() {
         location = Location.shared.location
@@ -44,52 +89,40 @@ struct ContentView: View {
         NavigationView {
             ScrollView {
                 VStack {
-                    if let location = location.value {
-                        MapView(
-                            region: MKCoordinateRegion(
-                                center: location.coordinate,
-                                span: MKCoordinateSpan(latitudeDelta: 0.012, longitudeDelta: 0.012)
-                            ),
+//                    if let location = location.value {
+//                        VStack(spacing: 0) {
+//                            MapView(
+//                                region: MKCoordinateRegion(
+//                                    center: location.coordinate,
+//                                    span: MKCoordinateSpan(latitudeDelta: 0.0032, longitudeDelta: 0.0032)
+//                                ),
+//
+//                                lineCoordinates: points.value.map(\.coordinate),
+//                                circleTriggerRegions: viewModel.circleTriggerRegions.value,
+//                                tappedAt: { location in
+//                                    viewModel.addRegion(location)
+//                                }
+//                            )
+//                            .frame(height: 250)
+//
+//                            CustomDraggableComponent {
+//                                viewModel.sliderValue.value = $0
+//                            }
+//                        }
+//                        .neumorphicStyle()
+//                    } else {
+//                        WaitingDots()
+//                    }
 
-                            lineCoordinates: points.value.map(\.coordinate),
-                            circleTriggerRegions: circleTriggerRegions.value,
-                            tappedAt: { location in
-                                let radius = 15.0
-
-                                self.circleTriggerRegions.value.append(MKCircle(
-                                    center:
-                                    location,
-                                    radius: radius
-                                ))
-                                Location.shared.monitorRegionAtLocation(center:
-                                    location,
-                                    radius: radius,
-                                    identifier: "target\(Date().timeIntervalSince1970)")
-
-                                Task {
-                                    do {
-                                        try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
-
-                                            let point = CircularPOI(
-                                                latitude: location.latitude,
-                                                longitude: location.longitude,
-                                                radius: 15,
-                                                trackId: nil,
-                                                timestamp: Date()
-                                            )
-                                            try point.save(db)
-                                        }
-                                    } catch {
-                                        osLog(error)
-                                    }
-                                }
-                            }
-                        )
-                        .frame(height: 250)
-                        .neumorphicStyle()
-                    } else {
-                        WaitingDots()
+                    NavigationLink {
+                        RecordTrackView()
+                    } label: {
+                        Text("Record New Track")
+                            .bold()
                     }
+
+                    
+                    Spacer()
 
                     TrackListView()
                         .padding()
@@ -100,41 +133,11 @@ struct ContentView: View {
                         .neumorphicStyle()
 
                     Spacer()
-                    IntervalBuilderView()
-                    Spacer()
                 }
             }
+            .background(Color(.displayP3, red: 1, green: 0.94, blue: 0.98, opacity: 1))
             .navigationBarHidden(true)
         }
-//        .onReceive(location.didUpdate) { location in
-//            let radius = 15.0
-//            if circleTriggerRegions.value.isEmpty {
-//                if let location = location {
-//                    circleTriggerRegions.value = []
-//                    let intersection2 = CLLocationCoordinate2D(latitude: 48.84342958760746, longitude: -122.40568967486759)
-//                    circleTriggerRegions.value.append(MKCircle(center:
-//                        intersection2,
-//                        radius: radius))
-//                    Location.shared.monitorRegionAtLocation(center:
-//                        intersection2,
-//                        radius: radius,
-//                        identifier: "target\(Date().timeIntervalSince1970)")
-//
-//                    let intersection = location.coordinate.move(
-//                        byDistance: 1000,
-//                        course: location.course
-//                    )
-//                    // let intersection = CLLocationCoordinate2D(latitude: 48.84370499670961, longitude: -122.40773336425492)
-//                    circleTriggerRegions.value.append(MKCircle(center:
-//                        intersection,
-//                        radius: radius))
-//                    Location.shared.monitorRegionAtLocation(center:
-//                        intersection,
-//                        radius: radius,
-//                        identifier: "target\(Date().timeIntervalSince1970)")
-//                }
-//            }
-//        }
     }
 }
 

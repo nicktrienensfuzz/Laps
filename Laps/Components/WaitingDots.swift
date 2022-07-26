@@ -13,15 +13,20 @@ struct WaitingDots: View {
     @State private var y: CGFloat = 0
 
     var body: some View {
-        HStack {
-            Dot(y: y)
-                .animation(.easeInOut(duration: 0.5).repeatForever().delay(0), value: y)
-            Dot(y: y)
-                .animation(.easeInOut(duration: 0.5).repeatForever().delay(0.2), value: y)
-            Dot(y: y)
-                .animation(.easeInOut(duration: 0.5).repeatForever().delay(0.4), value: y)
+        VStack {
+            Spacer()
+                .frame(height: 8)
+
+            HStack {
+                Dot(y: y)
+                    .animation(.easeInOut(duration: 0.5).repeatForever().delay(0), value: y)
+                Dot(y: y)
+                    .animation(.easeInOut(duration: 0.5).repeatForever().delay(0.2), value: y)
+                Dot(y: y)
+                    .animation(.easeInOut(duration: 0.5).repeatForever().delay(0.4), value: y)
+            }
+            .onAppear { y = -2 }
         }
-        .onAppear { y = -4 }
         .padding()
     }
 }
@@ -54,7 +59,7 @@ extension LinearGradient {
 // create our neumorphic style
 extension View {
     func neumorphicStyle() -> some View {
-        background(Color(.sRGB, white: 0.90, opacity: 1))
+        background(Color(.sRGB, white: 0.94, opacity: 1))
             .cornerRadius(10)
             .padding(20)
             .shadow(color: Color.black.opacity(0.2), radius: 10, x: 10, y: 10)
