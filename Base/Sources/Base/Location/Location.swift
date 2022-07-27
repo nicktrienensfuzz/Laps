@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  Location.swift
 //
 //
 //  Created by Nicholas Trienens on 6/20/22.
@@ -32,6 +32,10 @@ public class Location {
 
     public var location = Reference<CLLocation?>(value: nil)
     public var track = Reference<Track?>(value: nil)
+
+    let asyncLocationManager = AsyncLocationManager(desiredAccuracy: .bestAccuracy)
+    public private(set) var isMonitoringSignificantLocation: Bool = false
+    public private(set) var isRecording: Bool = false
 
     public func tracks() -> AnyPublisher<[Track], Never> {
         try! DependencyContainer.resolve(key: ContainerKeys.database)
@@ -88,7 +92,7 @@ public class Location {
         del = LocationDelegate(location: location, track: track)
         locationManager.startUpdatingLocation()
         locationManager.startMonitoringVisits()
-        locationManager.startMonitoringSignificantLocationChanges()
+        // locationManager.startMonitoringSignificantLocationChanges()
         // locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.pausesLocationUpdatesAutomatically = false
         locationManager.allowsBackgroundLocationUpdates = true
@@ -109,13 +113,13 @@ public class Location {
 
     public func startMonitoringSignificantLocationChanges() {
         locationManager.startMonitoringSignificantLocationChanges()
+        isMonitoringSignificantLocation = true
     }
 
     public func stopMonitoringSignificantLocationChanges() {
         locationManager.stopMonitoringSignificantLocationChanges()
+        isMonitoringSignificantLocation = false
     }
-
-    let asyncLocationManager = AsyncLocationManager(desiredAccuracy: .bestAccuracy)
 
     public func request() async throws {
         let permission = await asyncLocationManager.requestAuthorizationAlways()
@@ -265,6 +269,19 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
                             trackId: trackId
                         )
                         try point.save(db)
+
+                        let sql = """
+                        Select * from CircularPOI_table
+                            ORDER BY ABS(latitude - \(location.coordinate.latitude)) + ABS(longitude - \(location.coordinate.longitude))
+                        """
+                        let rows: [CircularPOI] = try CircularPOI.fetchAll(db, sql: sql, arguments: [])
+                        for closest in rows {
+                            let distance = closest.coordinate.distance(from: location.coordinate)
+                            if distance < closest.radius {
+                                osLog(closest)
+                                
+                            }
+                        }
                     }
                 }
             }

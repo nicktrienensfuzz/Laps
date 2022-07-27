@@ -119,6 +119,16 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		C0843CD2289039E20041AFC6 /* Rides */ = {
+			isa = PBXGroup;
+			children = (
+				C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */,
+				C00D22A62876AAC200B9A65F /* TrackListView.swift */,
+				C00D22A82876AE2100B9A65F /* TrackDetailView.swift */,
+			);
+			path = Rides;
+			sourceTree = "<group>";
+		};
 		C0A36D8E288CFA930038B341 /* Components */ = {
 			isa = PBXGroup;
 			children = (
@@ -152,6 +162,7 @@
 		C0A8159928617FC6004DF61F /* Laps */ = {
 			isa = PBXGroup;
 			children = (
+				C0843CD2289039E20041AFC6 /* Rides */,
 				C0A36D8E288CFA930038B341 /* Components */,
 				C00D229F287352EE00B9A65F /* Laps.entitlements */,
 				C046D5692867570B0056B7E8 /* Helpers */,
@@ -159,9 +170,6 @@
 				C0A8159A28617FC6004DF61F /* LapsApp.swift */,
 				C046D5672867549D0056B7E8 /* AppDelegate.swift */,
 				C0A8159C28617FC6004DF61F /* ContentView.swift */,
-				C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */,
-				C00D22A62876AAC200B9A65F /* TrackListView.swift */,
-				C00D22A82876AE2100B9A65F /* TrackDetailView.swift */,
 				C00D22A22873584300B9A65F /* IntervalBuilderView.swift */,
 				C0411C21288ECCBE00D328C6 /* Slider */,
 				C0A815D128636191004DF61F /* Music */,

@@ -120,8 +120,8 @@ struct ContentView: View {
                         Text("Record New Track")
                             .bold()
                     }
+                    .padding(.top, 30)
 
-                    
                     Spacer()
 
                     TrackListView()

@@ -23,10 +23,9 @@ extension RecordTrackView {
         @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
         @ObservedObject var regions = BoundReference<[CircularPOI]>(value: [])
 
-        
         @ObservedObject var isRecording = Reference<Bool>(value: false)
         @ObservedObject var name = Reference<String>(value: "")
-        
+
         var objectWillChange: AnyPublisher<Void, Never> {
             circleTriggerRegions.objectWillChange
                 .receive(on: RunLoop.main)
@@ -46,6 +45,7 @@ extension RecordTrackView {
 
             regions.bind(to: Location.shared.regions())
         }
+
         func toggleRecording() {
             isRecording.value.toggle()
             if isRecording.value {
@@ -54,7 +54,7 @@ extension RecordTrackView {
                 Location.shared.stopMonitoringSignificantLocationChanges()
             }
         }
-        
+
         func addRegion(_ location: CLLocationCoordinate2D) {
             let radius = 30.0 * sliderValue.value
 
@@ -126,18 +126,24 @@ struct RecordTrackView: View {
                 WaitingDots()
             }
         }
-        
+
         TextField("Name", text: viewModel.name.asBinding())
-        Button  {
+            .padding(6)
+            .background {
+                RoundedRectangle(cornerRadius: 6)
+                    .foregroundColor(Color.gray.opacity(0.24))
+            }
+            .padding()
+
+        Button {
             viewModel.toggleRecording()
         } label: {
-            if viewModel.isRecording.value {
+            if !viewModel.isRecording.value {
                 Text("Start Recording")
             } else {
                 Text("Pause Recording")
             }
         }
-
     }
 }
 

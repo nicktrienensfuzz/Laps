@@ -27,6 +27,7 @@ public extension CircularPOIInterface {
      public var radius: Double
      public var trackId: String? = nil
      public var timestamp: Date
+     public var enteredAt: Date? = nil
 
  }
  */
@@ -43,13 +44,17 @@ public protocol CircularPOIInterface {
     var timestamp: Date { get set }
 }
 
-public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable {
+public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable, CustomStringConvertible {
     public var id: String
     public var latitude: Double
     public var longitude: Double
     public var radius: Double
     public var trackId: String?
     public var timestamp: Date
+
+    public var description: String {
+        "\(id) \(radius) \(trackId ?? "na")"
+    }
 
     public init(
         id: String = UUID().uuidString,
