@@ -16,10 +16,16 @@ public extension CircularPOIInterface {
     }
 }
 
+extension CircularPOI: CustomStringConvertible {
+    public var description: String {
+        "\(id) \(radius) \(trackId ?? "na")"
+    }
+}
+
 // MARK: - Input
 
 /*
- public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable {
+ public class CircularPOI: Record, CircularPOIInterface, Equatable, TableCreator {
 
      public var id: String = UUID().uuidString
      public var latitude: Double
@@ -42,19 +48,17 @@ public protocol CircularPOIInterface {
     var radius: Double { get set }
     var trackId: String? { get set }
     var timestamp: Date { get set }
+    var enteredAt: Date? { get set }
 }
 
-public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable, CustomStringConvertible {
+public class CircularPOI: Record, CircularPOIInterface, Equatable, TableCreator {
     public var id: String
     public var latitude: Double
     public var longitude: Double
     public var radius: Double
     public var trackId: String?
     public var timestamp: Date
-
-    public var description: String {
-        "\(id) \(radius) \(trackId ?? "na")"
-    }
+    public var enteredAt: Date?
 
     public init(
         id: String = UUID().uuidString,
@@ -62,7 +66,8 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         longitude: Double,
         radius: Double,
         trackId: String? = nil,
-        timestamp: Date
+        timestamp: Date,
+        enteredAt: Date? = nil
     ) {
         self.id = id
         self.latitude = latitude
@@ -70,6 +75,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         self.radius = radius
         self.trackId = trackId
         self.timestamp = timestamp
+        self.enteredAt = enteredAt
         super.init()
     }
 
@@ -81,6 +87,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         radius = from.radius
         trackId = from.trackId
         timestamp = from.timestamp
+        enteredAt = from.enteredAt
         super.init()
     }
 
@@ -95,6 +102,8 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
             trackId: \(trackId != nil ? "\"\(trackId!)\"" : "nil")
             ,
             timestamp:  Date(timeIntervalSince1970: \(timestamp.timeIntervalSince1970))
+            ,
+            enteredAt:  \(enteredAt != nil ? "Date(timeIntervalSince1970: \(enteredAt!.timeIntervalSince1970))" : "nil")
             )
         """
     }
@@ -106,6 +115,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         hasher.combine(radius)
         hasher.combine(trackId)
         hasher.combine(timestamp)
+        hasher.combine(enteredAt)
     }
 
     public static func == (lhs: CircularPOI, rhs: CircularPOI) -> Bool {
@@ -114,7 +124,8 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
             lhs.longitude == rhs.longitude &&
             lhs.radius == rhs.radius &&
             lhs.trackId == rhs.trackId &&
-            lhs.timestamp == rhs.timestamp
+            lhs.timestamp == rhs.timestamp &&
+            lhs.enteredAt == rhs.enteredAt
     }
 
     public var attributes: OrderedDictionary<String, WritableKeyPath<CircularPOI, String>> {
@@ -129,7 +140,8 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         longitude: Double? = nil,
         radius: Double? = nil,
         trackId: String? = nil,
-        timestamp: Date? = nil
+        timestamp: Date? = nil,
+        enteredAt: Date? = nil
     ) -> CircularPOI {
         CircularPOI(
             id: id ?? self.id,
@@ -137,7 +149,8 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
             longitude: longitude ?? self.longitude,
             radius: radius ?? self.radius,
             trackId: trackId ?? self.trackId,
-            timestamp: timestamp ?? self.timestamp
+            timestamp: timestamp ?? self.timestamp,
+            enteredAt: enteredAt ?? self.enteredAt
         )
     }
 
@@ -154,6 +167,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         case radius
         case trackId
         case timestamp
+        case enteredAt
     }
 
     /// Creates a record from a database row
@@ -164,6 +178,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         radius = row[Columns.radius]
         trackId = row[Columns.trackId]
         timestamp = row[Columns.timestamp]
+        enteredAt = row[Columns.enteredAt]
         super.init(row: row)
     }
 
@@ -175,6 +190,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
         container[Columns.radius] = radius
         container[Columns.trackId] = trackId
         container[Columns.timestamp] = timestamp
+        container[Columns.enteredAt] = enteredAt
     }
 
     // MARK: - Table Creation
@@ -188,6 +204,7 @@ public class CircularPOI: Record, TableCreator, CircularPOIInterface, Equatable,
             t.column("radius", .double)
             t.column("trackId", .text)
             t.column("timestamp", .datetime)
+            t.column("enteredAt", .text)
         }
     }
 }

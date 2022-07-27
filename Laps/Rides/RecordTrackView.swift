@@ -55,6 +55,21 @@ extension RecordTrackView {
             }
         }
 
+        func clearRegions() {
+            Task {
+                do {
+                    try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+
+                        try CircularPOI.deleteAll(db)
+
+                        Location.shared.stopMonitoringAllRegions()
+                    }
+                } catch {
+                    osLog(error)
+                }
+            }
+        }
+
         func addRegion(_ location: CLLocationCoordinate2D) {
             let radius = 30.0 * sliderValue.value
 
@@ -103,6 +118,13 @@ struct RecordTrackView: View {
         VStack {
             if let location = location.value {
                 VStack(spacing: 0) {
+                    HStack {
+                        Button("Clear All") {
+                            viewModel.clearRegions()
+                        }.padding(.leading)
+                        Spacer()
+                    }
+                    .padding(4)
                     MapView(
                         region: MKCoordinateRegion(
                             center: location.coordinate,

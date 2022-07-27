@@ -274,12 +274,28 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
                         Select * from CircularPOI_table
                             ORDER BY ABS(latitude - \(location.coordinate.latitude)) + ABS(longitude - \(location.coordinate.longitude))
                         """
-                        let rows: [CircularPOI] = try CircularPOI.fetchAll(db, sql: sql, arguments: [])
+                        let rows: [CircularPOI] = try CircularPOI.fetchAll(db,
+                                                                           sql: sql,
+                                                                           arguments: [])
                         for closest in rows {
                             let distance = closest.coordinate.distance(from: location.coordinate)
                             if distance < closest.radius {
-                                osLog(closest)
-                                
+                                if closest.enteredAt == nil {
+                                    closest.enteredAt = Date()
+                                    try closest.save(db)
+                                    osLog("Entered \(closest)")
+                                    Drops.show(.init(title: "Entered"))
+                                    Task {
+                                        await Music.shared.test()
+                                    }
+                                }
+                            } else {
+                                if closest.enteredAt != nil {
+                                    closest.enteredAt = nil
+                                    try closest.save(db)
+                                    osLog("Exited \(closest)")
+                                    Drops.show(.init(title: "Exited"))
+                                }
                             }
                         }
                     }
