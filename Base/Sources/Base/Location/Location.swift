@@ -37,6 +37,17 @@ public class Location {
     public private(set) var isMonitoringSignificantLocation: Bool = false
     public private(set) var isRecording: Bool = false
 
+    public func circularRegions() -> AnyPublisher<[CircularPOI], Never> {
+        try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(CircularPOI.all())
+            .catch { error -> AnyPublisher<[CircularPOI], Never> in
+                osLog(error)
+                return Just.any([CircularPOI]())
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+
     public func tracks() -> AnyPublisher<[Track], Never> {
         try! DependencyContainer.resolve(key: ContainerKeys.database)
             .observeAll(Track.all().order(Track.Columns.startTime).reversed().limit(10))

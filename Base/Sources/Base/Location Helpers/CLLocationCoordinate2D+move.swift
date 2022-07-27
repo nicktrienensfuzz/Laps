@@ -40,3 +40,9 @@ public extension CLLocationCoordinate2D {
         return CLLocation(latitude: latitude, longitude: longitude).distance(from: destination)
     }
 }
+
+extension CLLocationCoordinate2D: Equatable {
+    public static func == (lhs: CLLocationCoordinate2D, rhs: CLLocationCoordinate2D) -> Bool {
+        lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
+    }
+}

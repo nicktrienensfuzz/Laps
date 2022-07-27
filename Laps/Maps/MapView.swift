@@ -6,6 +6,7 @@
 //
 
 import Base
+import Combine
 import CoreLocation
 import MapKit
 import SwiftUI
@@ -24,6 +25,8 @@ struct MapView: UIViewRepresentable {
         mapView.showsBuildings = true
         mapView.showsCompass = true
         mapView.showsUserLocation = true
+        mapView.showsScale = true
+
         mapView.mapType = .hybrid
 
         #if targetEnvironment(simulator)
@@ -73,9 +76,18 @@ struct MapView: UIViewRepresentable {
 
 class Coordinator: NSObject, MKMapViewDelegate {
     var parent: MapView
+    var circularRegions = [CircularPOI]()
+    private var publisherStorage = Set<AnyCancellable>()
 
     init(_ parent: MapView) {
         self.parent = parent
+
+        super.init()
+        Location.shared.circularRegions()
+            .sink { [weak self] update in
+                self?.circularRegions = update
+            }
+            .store(in: &publisherStorage)
     }
 
     @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
@@ -90,7 +102,11 @@ class Coordinator: NSObject, MKMapViewDelegate {
     func mapView(_: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         if let circle = overlay as? MKCircle {
             let renderer = MKCircleRenderer(circle: circle)
-            renderer.strokeColor = UIColor.orange
+            let inRegion = circularRegions.contains {
+                circle.coordinate == $0.coordinate &&
+                    $0.enteredAt != nil
+            }
+            renderer.strokeColor = inRegion ? UIColor.green : UIColor.orange
             renderer.lineWidth = 10
             return renderer
         }

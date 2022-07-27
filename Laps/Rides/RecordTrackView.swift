@@ -125,6 +125,7 @@ struct RecordTrackView: View {
                         Spacer()
                     }
                     .padding(4)
+
                     MapView(
                         region: MKCoordinateRegion(
                             center: location.coordinate,
