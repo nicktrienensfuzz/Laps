@@ -33,7 +33,8 @@ extension CircularPOI: CustomStringConvertible {
      public var radius: Double
      public var trackId: String? = nil
      public var timestamp: Date
-     public var enteredAt: Date? = nil
+     public var test: Date
+     public let enteredAt: Date? = nil
 
  }
  */

@@ -15,6 +15,7 @@
 		C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */; };
 		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
 		C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D56A2867571B0056B7E8 /* Throttler.swift */; };
+		C04D2BA428AA023300653B06 /* WorkOutForHolly.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */; };
 		C0843CD128900E3C0041AFC6 /* RecordTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */; };
 		C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A36D8F288CFAA80038B341 /* WaitingDots.swift */; };
 		C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159A28617FC6004DF61F /* LapsApp.swift */; };
@@ -58,6 +59,7 @@
 		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C046D5672867549D0056B7E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C046D56A2867571B0056B7E8 /* Throttler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
+		C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOutForHolly.swift; sourceTree = "<group>"; };
 		C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTrackView.swift; sourceTree = "<group>"; };
 		C0A36D8F288CFAA80038B341 /* WaitingDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingDots.swift; sourceTree = "<group>"; };
 		C0A8159728617FC6004DF61F /* Laps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laps.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -119,9 +121,18 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
+		C04D2BA228AA01FB00653B06 /* WorkOut */ = {
+			isa = PBXGroup;
+			children = (
+				C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */,
+			);
+			path = WorkOut;
+			sourceTree = "<group>";
+		};
 		C0843CD2289039E20041AFC6 /* Rides */ = {
 			isa = PBXGroup;
 			children = (
+				C04D2BA228AA01FB00653B06 /* WorkOut */,
 				C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */,
 				C00D22A62876AAC200B9A65F /* TrackListView.swift */,
 				C00D22A82876AE2100B9A65F /* TrackDetailView.swift */,
@@ -390,6 +401,7 @@
 				C0843CD128900E3C0041AFC6 /* RecordTrackView.swift in Sources */,
 				C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */,
 				C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */,
+				C04D2BA428AA023300653B06 /* WorkOutForHolly.swift in Sources */,
 				C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */,
 				C00D22A92876AE2100B9A65F /* TrackDetailView.swift in Sources */,
 				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,

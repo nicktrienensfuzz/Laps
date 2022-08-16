@@ -37,7 +37,17 @@ public actor Music {
 
     public init() {}
 
-    public func play(playParameters: PlayParameters) async throws {
+    public func pause() {
+        let player = MPMusicPlayerController.systemMusicPlayer
+        player.pause()
+    }
+
+    public func resume() {
+        let player = MPMusicPlayerController.systemMusicPlayer
+        player.play()
+    }
+
+    public func play(playParameters: PlayParameters, startAt: Double = 0) async throws {
         let playParameters = try playParameters.toMPPlayParameters()
         let queue = MPMusicPlayerPlayParametersQueueDescriptor(playParametersQueue: [playParameters])
 
@@ -46,7 +56,7 @@ public actor Music {
         /// Set the queue
         player.setQueue(with: queue)
         try await player.prepareToPlay()
-
+        player.currentPlaybackTime = startAt
         /// Finally, play the album!
         player.play()
     }
@@ -152,6 +162,15 @@ public actor Music {
         return player.playbackState == .playing
     }
 
+    public func selectedPlaylist() async throws -> Playlist? {
+        let selected = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> PlaylistRecord? in
+            try PlaylistRecord.fetchOne(db, PlaylistRecord.all().filter(PlaylistRecord.Columns.selected == true))
+        }
+        let selectedUnwrapped = try selected.unwrapped()
+        let playlist = try await selectedUnwrapped.playlistWithTracks()
+        return playlist
+    }
+
     public func test() async {
         _ = await MusicAuthorization.request()
 
@@ -163,9 +182,10 @@ public actor Music {
                 try PlaylistRecord.fetchOne(db, PlaylistRecord.all().filter(PlaylistRecord.Columns.selected == true)) // ?? try PlaylistRecord.fetchOne(db)
             }
 
-            if let selected = selected, let playlist = try await selected.playlistWithTracks() {
+            if let selected = selected {
+                let playlist = try await selected.playlistWithTracks()
                 Drops.show(.init(title: "Playing: \(selected.name)"))
-                if let t = playlist.tracks?.compactMap(\.playParameters).shuffled() {
+                if let t = playlist.tracks?.compactMap(\.playParameters) {
                     osLog(t)
                     try await Music.shared.play(playParameters: t)
                 }

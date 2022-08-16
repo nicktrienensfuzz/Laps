@@ -15,7 +15,7 @@ class AppDelegate: NSObject, UIApplicationDelegate {
         osLog("Your code here")
 
         tryLog {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default)
+            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
         }
 
         return true

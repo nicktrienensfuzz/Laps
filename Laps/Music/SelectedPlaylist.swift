@@ -18,6 +18,7 @@ extension SelectedPlaylist {
         var objectWillChange: AnyPublisher<Void, Never> {
             selectedPlaylist.objectWillChange
                 .merge(with: playlists.objectWillChange)
+                .throttle(for: 0.2, scheduler: RunLoop.main, latest: true)
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
         }

@@ -4,26 +4,30 @@ import GRDB
 import MusadoraKit
 import MusicKit
 import OrderedCollections
+import TuvaCore
 
 public extension PlaylistRecord {
-    func playlistWithTracks() async throws -> Playlist? {
+    func playlistWithTracks() async throws -> Playlist {
         var detailedPlaylist = try await Music.shared.playlist(id: id)
         detailedPlaylist = try await detailedPlaylist.with([.tracks])
         return detailedPlaylist
     }
+//    func playlistWithTracks() async throws -> Playlist? {
+//        var detailedPlaylist = try await Music.shared.playlist(id: id)
+//        detailedPlaylist = try await detailedPlaylist.with([.tracks])
+//        return detailedPlaylist
+//    }
 }
 
 // MARK: - Input
 
 /*
  public class PlaylistRecord: Record, TableCreator, PlaylistRecordInterface, Equatable {
-
      public var id: String = UUID().uuidString
      public var name: String
      public var tracks: Int
      public var selected: Bool? = nil
      public var timestamp: Date
-
  }
  */
 

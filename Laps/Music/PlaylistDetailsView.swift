@@ -28,7 +28,7 @@ extension PlaylistDetailsView {
         func update(_ incomingPlaylist: PlaylistRecord) {
             playlist.value = incomingPlaylist
             Task {
-                let detailedPlaylist = try await incomingPlaylist.playlistWithTracks()
+                let detailedPlaylist: Playlist? = try await incomingPlaylist.playlistWithTracks()
                 osLog(detailedPlaylist?.tracks)
                 playlistWithTracks.value = detailedPlaylist
             }

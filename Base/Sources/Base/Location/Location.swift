@@ -329,9 +329,9 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
                     osLog("enter:")
                     osLog(region)
                     // triggered.append(region.identifier)
-                    Task {
-                        await Music.shared.test()
-                    }
+//                    Task {
+//                        await Music.shared.test()
+//                    }
                 }
             }
     }

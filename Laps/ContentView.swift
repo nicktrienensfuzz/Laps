@@ -115,6 +115,12 @@ struct ContentView: View {
 //                    }
 
                     NavigationLink {
+                        WorkOutForHollyView()
+                    } label: {
+                        Text("Holly's 30s")
+                            .font(.title2)
+                    }
+                    NavigationLink {
                         RecordTrackView()
                     } label: {
                         Text("Record New Track")
