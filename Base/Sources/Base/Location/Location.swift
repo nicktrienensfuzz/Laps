@@ -72,6 +72,7 @@ public class Location {
 
     public func points() -> AnyPublisher<[TrackPoint], Never> {
         track.didUpdate
+            .prepend(track.value)
             .flatMap { track -> AnyPublisher<[TrackPoint], Never> in
                 let query: QueryInterfaceRequest<TrackPoint>
                 if let track = track {
@@ -102,7 +103,7 @@ public class Location {
     public init() {
         del = LocationDelegate(location: location, track: track)
         locationManager.startUpdatingLocation()
-        locationManager.startMonitoringVisits()
+//        locationManager.startMonitoringVisits()
         // locationManager.startMonitoringSignificantLocationChanges()
         // locationManager.stopMonitoringSignificantLocationChanges()
         locationManager.pausesLocationUpdatesAutomatically = false
@@ -280,6 +281,7 @@ class LocationDelegate: NSObject, CLLocationManagerDelegate {
                             trackId: trackId
                         )
                         try point.save(db)
+                        osLog("saved point")
 
                         let sql = """
                         Select * from CircularPOI_table

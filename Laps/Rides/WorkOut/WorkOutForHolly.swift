@@ -186,6 +186,7 @@ struct WorkOutForHollyView: View {
             ProgressBar(value: viewModel.progress)
                 .frame(height: 80)
 
+            InfoBarView()
             Spacer()
 
             Text(viewModel.state.asString)

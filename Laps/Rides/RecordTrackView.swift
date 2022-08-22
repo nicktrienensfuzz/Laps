@@ -23,7 +23,7 @@ extension RecordTrackView {
         @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
         @ObservedObject var regions = BoundReference<[CircularPOI]>(value: [])
 
-        @ObservedObject var isRecording = Reference<Bool>(value: false)
+        @ObservedObject var isRecording = Reference<Bool>(value: Location.shared.isRecording)
         @ObservedObject var name = Reference<String>(value: "")
 
         var objectWillChange: AnyPublisher<Void, Never> {
