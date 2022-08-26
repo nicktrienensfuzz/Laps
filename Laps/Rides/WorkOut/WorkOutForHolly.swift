@@ -7,15 +7,16 @@
 
 import AVFoundation
 import Base
+import BaseWatch
 import Combine
 import CoreLocation
 import DependencyContainer
 import FuzzCombine
+import Logger
 import MapKit
 import MusadoraKit
 import MusicKit
 import SwiftUI
-
 import TuvaCore
 
 extension WorkOutForHollyView {
@@ -160,9 +161,10 @@ struct WorkOutForHollyView: View {
     @StateObject private var viewModel = ViewModel()
 
     @ObservedObject var location: Reference<CLLocation?>
-
+    @ObservedObject var heartRate: Reference<Double>
     init() {
         location = Location.shared.location
+        heartRate = Comms.shared.heartRateValue
     }
 
     func runTime(interval: Double) -> String {
@@ -188,6 +190,13 @@ struct WorkOutForHollyView: View {
 
             InfoBarView()
             Spacer()
+            HStack {
+                Image(systemName: "heart")
+                    .font(.title)
+                Text("\(String(format: "%0.0f", heartRate.value))")
+                    .font(.title)
+            }
+            .padding()
 
             Text(viewModel.state.asString)
                 .font(.title)

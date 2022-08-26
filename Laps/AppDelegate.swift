@@ -8,6 +8,7 @@
 import AVFoundation
 import Base
 import Foundation
+import Logger
 import UIKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {

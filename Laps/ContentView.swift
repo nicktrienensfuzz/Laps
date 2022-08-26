@@ -6,6 +6,7 @@
 //
 
 import Base
+import BaseWatch
 import Combine
 import CoreLocation
 import DependencyContainer
@@ -29,7 +30,6 @@ extension ContentView {
 
         init() {
             Location.shared.allRegions()
-
             regions.didUpdate
                 .sink { r in
                     self.circleTriggerRegions.value = r.map {
@@ -141,7 +141,7 @@ struct ContentView: View {
                     Spacer()
                 }
             }
-            .background(Color(.displayP3, red: 1, green: 0.94, blue: 0.98, opacity: 1))
+            .background(Color(.displayP3, red: 0.93, green: 0.94, blue: 0.94, opacity: 1))
             .navigationBarHidden(true)
         }
     }

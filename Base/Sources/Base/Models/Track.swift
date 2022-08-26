@@ -9,6 +9,7 @@ import Combine
 import DependencyContainer
 import Foundation
 import GRDB
+import Logger
 
 // protocol
 public protocol TrackInterface {

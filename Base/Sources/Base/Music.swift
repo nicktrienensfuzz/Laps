@@ -11,6 +11,7 @@
     import Drops
     import Foundation
     import GRDB
+    import Logger
     import MediaPlayer
     import MusadoraKit
     import MusicKit

@@ -14,6 +14,7 @@
     import Foundation
     import FuzzCombine
     import GRDB
+    import Logger
     import MapKit
 
     public extension ContainerKeys {
@@ -282,7 +283,7 @@
                                 trackId: trackId
                             )
                             try point.save(db)
-                            osLog("saved point")
+                            // osLog("saved point")
 
                             let sql = """
                             Select * from CircularPOI_table

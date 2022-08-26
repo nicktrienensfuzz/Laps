@@ -18,12 +18,19 @@ struct ContentView: View {
     
     var body: some View {
         VStack{
-            Text("Hello, World!\n\(heartRate.value)")
+            HStack{
+                Image(systemName: "heart")
+                Text("\(String(format: "%0.0f",heartRate.value))")
+            }
             .padding()
             
             Button {
-                WorkoutTracking.authorizeHealthKit()
-                WorkoutTracking.shared.startWorkOut()
+                if WorkoutTracking.shared.workoutSessionState.value != .running {
+                    WorkoutTracking.authorizeHealthKit()
+                    WorkoutTracking.shared.startWorkOut()
+                } else {
+                    WorkoutTracking.shared.stopWorkOut()
+                }
             } label: {
                 Text("test")
             }

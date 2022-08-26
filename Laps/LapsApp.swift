@@ -6,6 +6,7 @@
 //
 
 import Base
+import BaseWatch
 import DependencyContainer
 import SwiftUI
 
@@ -25,6 +26,8 @@ struct LapsApp: App {
 //                        await Music.shared.test()
 //                    }
                     _ = try? await Music.shared.playlists()
+
+                    Comms.shared.sendMessage(.startActivity)
 
                     LocalNotificationHelper.shared.requestPermission()
 

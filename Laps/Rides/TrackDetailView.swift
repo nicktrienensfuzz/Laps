@@ -6,6 +6,7 @@
 //
 
 import Base
+import Logger
 import MapKit
 import SwiftUI
 

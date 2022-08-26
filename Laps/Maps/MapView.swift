@@ -8,6 +8,7 @@
 import Base
 import Combine
 import CoreLocation
+import Logger
 import MapKit
 import SwiftUI
 

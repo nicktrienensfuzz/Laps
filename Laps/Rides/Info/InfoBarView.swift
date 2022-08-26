@@ -8,6 +8,7 @@
 import Base
 import Combine
 import FuzzCombine
+import Logger
 import SwiftUI
 
 struct InfoBarView: View {
@@ -29,7 +30,7 @@ struct InfoBarView: View {
             Location.shared.points()
                 // }
                 .sink { points in
-                    osLog(points.last)
+                    // osLog(points.last)
                     self.points.value = points
                 }
                 .store(in: &publisherStorage)

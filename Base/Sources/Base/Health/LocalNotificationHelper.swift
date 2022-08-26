@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Logger
 import UIKit
 import UserNotifications
 

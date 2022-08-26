@@ -8,6 +8,7 @@
 import Base
 import Combine
 import FuzzCombine
+import Logger
 import MediaPlayer
 import MusicKit
 import SwiftUI

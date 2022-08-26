@@ -12,6 +12,7 @@ import Combine
 import CoreLocation
 import DependencyContainer
 import FuzzCombine
+import Logger
 import MapKit
 import SwiftUI
 

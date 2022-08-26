@@ -2,6 +2,7 @@ import CoreLocation
 import DependencyContainer
 import Drops
 import HealthKit
+import Logger
 
 public protocol WorkoutTrackingProtocol {
     func authorizeHealthKit() async -> Bool
@@ -175,7 +176,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                     let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
                     let heartRate = sample.quantity.doubleValue(for: heartRateUnit)
                     let timeStamp = sample.startDate
-                    osLog("Heart Rate Sample: \(heartRate) @ \(timeStamp.toFormat("hh:mm a"))")
+                    osLog("Heart Rate Sample: \(heartRate) @ \(timeStamp.toFormat("hh:mm:ss a"))")
 
                     let trackId = Location.shared.track.value?.id
                     Task {
@@ -187,7 +188,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                                 trackId: trackId
                             )
                             try point.save(db)
-                            osLog("Saved HeartRate: \(point.toSwift())")
+                            // osLog("Saved HeartRate: \(point.toSwift())")
                         }
                     }
 

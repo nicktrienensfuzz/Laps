@@ -10,6 +10,7 @@ import Foundation
 import HealthKit
 import BaseWatch
 import FuzzCombine
+import Logger
 
 protocol WorkoutTrackingDelegate: AnyObject {
     func didReceiveHealthKitHeartRate(_ heartRate: Double)
@@ -31,15 +32,14 @@ class WorkoutTracking: NSObject {
     var workoutBuilder: HKLiveWorkoutBuilder!
     
     let heartRateValue: Reference<Double> = .init(value: 0)
+    let workoutSessionState: Reference<HKWorkoutSessionState> = .init(value: .notStarted)
     
     weak var delegate: WorkoutTrackingDelegate?
     
     override init() {
         super.init()
-    }        
-}
-
-extension WorkoutTracking {
+    }
+    
     private func handleSendStatisticsData(_ statistics: HKStatistics) {
         switch statistics.quantityType {
         case HKQuantityType.quantityType(forIdentifier: .heartRate):
@@ -47,7 +47,11 @@ extension WorkoutTracking {
             let value = statistics.mostRecentQuantity()?.doubleValue(for: heartRateUnit)
             let roundedValue = Double( round( 1 * value! ) / 1 )
             heartRateValue.update(value: roundedValue)
+            osLog("\(statistics.startDate) \(roundedValue)")
+            
+            Comms.shared.sendMessage(Comms.Action.startActivity, heartRate: roundedValue)
             delegate?.didReceiveHealthKitHeartRate(roundedValue)
+            
             
         case HKQuantityType.quantityType(forIdentifier: .stepCount):
             guard let stepCounts = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
@@ -81,12 +85,13 @@ extension WorkoutTracking {
     }
     
     private func configWorkout() {
-        configuration.activityType = .walking
+        configuration.activityType = .cycling
         
         do {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
             workoutBuilder = workoutSession?.associatedWorkoutBuilder()
         } catch {
+            workoutSessionState.value = .notStarted
             return
         }
         
@@ -104,13 +109,13 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                 HKSampleType.quantityType(forIdentifier: .stepCount)!,
                 HKSampleType.quantityType(forIdentifier: .heartRate)!,
                 HKSampleType.workoutType()
-                ])
+            ])
             
             let infoToShare = Set([
                 HKSampleType.quantityType(forIdentifier: .stepCount)!,
                 HKSampleType.quantityType(forIdentifier: .heartRate)!,
                 HKSampleType.workoutType()
-                ])
+            ])
             
             HKHealthStore().requestAuthorization(toShare: infoToShare, read: infoToRead) { (success, error) in
                 if success {
@@ -138,6 +143,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
     
     func stopWorkOut() {
         osLog("Stop workout")
+        osLog(workoutSessionState.value.title)
         workoutSession.stopActivity(with: Date())
         workoutSession.end()
         workoutBuilder.endCollection(withEnd: Date()) { (success, error) in
@@ -175,7 +181,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
 
 extension WorkoutTracking: HKLiveWorkoutBuilderDelegate {
     func workoutBuilder(_ workoutBuilder: HKLiveWorkoutBuilder, didCollectDataOf collectedTypes: Set<HKSampleType>) {
-        osLog("GET DATA: \(Date())")
+        //osLog("GET DATA: \(Date())")
         for type in collectedTypes {
             guard let quantityType = type as? HKQuantityType else {
                 return
@@ -193,11 +199,36 @@ extension WorkoutTracking: HKLiveWorkoutBuilderDelegate {
 }
 
 extension WorkoutTracking: HKWorkoutSessionDelegate {
-    func workoutSession(_ workoutSession: HKWorkoutSession, didChangeTo toState: HKWorkoutSessionState, from fromState: HKWorkoutSessionState, date: Date) {
-        
+    func workoutSession(_ workoutSession: HKWorkoutSession,
+                        didChangeTo toState: HKWorkoutSessionState,
+                        from fromState: HKWorkoutSessionState, date: Date) {
+        osLog(toState.title)
+        workoutSessionState.value = toState
     }
     
     func workoutSession(_ workoutSession: HKWorkoutSession, didFailWithError error: Error) {
-        
+        osLog(error)
+    }
+}
+
+
+extension HKWorkoutSessionState {
+    var title: String {
+        switch self {
+        case .notStarted:
+            return "notStarted"
+        case .running:
+            return "running"
+        case .ended:
+            return "ended"
+        case .paused:
+            return "paused"
+        case .prepared:
+            return "prepared"
+        case .stopped:
+            return "stopped"
+        @unknown default:
+            return "@unknown"
+        }
     }
 }

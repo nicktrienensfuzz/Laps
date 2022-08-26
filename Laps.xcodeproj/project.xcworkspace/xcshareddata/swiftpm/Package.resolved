@@ -51,7 +51,7 @@
       "location" : "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git",
       "state" : {
         "branch" : "master",
-        "revision" : "5bfc3b9241bc228074c49fcf5b4d0defb2c2659b"
+        "revision" : "b17d97c916fdfaffb3f3aac186628d910435f5ce"
       }
     },
     {

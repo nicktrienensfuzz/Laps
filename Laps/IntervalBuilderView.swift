@@ -7,6 +7,7 @@
 
 import Base
 import ComposableArchitecture
+import Logger
 import SwiftUI
 
 struct IntervalBuilderView: View {

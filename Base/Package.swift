@@ -8,6 +8,10 @@ let package = Package(
     platforms: [.iOS(.v15), .watchOS(.v8)],
     products: [
         .library(
+            name: "Logger",
+            targets: ["Logger"]
+        ),
+        .library(
             name: "Base",
             targets: ["Base"]
         ),
@@ -36,12 +40,16 @@ let package = Package(
             name: "DependencyContainer"
         ),
         .target(
+            name: "Logger"
+        ),
+        .target(
             name: "Base",
             dependencies: [
                 "MusadoraKit",
                 "FancyScrollView",
                 "AsyncLocationKit",
                 "Drops",
+                "Logger",
                 "Communicator",
                 .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
                 .product(name: "GRDB", package: "GRDB.swift"),
@@ -54,6 +62,7 @@ let package = Package(
             name: "BaseWatch",
             dependencies: [
                 "Communicator",
+                "Logger",
                 .product(name: "GRDB", package: "GRDB.swift"),
                 .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
                 .product(name: "FuzzCombine", package: "fuzz-combine-iosmodule"),

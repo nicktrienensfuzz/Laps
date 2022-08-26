@@ -25,6 +25,7 @@
 		C028F40828B8451D004A17AD /* LapsWatchUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F40728B8451D004A17AD /* LapsWatchUITests.swift */; };
 		C028F40A28B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F40928B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift */; };
 		C028F40D28B8451D004A17AD /* LapsWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C028F3D728B8451B004A17AD /* LapsWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		C02BCC0128B870EA00D84BF2 /* BaseWatch in Frameworks */ = {isa = PBXBuildFile; productRef = C02BCC0028B870EA00D84BF2 /* BaseWatch */; };
 		C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */; };
 		C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */; };
 		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
@@ -203,6 +204,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0A815C9286187CD004DF61F /* Base in Frameworks */,
+				C02BCC0128B870EA00D84BF2 /* BaseWatch in Frameworks */,
 				C00D22A1287352EE00B9A65F /* HealthKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -530,6 +532,7 @@
 			name = Laps;
 			packageProductDependencies = (
 				C0A815C8286187CD004DF61F /* Base */,
+				C02BCC0028B870EA00D84BF2 /* BaseWatch */,
 			);
 			productName = Laps;
 			productReference = C0A8159728617FC6004DF61F /* Laps.app */;
@@ -1169,6 +1172,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -1182,7 +1186,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -1208,6 +1212,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
@@ -1221,7 +1226,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};
@@ -1390,6 +1395,10 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C02BCC0028B870EA00D84BF2 /* BaseWatch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BaseWatch;
+		};
 		C063B39E28B84E88006B05B6 /* DependencyContainer */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = DependencyContainer;

@@ -5,6 +5,7 @@
     import Foundation
     import FuzzCombine
     import GRDB
+    import Logger
 
     public extension ContainerKeys {
         static let database = KeyedDependency("database", type: AppDatabaseInterface.self)
