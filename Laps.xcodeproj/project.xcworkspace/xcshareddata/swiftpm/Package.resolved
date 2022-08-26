@@ -19,6 +19,15 @@
       }
     },
     {
+      "identity" : "communicator",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/KaneCheshire/Communicator.git",
+      "state" : {
+        "revision" : "3d2b6c9f07902de7e87a5e9af2cff280de7981c9",
+        "version" : "4.1.0"
+      }
+    },
+    {
       "identity" : "drops",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/omaralbeik/Drops.git",
@@ -41,8 +50,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git",
       "state" : {
-        "revision" : "02d4909294034450ba300e02b32a7daaf3649476",
-        "version" : "0.1.23"
+        "branch" : "master",
+        "revision" : "5bfc3b9241bc228074c49fcf5b4d0defb2c2659b"
       }
     },
     {
@@ -59,8 +68,8 @@
       "kind" : "remoteSourceControl",
       "location" : "git@github.com:rryam/MusadoraKit.git",
       "state" : {
-        "revision" : "48d2d85849f650bc8939526598f6c53cebe261ef",
-        "version" : "1.7.0"
+        "revision" : "77a84ef0b00080630ab6f5d4c497119bd886c089",
+        "version" : "1.7.2"
       }
     },
     {

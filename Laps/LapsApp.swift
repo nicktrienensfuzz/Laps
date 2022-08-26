@@ -27,10 +27,11 @@ struct LapsApp: App {
                     _ = try? await Music.shared.playlists()
 
                     LocalNotificationHelper.shared.requestPermission()
-//                    WorkoutTracking.shared.authorizeHealthKit()
-//                    if WorkoutTracking.shared.isHealthDataAvailable() {
-//                        WorkoutTracking.shared.observerHeartRateSamples()
-//                    }
+
+                    await WorkoutTracking.shared.authorizeHealthKit()
+                    if WorkoutTracking.shared.isHealthDataAvailable() {
+                        WorkoutTracking.shared.observerHeartRateSamples()
+                    }
                 }
         }
     }

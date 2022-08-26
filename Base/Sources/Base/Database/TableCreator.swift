@@ -2,11 +2,14 @@
 // Created by Andrew Grosner on 3/22/21.
 // Copyright (c) 2021 Fuzzproductions. All rights reserved.
 //
+#if canImport(GRDB)
 
-import Foundation
-import GRDB
+    import Foundation
+    import GRDB
 
-protocol TableCreator {
-    static func createTable(db: Database) throws -> Void
-    static var databaseTableName: String { get }
-}
+    protocol TableCreator {
+        static func createTable(db: Database) throws -> Void
+        static var databaseTableName: String { get }
+    }
+
+#endif
