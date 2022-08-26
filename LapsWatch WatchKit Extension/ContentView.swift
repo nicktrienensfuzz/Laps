@@ -8,14 +8,17 @@
 import SwiftUI
 import BaseWatch
 import FuzzCombine
+import HealthKit
+
 
 struct ContentView: View {
-    internal init(){
+    internal init() {
         heartRate = WorkoutTracking.shared.heartRateValue
+        workoutSessionState = WorkoutTracking.shared.workoutSessionState
     }
     
     @ObservedObject var heartRate: Reference<Double>
-    
+    @ObservedObject var workoutSessionState: Reference<HKWorkoutSessionState>
     var body: some View {
         VStack{
             HStack{
@@ -32,7 +35,12 @@ struct ContentView: View {
                     WorkoutTracking.shared.stopWorkOut()
                 }
             } label: {
-                Text("test")
+                if workoutSessionState.value != .running {
+                    Text("Start")
+                } else {
+                    Text("Stop")
+                }
+                
             }
 
         }

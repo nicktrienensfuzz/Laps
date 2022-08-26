@@ -40,7 +40,11 @@ let package = Package(
             name: "DependencyContainer"
         ),
         .target(
-            name: "Logger"
+            name: "Logger",
+            dependencies: [
+                .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
+            ]
+
         ),
         .target(
             name: "Base",

@@ -42,17 +42,22 @@ struct InfoBarView: View {
     init() {}
 
     var body: some View {
-        HStack {
-            box(label: "Speed", value: String(format: "%0.2f", viewModel.points.last?.speed ?? 0))
-            Spacer()
-            Divider()
-            Spacer()
-            box(label: "Speed 3m", value:
-                String(format: "%0.2f", viewModel.points.value.averageSpeedSince(startDate: Date().addingTimeInterval(-180))))
-            Spacer()
-            Divider()
-            Spacer()
-            box(label: "Speed 10m", value: String(format: "%0.2f", viewModel.points.value.averageSpeedSince(startDate: Date().addingTimeInterval(-600))))
+        GeometryReader { proxy in
+            HStack {
+                box(label: "Speed", value: String(format: "%0.2f", viewModel.points.last?.speed ?? 0))
+                    .frame(width: proxy.size.width / 3.3)
+                Spacer()
+                Divider()
+                Spacer()
+                box(label: "Speed 3m", value:
+                    String(format: "%0.2f", viewModel.points.value.averageSpeedSince(startDate: Date().addingTimeInterval(-180))))
+                    .frame(width: proxy.size.width / 3.3)
+                Spacer()
+                Divider()
+                Spacer()
+                box(label: "Speed 10m", value: String(format: "%0.2f", viewModel.points.value.averageSpeedSince(startDate: Date().addingTimeInterval(-600))))
+                    .frame(width: proxy.size.width / 3.3)
+            }
         }
         .frame(maxHeight: 70)
     }

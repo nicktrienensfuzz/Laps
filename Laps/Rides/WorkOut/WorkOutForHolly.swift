@@ -36,7 +36,7 @@ extension WorkOutForHollyView {
 
         var asString: String {
             switch self {
-            case .none: return "None"
+            case .none: return "Not Started"
             case let .hot(i): return "Hot \(i + 1) / 16"
             case let .cold(i): return "Cold \(i + 1) / 16"
             case .rest: return "Rest"
@@ -168,11 +168,30 @@ struct WorkOutForHollyView: View {
     }
 
     func runTime(interval: Double) -> String {
-        let formatter = DateComponentsFormatter()
-        formatter.allowedUnits = [.minute, .second]
-        formatter.unitsStyle = .positional
+        let time = Int(interval)
 
-        return formatter.string(from: interval)!
+        let seconds = time % 60
+        let minutes = (time / 60) % 60
+        let hours = (time / 3600)
+
+        var formatString = ""
+        if hours == 0 {
+            if minutes < 10 {
+                formatString = "%2d:%0.2d"
+            } else {
+                formatString = "%0.2d:%0.2d"
+            }
+            return String(format: formatString, minutes, seconds)
+        } else {
+            formatString = "%2d:%0.2d:%0.2d"
+            return String(format: formatString, hours, minutes, seconds)
+        }
+
+//        let formatter = DateComponentsFormatter()
+//        formatter.allowedUnits = [.minute, .second]
+//        formatter.unitsStyle = .positional
+//
+//        return formatter.string(from: interval)!
     }
 
     var body: some View {
@@ -189,15 +208,15 @@ struct WorkOutForHollyView: View {
                 .frame(height: 80)
 
             InfoBarView()
-            Spacer()
             HStack {
                 Image(systemName: "heart")
                     .font(.title)
                 Text("\(String(format: "%0.0f", heartRate.value))")
                     .font(.title)
             }
-            .padding()
+            .padding(.horizontal)
 
+            Spacer()
             Text(viewModel.state.asString)
                 .font(.title)
             HStack {
