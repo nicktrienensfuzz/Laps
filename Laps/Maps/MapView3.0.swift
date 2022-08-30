@@ -15,6 +15,13 @@ import MapKit
 import SwiftUI
 
 struct MapView3: UIViewRepresentable {
+    internal init(sliderValue: BoundReference<Double> = BoundReference<Double>(value: 0.5),
+                  followsUserLocation: Reference<Bool> = Reference<Bool>(value: false))
+    {
+        self.sliderValue = sliderValue
+        self.followsUserLocation = followsUserLocation
+    }
+
     @State fileprivate var mapView = MKMapView()
     var sliderValue = BoundReference<Double>(value: 0.5)
     var followsUserLocation = Reference<Bool>(value: false)
@@ -25,7 +32,7 @@ struct MapView3: UIViewRepresentable {
         mapView.showsBuildings = true
         mapView.showsCompass = true
         mapView.showsUserLocation = true
-        mapView.userTrackingMode = .followWithHeading
+        mapView.userTrackingMode = .follow
         mapView.showsScale = true
         mapView.mapType = .hybrid
 
@@ -109,15 +116,27 @@ class Coordinator3: NSObject, MKMapViewDelegate {
 
         location.currentValueWithUpdates
             .combineLatest(region.currentValueWithUpdates, points.currentValueWithUpdates)
-            .sink { _, _, _ in
-                self.updateMap()
+            .sink { [weak self] _, _, _ in
+                self?.updateMap()
             }
             .store(in: &publisherStorage)
     }
 
     func updateMap() {
         if let lastRegionValue = lastRegion.value, followsUserLocation.value, region.value != lastRegionValue {
-            parent.mapView.region = region.value
+            // parent.mapView.region = region.value
+            parent.mapView.setRegion(region.value, animated: false)
+            lastRegion.value = region.value
+            // parent.mapView.setUserTrackingMode(.followWithHeading, animated: true)
+            let mapCamera = parent.mapView.camera
+            if let newHeading = points.value.takeLast(4).computeHeading() {
+                osLog(newHeading)
+                mapCamera.heading = newHeading
+            }
+            parent.mapView.setCamera(mapCamera, animated: true)
+        }
+        if lastRegion.value == nil {
+            parent.mapView.setRegion(region.value, animated: true)
             lastRegion.value = region.value
         }
 
@@ -210,6 +229,7 @@ class Coordinator3: NSObject, MKMapViewDelegate {
     func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
         osLog(mapView.region)
         // parent.regionUpdated(mapView.region)
+        lastRegion.value = mapView.region
     }
 }
 

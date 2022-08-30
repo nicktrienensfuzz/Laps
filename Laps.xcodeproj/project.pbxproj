@@ -30,6 +30,9 @@
 		C03532CB28BD556300875ECA /* MapView3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532CA28BD556200875ECA /* MapView3.0.swift */; };
 		C03532CE28BDBEA500875ECA /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = C03532CD28BDBEA500875ECA /* NavigationStack */; };
 		C03532D028BDD10D00875ECA /* HeartRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532CF28BDD10D00875ECA /* HeartRateView.swift */; };
+		C03532D228BE3B2900875ECA /* Announcer.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532D128BE3B2900875ECA /* Announcer.swift */; };
+		C03532D428BE3CAD00875ECA /* TimeIntervalFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532D328BE3CAD00875ECA /* TimeIntervalFormatter.swift */; };
+		C03532D628BE9EE300875ECA /* TwoHandledSliderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532D528BE9EE300875ECA /* TwoHandledSliderView.swift */; };
 		C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */; };
 		C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */; };
 		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
@@ -153,6 +156,9 @@
 		C03532C828BD48ED00875ECA /* MapView2.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView2.0.swift; sourceTree = "<group>"; };
 		C03532CA28BD556200875ECA /* MapView3.0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView3.0.swift; sourceTree = "<group>"; };
 		C03532CF28BDD10D00875ECA /* HeartRateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateView.swift; sourceTree = "<group>"; };
+		C03532D128BE3B2900875ECA /* Announcer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Announcer.swift; sourceTree = "<group>"; };
+		C03532D328BE3CAD00875ECA /* TimeIntervalFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalFormatter.swift; sourceTree = "<group>"; };
+		C03532D528BE9EE300875ECA /* TwoHandledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHandledSliderView.swift; sourceTree = "<group>"; };
 		C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPlaylist.swift; sourceTree = "<group>"; };
 		C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDraggableComponent.swift; sourceTree = "<group>"; };
 		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -307,6 +313,7 @@
 			isa = PBXGroup;
 			children = (
 				C046D56A2867571B0056B7E8 /* Throttler.swift */,
+				C03532D328BE3CAD00875ECA /* TimeIntervalFormatter.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -315,6 +322,7 @@
 			isa = PBXGroup;
 			children = (
 				C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */,
+				C03532D128BE3B2900875ECA /* Announcer.swift */,
 			);
 			path = WorkOut;
 			sourceTree = "<group>";
@@ -335,6 +343,7 @@
 			isa = PBXGroup;
 			children = (
 				C0A36D8F288CFAA80038B341 /* WaitingDots.swift */,
+				C03532D528BE9EE300875ECA /* TwoHandledSliderView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -766,11 +775,13 @@
 				C00D22A72876AAC200B9A65F /* TrackListView.swift in Sources */,
 				C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */,
 				C0843CD128900E3C0041AFC6 /* RecordTrackView.swift in Sources */,
+				C03532D228BE3B2900875ECA /* Announcer.swift in Sources */,
 				C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */,
 				C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */,
 				C04D2BA428AA023300653B06 /* WorkOutForHolly.swift in Sources */,
 				C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */,
 				C00D22A92876AE2100B9A65F /* TrackDetailView.swift in Sources */,
+				C03532D628BE9EE300875ECA /* TwoHandledSliderView.swift in Sources */,
 				C028F36728B34811004A17AD /* InfoBarView.swift in Sources */,
 				C03532C928BD48ED00875ECA /* MapView2.0.swift in Sources */,
 				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,
@@ -780,6 +791,7 @@
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,
 				C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */,
 				C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */,
+				C03532D428BE3CAD00875ECA /* TimeIntervalFormatter.swift in Sources */,
 				C03532D028BDD10D00875ECA /* HeartRateView.swift in Sources */,
 				C0A815CF2862C47A004DF61F /* MapView.swift in Sources */,
 			);

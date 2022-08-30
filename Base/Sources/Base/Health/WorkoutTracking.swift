@@ -204,7 +204,6 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                             // osLog("Saved HeartRate: \(point.toSwift())")
                         }
                     }
-
                 }
             }
         }

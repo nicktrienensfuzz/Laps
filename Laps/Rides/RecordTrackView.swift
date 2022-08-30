@@ -173,7 +173,8 @@ struct RecordTrackView: View {
                         }
                         .padding(4)
 
-                        MapView3(sliderValue: viewModel.sliderValue)
+                        MapView3(sliderValue: viewModel.sliderValue,
+                                 followsUserLocation: viewModel.followsUserLocation)
                             .frame(minHeight: 250, maxHeight: 350)
 
                         CustomDraggableComponent {

@@ -15,7 +15,7 @@ import FuzzCombine
 import SwiftUI
 
 struct HeartRateView: View {
-    @ObservedObject var heartRate = BoundReference<[HeartRatePoint]>(value: [])
+    @State var heartRate = BoundReference<[HeartRatePoint]>(value: [])
     init() {
         heartRate.bind(to:
             WorkoutTracking.shared.lastReadings()

@@ -266,7 +266,7 @@
                 let previousLocation = self.location.value
                 self.location.value = location
                 // if track.value?.live == .some(true) {
-                if isTracking.value || previousLocation == nil {
+                if isTracking.value || previousLocation == nil || true {
                     let trackId = track.value?.id ?? "-1"
                     Task {
                         try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in

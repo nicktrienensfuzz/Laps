@@ -50,17 +50,17 @@ extension WorkOutForHollyView {
             }
         }
 
-        var next: State {
+        func next(limit: Int = 16) -> State {
             switch self {
             case .none: return .hot(0)
             case let .hot(i):
-                if i < 15 {
+                if i < limit - 1 {
                     return .cold(i + 1)
                 } else {
                     return .rest
                 }
             case let .cold(i):
-                if i < 15 {
+                if i < limit - 1 {
                     return .hot(i + 1)
                 } else {
                     return .rest
@@ -83,7 +83,6 @@ extension WorkOutForHollyView {
         @ObservedObject var playlistWithTracks = BoundReference<Playlist?>(value: nil)
 
         var startedAt: Date = .distantPast
-        // let synthesizer = AVSpeechSynthesizer()
 
         var progress: Double {
             if timeRemaining.value > 0 {
@@ -117,7 +116,7 @@ extension WorkOutForHollyView {
 
                 if timeRemaining.value <= 0 {
                     osLog("Phase Ended")
-                    state.value = state.next
+                    state.value = state.value.next()
                     timeRemaining.value = state.time
 
                     if let tracks = playlistWithTracks.value?.tracks, tracks.count >= 2 {
@@ -126,8 +125,7 @@ extension WorkOutForHollyView {
                             let track = tracks[0]
                             if let playParameters = track.playParameters {
                                 osLog(playParameters)
-//                                let speech = AVSpeechUtterance(string: "Hot")
-//                                synthesizer.speak(speech)
+
                                 Task {
                                     try await Music.shared.play(playParameters: playParameters, startAt: 2.0)
                                 }
@@ -136,8 +134,7 @@ extension WorkOutForHollyView {
                             let track = tracks[1]
                             if let playParameters = track.playParameters {
                                 osLog(playParameters)
-//                                let speech = AVSpeechUtterance(string: "Cold")
-//                                synthesizer.speak(speech)
+
                                 Task {
                                     try await Music.shared.play(playParameters: playParameters, startAt: 8)
                                 }
@@ -151,6 +148,7 @@ extension WorkOutForHollyView {
 
         func toggleRecording() {
             isRunning.value.toggle()
+            Location.shared.isTracking.value = isRunning.value
             if isRunning.value {
                 Task {
                     await Music.shared.resume()
@@ -172,34 +170,13 @@ struct WorkOutForHollyView: View {
         location = Location.shared.location
     }
 
-    func runTime(interval: Double) -> String {
-        let time = Int(interval)
-
-        let seconds = time % 60
-        let minutes = (time / 60) % 60
-        let hours = (time / 3600)
-
-        var formatString = ""
-        if hours == 0 {
-            if minutes < 10 {
-                formatString = "%2d:%0.2d"
-            } else {
-                formatString = "%0.2d:%0.2d"
-            }
-            return String(format: formatString, minutes, seconds)
-        } else {
-            formatString = "%2d:%0.2d:%0.2d"
-            return String(format: formatString, hours, minutes, seconds)
-        }
-    }
-
     var body: some View {
         VStack {
             HStack {
                 Text("Segment Time left:")
                     .font(.title)
                 Spacer()
-                Text(runTime(interval: viewModel.timeRemaining.value))
+                Text(viewModel.timeRemaining.value.runTime)
                     .font(.title)
             }
 
@@ -217,7 +194,7 @@ struct WorkOutForHollyView: View {
                 Text("Total Time:")
                     .font(.title)
                 Spacer()
-                Text(runTime(interval: viewModel.runningTime.value))
+                Text(viewModel.runningTime.value.runTime)
                     .font(.title)
             }
 

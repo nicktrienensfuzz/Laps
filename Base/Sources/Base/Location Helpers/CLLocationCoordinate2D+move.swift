@@ -46,3 +46,23 @@ extension CLLocationCoordinate2D: Equatable {
         lhs.latitude == rhs.latitude && lhs.longitude == rhs.longitude
     }
 }
+
+extension hasLatLong {
+    func calculateBearing(to: hasLatLong) -> Double {
+        let x1 = longitude * (Double.pi / 180.0)
+        let y1 = latitude * (Double.pi / 180.0)
+        let x2 = to.longitude * (Double.pi / 180.0)
+        let y2 = to.latitude * (Double.pi / 180.0)
+
+        let dx = x2 - x1
+        let sita = atan2(sin(dx) * cos(y2), cos(y1) * sin(y2) - sin(y1) * cos(y2) * cos(dx))
+
+        return sita * (180.0 / Double.pi)
+    }
+
+    // Distance in meters, as explained in CLLocationDistance definition
+    func distance(from: hasLatLong) -> CLLocationDistance {
+        let destination = CLLocation(latitude: from.latitude, longitude: from.longitude)
+        return CLLocation(latitude: latitude, longitude: longitude).distance(from: destination)
+    }
+}

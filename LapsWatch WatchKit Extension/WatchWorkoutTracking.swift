@@ -12,11 +12,6 @@ import FuzzCombine
 import HealthKit
 import Logger
 
-protocol WorkoutTrackingDelegate: AnyObject {
-    func didReceiveHealthKitHeartRate(_ heartRate: Double)
-    func didReceiveHealthKitStepCounts(_ stepCounts: Double)
-}
-
 protocol WorkoutTrackingProtocol {
     static func authorizeHealthKit()
     func startWorkOut()
@@ -34,8 +29,6 @@ class WorkoutTracking: NSObject {
     let heartRateValue: Reference<Double> = .init(value: 0)
     let workoutSessionState: Reference<HKWorkoutSessionState> = .init(value: .notStarted)
 
-    weak var delegate: WorkoutTrackingDelegate?
-
     override init() {
         super.init()
     }
@@ -50,7 +43,6 @@ class WorkoutTracking: NSObject {
             osLog("\(statistics.startDate) \(roundedValue)")
 
             Comms.shared.sendMessage(Comms.Action.startActivity, heartRate: roundedValue, timestamp: Date())
-            delegate?.didReceiveHealthKitHeartRate(roundedValue)
 
         case HKQuantityType.quantityType(forIdentifier: .stepCount):
             guard let stepCounts = HKQuantityType.quantityType(forIdentifier: .stepCount) else {
@@ -71,7 +63,6 @@ class WorkoutTracking: NSObject {
 
                 if let sum = result.sumQuantity() {
                     resultCount = sum.doubleValue(for: HKUnit.count())
-                    weakSelf.delegate?.didReceiveHealthKitStepCounts(resultCount)
                 } else {
                     osLog("Failed to fetch steps rate 2")
                 }
@@ -85,6 +76,7 @@ class WorkoutTracking: NSObject {
 
     private func configWorkout() {
         configuration.activityType = .cycling
+        configuration.locationType = .outdoor
 
         do {
             workoutSession = try HKWorkoutSession(healthStore: healthStore, configuration: configuration)
@@ -146,7 +138,11 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
         osLog(workoutSessionState.value.title)
         workoutSession.stopActivity(with: Date())
         workoutSession.end()
-        workoutBuilder.endCollection(withEnd: Date()) { _, _ in
+        workoutBuilder.endCollection(withEnd: Date()) { success, error in
+            osLog(success)
+            if let error = error {
+                osLog(error)
+            }
         }
     }
 
@@ -169,7 +165,6 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
 
             if let sum = result.sumQuantity() {
                 resultCount = sum.doubleValue(for: HKUnit.count())
-                weakSelf.delegate?.didReceiveHealthKitStepCounts(resultCount)
             } else {
                 osLog("Failed to fetch steps rate 2")
             }

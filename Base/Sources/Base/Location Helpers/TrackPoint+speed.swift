@@ -1,5 +1,5 @@
 //
-//  File.swift
+//  TrackPoint+Extensions.swift
 //
 //
 //  Created by Nicholas Trienens on 8/22/22.
@@ -43,6 +43,17 @@ public extension Array where Element == TrackPoint {
 
         let milesTraveled = distanceTraveled / 1609.34
         return milesTraveled / (interval / 3600)
+    }
+
+    func computeHeading() -> Double? {
+        guard count >= 2 else { return nil }
+        guard let last = last else { return nil }
+
+        let prevPoint = self[count - 2]
+
+        let prevPoint2 = self[count - 3]
+
+        return prevPoint.calculateBearing(to: last) * 0.8 + prevPoint2.calculateBearing(to: prevPoint) * 0.2
     }
 
     // Latitude -180...180 -> 0...360

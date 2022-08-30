@@ -6,6 +6,7 @@
 //
 
 import AVFoundation
+import AVKit
 import Base
 import BaseWatch
 import Combine
@@ -19,7 +20,9 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
     func application(_: UIApplication, didFinishLaunchingWithOptions _: [UIApplication.LaunchOptionsKey: Any]? = nil) -> Bool {
         tryLog {
-            try AVAudioSession.sharedInstance().setCategory(.playback, mode: .spokenAudio)
+            try AVAudioSession.sharedInstance().setCategory(.playback,
+                                                            mode: .default,
+                                                            options: AVAudioSession.CategoryOptions.mixWithOthers)
         }
 
         Comms.shared.heartRateValue.didUpdate
