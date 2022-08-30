@@ -26,6 +26,10 @@
 		C028F40A28B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F40928B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift */; };
 		C028F40D28B8451D004A17AD /* LapsWatch.app in Embed Watch Content */ = {isa = PBXBuildFile; fileRef = C028F3D728B8451B004A17AD /* LapsWatch.app */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C02BCC0128B870EA00D84BF2 /* BaseWatch in Frameworks */ = {isa = PBXBuildFile; productRef = C02BCC0028B870EA00D84BF2 /* BaseWatch */; };
+		C03532C928BD48ED00875ECA /* MapView2.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532C828BD48ED00875ECA /* MapView2.0.swift */; };
+		C03532CB28BD556300875ECA /* MapView3.0.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532CA28BD556200875ECA /* MapView3.0.swift */; };
+		C03532CE28BDBEA500875ECA /* NavigationStack in Frameworks */ = {isa = PBXBuildFile; productRef = C03532CD28BDBEA500875ECA /* NavigationStack */; };
+		C03532D028BDD10D00875ECA /* HeartRateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C03532CF28BDD10D00875ECA /* HeartRateView.swift */; };
 		C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */; };
 		C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */; };
 		C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C046D5672867549D0056B7E8 /* AppDelegate.swift */; };
@@ -146,6 +150,9 @@
 		C028F40728B8451D004A17AD /* LapsWatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsWatchUITests.swift; sourceTree = "<group>"; };
 		C028F40928B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C02BCBFF28B8686600D84BF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C03532C828BD48ED00875ECA /* MapView2.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView2.0.swift; sourceTree = "<group>"; };
+		C03532CA28BD556200875ECA /* MapView3.0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView3.0.swift; sourceTree = "<group>"; };
+		C03532CF28BDD10D00875ECA /* HeartRateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateView.swift; sourceTree = "<group>"; };
 		C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPlaylist.swift; sourceTree = "<group>"; };
 		C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDraggableComponent.swift; sourceTree = "<group>"; };
 		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -204,6 +211,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C0A815C9286187CD004DF61F /* Base in Frameworks */,
+				C03532CE28BDBEA500875ECA /* NavigationStack in Frameworks */,
 				C02BCC0128B870EA00D84BF2 /* BaseWatch in Frameworks */,
 				C00D22A1287352EE00B9A65F /* HealthKit.framework in Frameworks */,
 			);
@@ -230,6 +238,7 @@
 			isa = PBXGroup;
 			children = (
 				C028F36628B34811004A17AD /* InfoBarView.swift */,
+				C03532CF28BDD10D00875ECA /* HeartRateView.swift */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -419,6 +428,8 @@
 			isa = PBXGroup;
 			children = (
 				C0A815CE2862C47A004DF61F /* MapView.swift */,
+				C03532CA28BD556200875ECA /* MapView3.0.swift */,
+				C03532C828BD48ED00875ECA /* MapView2.0.swift */,
 			);
 			path = Maps;
 			sourceTree = "<group>";
@@ -533,6 +544,7 @@
 			packageProductDependencies = (
 				C0A815C8286187CD004DF61F /* Base */,
 				C02BCC0028B870EA00D84BF2 /* BaseWatch */,
+				C03532CD28BDBEA500875ECA /* NavigationStack */,
 			);
 			productName = Laps;
 			productReference = C0A8159728617FC6004DF61F /* Laps.app */;
@@ -622,6 +634,7 @@
 			mainGroup = C0A8158E28617FC6004DF61F;
 			packageReferences = (
 				C063B3A028B84F8D006B05B6 /* XCRemoteSwiftPackageReference "Communicator" */,
+				C03532CC28BDBEA500875ECA /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */,
 			);
 			productRefGroup = C0A8159828617FC6004DF61F /* Products */;
 			projectDirPath = "";
@@ -711,7 +724,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/opt/homebrew/bin/swiftformat Laps --swiftversion 5.6\n/opt/homebrew/bin/swiftformat Base --swiftversion 5.6\n";
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n/opt/homebrew/bin/swiftformat Laps --swiftversion 5.6\n/opt/homebrew/bin/swiftformat Base --swiftversion 5.6\n/opt/homebrew/bin/swiftformat LapsWatch\\ WatchKit\\ Extension --swiftversion 5.6\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -759,12 +772,15 @@
 				C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */,
 				C00D22A92876AE2100B9A65F /* TrackDetailView.swift in Sources */,
 				C028F36728B34811004A17AD /* InfoBarView.swift in Sources */,
+				C03532C928BD48ED00875ECA /* MapView2.0.swift in Sources */,
 				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,
+				C03532CB28BD556300875ECA /* MapView3.0.swift in Sources */,
 				C00D22A32873584300B9A65F /* IntervalBuilderView.swift in Sources */,
 				C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */,
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,
 				C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */,
 				C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */,
+				C03532D028BDD10D00875ECA /* HeartRateView.swift in Sources */,
 				C0A815CF2862C47A004DF61F /* MapView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1384,6 +1400,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C03532CC28BDBEA500875ECA /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/matteopuc/swiftui-navigation-stack.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.0.0;
+			};
+		};
 		C063B3A028B84F8D006B05B6 /* XCRemoteSwiftPackageReference "Communicator" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/KaneCheshire/Communicator.git";
@@ -1398,6 +1422,11 @@
 		C02BCC0028B870EA00D84BF2 /* BaseWatch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BaseWatch;
+		};
+		C03532CD28BDBEA500875ECA /* NavigationStack */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C03532CC28BDBEA500875ECA /* XCRemoteSwiftPackageReference "swiftui-navigation-stack" */;
+			productName = NavigationStack;
 		};
 		C063B39E28B84E88006B05B6 /* DependencyContainer */ = {
 			isa = XCSwiftPackageProductDependency;

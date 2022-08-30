@@ -8,6 +8,7 @@
 import Base
 import BaseWatch
 import DependencyContainer
+import NavigationStack
 import SwiftUI
 
 @main
@@ -20,22 +21,49 @@ struct LapsApp: App {
 
     var body: some Scene {
         WindowGroup {
-            ContentView()
-                .task {
-//                    if await !Music.shared.isPlaying() {
-//                        await Music.shared.test()
-//                    }
-                    _ = try? await Music.shared.playlists()
+            NavigationStackView {
+                ContentView()
+                    .task {
+                        _ = try? await Music.shared.playlists()
 
-                    Comms.shared.sendMessage(.startActivity)
+                        // Comms.shared.sendMessage(.startActivity)
 
-                    LocalNotificationHelper.shared.requestPermission()
+                        LocalNotificationHelper.shared.requestPermission()
 
-                    await WorkoutTracking.shared.authorizeHealthKit()
-                    if WorkoutTracking.shared.isHealthDataAvailable() {
-                        WorkoutTracking.shared.observerHeartRateSamples()
+                        await WorkoutTracking.shared.authorizeHealthKit()
+                        if WorkoutTracking.shared.isHealthDataAvailable() {
+                            WorkoutTracking.shared.observerHeartRateSamples()
+                        }
                     }
-                }
+            }
+        }
+    }
+}
+
+extension Color {
+    static let myAppBgColor = Color.gray.opacity(0.2)
+}
+
+struct Screen<Content>: View where Content: View {
+    let content: () -> Content
+
+    var body: some View {
+        ZStack {
+            Color.myAppBgColor.edgesIgnoringSafeArea(.all)
+            content()
+        }
+    }
+}
+
+struct BackButton: View {
+    var body: some View {
+        PopView {
+            HStack(spacing: 3) {
+                Image(systemName: "chevron.backward")
+                Text("Back")
+                Spacer()
+            }
+            .padding(.leading, 20)
         }
     }
 }

@@ -37,7 +37,7 @@
 
         let asyncLocationManager = AsyncLocationManager(desiredAccuracy: .bestAccuracy)
         public private(set) var isMonitoringSignificantLocation: Bool = false
-        public private(set) var isRecording: Bool = false
+        public private(set) var isTracking: Reference<Bool> = .init(value: false)
 
         public func circularRegions() -> AnyPublisher<[CircularPOI], Never> {
             try! DependencyContainer.resolve(key: ContainerKeys.database)
@@ -103,9 +103,9 @@
         }
 
         public init() {
-            del = LocationDelegate(location: location, track: track)
+            del = LocationDelegate(location: location, track: track, isTracking: isTracking)
             locationManager.startUpdatingLocation()
-//        locationManager.startMonitoringVisits()
+            // locationManager.startMonitoringVisits()
             // locationManager.startMonitoringSignificantLocationChanges()
             // locationManager.stopMonitoringSignificantLocationChanges()
             locationManager.pausesLocationUpdatesAutomatically = false
@@ -123,6 +123,10 @@
                     osLog(error)
                 }
             }
+        }
+
+        public func updateIsTracking(_ tracking: Bool) {
+            isTracking.value = tracking
         }
 
         public func startMonitoringSignificantLocationChanges() {
@@ -160,12 +164,6 @@
             }
             locationManager.delegate = del
         }
-
-//    public func startUpdatingLocation() async -> LocationStream {
-//        await asyncLocationManager.startUpdatingLocation()
-//        locationManager.delegate = del
-//
-//    }
 
         public func monitorRegionAtLocation(center: CLLocationCoordinate2D, radius: Double, identifier: String) {
             if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
@@ -231,10 +229,12 @@
     class LocationDelegate: NSObject, CLLocationManagerDelegate {
         let location: Reference<CLLocation?>
         let track: Reference<Track?>
+        let isTracking: Reference<Bool>
 
-        init(location: Reference<CLLocation?>, track: Reference<Track?>) {
+        init(location: Reference<CLLocation?>, track: Reference<Track?>, isTracking: Reference<Bool>) {
             self.location = location
             self.track = track
+            self.isTracking = isTracking
             super.init()
             Task {
                 track.value = try await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db -> Track in
@@ -262,10 +262,11 @@
         // MARK: - Private
 
         func locationManager(_: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-            // Hit api to update location
             if let location = locations.last {
+                let previousLocation = self.location.value
                 self.location.value = location
-                if track.value?.live == .some(true) {
+                // if track.value?.live == .some(true) {
+                if isTracking.value || previousLocation == nil {
                     let trackId = track.value?.id ?? "-1"
                     Task {
                         try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
@@ -284,7 +285,6 @@
                             )
                             try point.save(db)
                             // osLog("saved point")
-
                             let sql = """
                             Select * from CircularPOI_table
                                 ORDER BY ABS(latitude - \(location.coordinate.latitude)) + ABS(longitude - \(location.coordinate.longitude))
@@ -318,40 +318,40 @@
                 }
             }
         }
-
-        var triggered = [String]()
-        var hasFired = false
-        func locationManager(_: CLLocationManager, didEnterRegion region: CLRegion) {
-            signPost()
-            Drops.show(.init(title: "Entered Region"))
-
-            DispatchQueue(label: "background")
-                .sync {
-                    // if !triggered.contains(region.identifier) {
-                    if !self.hasFired {
-                        self.hasFired = true
-                        osLog("enter:")
-                        osLog(region)
-                        // triggered.append(region.identifier)
-//                    Task {
-//                        await Music.shared.test()
+//
+//        var triggered = [String]()
+//        var hasFired = false
+//        func locationManager(_: CLLocationManager, didEnterRegion region: CLRegion) {
+//            signPost()
+//            Drops.show(.init(title: "Entered Region"))
+//
+//            DispatchQueue(label: "background")
+//                .sync {
+//                    // if !triggered.contains(region.identifier) {
+//                    if !self.hasFired {
+//                        self.hasFired = true
+//                        osLog("enter:")
+//                        osLog(region)
+//                        // triggered.append(region.identifier)
+        ////                    Task {
+        ////                        await Music.shared.test()
+        ////                    }
 //                    }
-                    }
-                }
-        }
-
-        func locationManager(_: CLLocationManager, didExitRegion region: CLRegion) {
-            osLog("exit:")
-            osLog(region)
-        }
-
-        func locationManager(_: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
-            dump(error)
-            osLog(region)
-            if let region = region {
-                Location.shared.stopMonitoringRegion(region: region)
-            }
-        }
+//                }
+//        }
+//
+//        func locationManager(_: CLLocationManager, didExitRegion region: CLRegion) {
+//            osLog("exit:")
+//            osLog(region)
+//        }
+//
+//        func locationManager(_: CLLocationManager, monitoringDidFailFor region: CLRegion?, withError error: Error) {
+//            dump(error)
+//            osLog(region)
+//            if let region = region {
+//                Location.shared.stopMonitoringRegion(region: region)
+//            }
+//        }
     }
 
 #endif

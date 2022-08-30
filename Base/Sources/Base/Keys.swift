@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import NavigationStack
 
 struct Keys {
     static var serviceAPIKey: String = "$(SERVICE_PROD_KEY)"

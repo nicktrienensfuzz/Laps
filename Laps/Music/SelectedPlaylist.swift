@@ -9,6 +9,7 @@ import Base
 import Combine
 import FuzzCombine
 import Logger
+import NavigationStack
 import SwiftUI
 
 extension SelectedPlaylist {
@@ -41,6 +42,7 @@ extension SelectedPlaylist {
 
 struct SelectedPlaylist: View {
     @StateObject private var viewModel = ViewModel()
+    @EnvironmentObject private var navigationStack: NavigationStackCompat
 
     var body: some View {
         HStack {
@@ -50,8 +52,8 @@ struct SelectedPlaylist: View {
 
                 VStack(alignment: .leading) {
                     ForEach(viewModel.playlists.value) { playlist in
-                        NavigationLink {
-                            PlaylistDetailsView(playlist: playlist)
+                        Button {
+                            navigationStack.push(PlaylistDetailsView(playlist: playlist))
                         } label: {
                             if playlist.selected ?? false {
                                 Text(playlist.name)

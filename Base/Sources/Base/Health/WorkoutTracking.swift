@@ -1,6 +1,8 @@
+import Combine
 import CoreLocation
 import DependencyContainer
 import Drops
+import GRDB
 import HealthKit
 import Logger
 
@@ -152,6 +154,17 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
         return locations
     }
 
+    public func lastReadings() -> AnyPublisher<[HeartRatePoint], Never> {
+        try! DependencyContainer.resolve(key: ContainerKeys.database)
+            .observeAll(HeartRatePoint.all().order(HeartRatePoint.Columns.timestamp).reversed().limit(100))
+            .catch { error -> AnyPublisher<[HeartRatePoint], Never> in
+                osLog(error)
+                return Just.any([HeartRatePoint]())
+            }
+            .removeDuplicates()
+            .eraseToAnyPublisher()
+    }
+
     public func observerHeartRateSamples() {
         guard let heartRateSampleType = HKObjectType.quantityType(forIdentifier: .heartRate) else {
             return
@@ -192,9 +205,6 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                         }
                     }
 
-                    // LocalNotificationHelper.shared.fireHeartRate(heartRate)
-                    let drop = Drop(title: "Heart Rate Sample", subtitle: "\(heartRate)", duration: 5.0)
-                    Drops.show(drop)
                 }
             }
         }

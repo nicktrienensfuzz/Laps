@@ -61,54 +61,58 @@ struct PlaylistDetailsView: View {
     @State private var showingSongPicker = false
 
     var body: some View {
-        VStack {
-            if let name = viewModel.playlist.value?.name {
-                Text(name)
-                    .font(.title)
-            }
+        Screen {
+            VStack {
+                BackButton()
+                if let name = viewModel.playlist.value?.name {
+                    Text(name)
+                        .font(.title)
+                }
 
-            Button {
-                viewModel.makeFavorite()
-            } label: {
-                Text((viewModel.playlist.value?.selected ?? false) ? "Favorited" : "Make Favorite")
-            }
+                Button {
+                    viewModel.makeFavorite()
+                } label: {
+                    Text((viewModel.playlist.value?.selected ?? false) ? "Favorited" : "Make Favorite")
+                }
 
-            if let tracks = viewModel.playlistWithTracks.value?.tracks {
-                ScrollView {
-                    VStack(alignment: .leading) {
-                        ForEach(tracks) { track in
-                            Text("\(track.artistName) - \(track.title)")
+                if let tracks = viewModel.playlistWithTracks.value?.tracks {
+                    ScrollView {
+                        VStack(alignment: .leading) {
+                            ForEach(tracks) { track in
+                                Text("\(track.artistName) - \(track.title)")
+                            }
+                        }
+                    }
+                    .frame(minHeight: 250)
+                } else {
+                    WaitingDots()
+                    Spacer()
+                }
+
+                Button(action: {
+                    // self.showingSongPicker = true
+                    Task { @MainActor in
+                        do {
+                            guard let detailedPlaylist = viewModel.playlistWithTracks.value else { return }
+
+                            if let t = detailedPlaylist.tracks?.compactMap(\.playParameters) {
+                                osLog(t)
+                                try await Music.shared.play(playParameters: t)
+                            } else if let t = detailedPlaylist.playParameters {
+                                osLog(t)
+                                try await Music.shared.play(playParameters: t)
+                            }
+                        } catch {
+                            osLog(error)
                         }
                     }
                 }
-                .frame(minHeight: 250)
-            } else {
-                WaitingDots()
-            }
-
-            Button(action: {
-                // self.showingSongPicker = true
-                Task { @MainActor in
-                    do {
-                        guard let detailedPlaylist = viewModel.playlistWithTracks.value else { return }
-
-                        if let t = detailedPlaylist.tracks?.compactMap(\.playParameters) {
-                            osLog(t)
-                            try await Music.shared.play(playParameters: t)
-                        } else if let t = detailedPlaylist.playParameters {
-                            osLog(t)
-                            try await Music.shared.play(playParameters: t)
-                        }
-                    } catch {
-                        osLog(error)
-                    }
+                ) {
+                    Text("Edit Test Song")
                 }
-            }
-            ) {
-                Text("Edit Test Song")
-            }
-            .sheet(isPresented: $showingSongPicker) {
-                MusicPicker(songs: self.$songs)
+                .sheet(isPresented: $showingSongPicker) {
+                    MusicPicker(songs: self.$songs)
+                }
             }
         }
         .onAppear(perform: { viewModel.update(playlist) })

@@ -5,28 +5,27 @@
 //  Created by Nicholas Trienens on 8/25/22.
 //
 
-import SwiftUI
 import BaseWatch
 import FuzzCombine
 import HealthKit
-
+import SwiftUI
 
 struct ContentView: View {
     internal init() {
         heartRate = WorkoutTracking.shared.heartRateValue
         workoutSessionState = WorkoutTracking.shared.workoutSessionState
     }
-    
+
     @ObservedObject var heartRate: Reference<Double>
     @ObservedObject var workoutSessionState: Reference<HKWorkoutSessionState>
     var body: some View {
-        VStack{
-            HStack{
+        VStack {
+            HStack {
                 Image(systemName: "heart")
-                Text("\(String(format: "%0.0f",heartRate.value))")
+                Text("\(String(format: "%0.0f", heartRate.value))")
             }
             .padding()
-            
+
             Button {
                 if WorkoutTracking.shared.workoutSessionState.value != .running {
                     WorkoutTracking.authorizeHealthKit()
@@ -40,9 +39,21 @@ struct ContentView: View {
                 } else {
                     Text("Stop")
                 }
-                
             }
-
+        }
+        .onReceive(Comms.shared.actions) { action in
+            switch action {
+            case .startActivity:
+                if WorkoutTracking.shared.workoutSessionState.value != .running {
+                    WorkoutTracking.authorizeHealthKit()
+                    WorkoutTracking.shared.startWorkOut()
+                }
+            case .stopActivity:
+                if WorkoutTracking.shared.workoutSessionState.value == .running {
+                    WorkoutTracking.shared.stopWorkOut()
+                }
+            default: return
+            }
         }
     }
 }

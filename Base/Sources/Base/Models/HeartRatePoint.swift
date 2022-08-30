@@ -26,7 +26,7 @@ public protocol HeartRatePointInterface {
     var trackId: String? { get set }
 }
 
-public class HeartRatePoint: Record, TableCreator, HeartRatePointInterface {
+public class HeartRatePoint: Record, TableCreator, HeartRatePointInterface, Equatable {
     public var id: String
     public var timestamp: Date
     public var heartRate: Double

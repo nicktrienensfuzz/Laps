@@ -20,6 +20,16 @@ public extension MKCoordinateRegion {
         )
     }
 
+    static var boulder: MKCoordinateRegion {
+        MKCoordinateRegion(
+            center: CLLocationCoordinate2D(latitude: 39.99531053282066,
+                                           longitude: -105.25716619076604),
+            span: MKCoordinateSpan(
+                latitudeDelta: 0.0016923261917511923, longitudeDelta: 0.0022739952207047054
+            )
+        )
+    }
+
     @available(*, unavailable, renamed: "init(center:latitudinalMeters:longitudinalMeters:)")
     init(center: CLLocationCoordinate2D, latitudalDistance: CLLocationDistance, longitudalDistance: CLLocationDistance) {
         self.init(center: center, latitudinalMeters: latitudalDistance, longitudinalMeters: longitudalDistance)
@@ -203,5 +213,43 @@ public extension MKCoordinateRegion {
 extension MKCoordinateSpan: Equatable {
     public static func == (a: MKCoordinateSpan, b: MKCoordinateSpan) -> Bool {
         a.latitudeDelta == b.latitudeDelta && a.longitudeDelta == b.longitudeDelta
+    }
+}
+
+public protocol hasLatLong {
+    var latitude: CLLocationDegrees { get }
+    var longitude: CLLocationDegrees { get }
+}
+
+extension CLLocationCoordinate2D: hasLatLong {}
+extension TrackPoint: hasLatLong {}
+
+extension MKCoordinateRegion {
+    init(coordinates: [hasLatLong], inflationFactor: Double = 0.05) {
+        var minLat: CLLocationDegrees = 90.0
+        var maxLat: CLLocationDegrees = -90.0
+        var minLon: CLLocationDegrees = 180.0
+        var maxLon: CLLocationDegrees = -180.0
+
+        for coordinate in coordinates {
+            let lat = Double(coordinate.latitude)
+            let long = Double(coordinate.longitude)
+            if lat < minLat {
+                minLat = lat
+            }
+            if long < minLon {
+                minLon = long
+            }
+            if lat > maxLat {
+                maxLat = lat
+            }
+            if long > maxLon {
+                maxLon = long
+            }
+        }
+
+        let span = MKCoordinateSpan(latitudeDelta: abs(maxLat - minLat) * 2.0 * (1.0 + inflationFactor), longitudeDelta: abs(maxLon - minLon) * 2.0 * (1.0 + inflationFactor))
+        let center = CLLocationCoordinate2DMake(maxLat - span.latitudeDelta / 4, maxLon - span.longitudeDelta / 4)
+        self.init(center: center, span: span)
     }
 }

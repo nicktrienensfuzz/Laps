@@ -43,6 +43,13 @@ extension WorkOutForHollyView {
             }
         }
 
+        var isHot: Bool {
+            switch self {
+            case .hot: return true
+            default: return false
+            }
+        }
+
         var next: State {
             switch self {
             case .none: return .hot(0)
@@ -161,10 +168,8 @@ struct WorkOutForHollyView: View {
     @StateObject private var viewModel = ViewModel()
 
     @ObservedObject var location: Reference<CLLocation?>
-    @ObservedObject var heartRate: Reference<Double>
     init() {
         location = Location.shared.location
-        heartRate = Comms.shared.heartRateValue
     }
 
     func runTime(interval: Double) -> String {
@@ -186,12 +191,6 @@ struct WorkOutForHollyView: View {
             formatString = "%2d:%0.2d:%0.2d"
             return String(format: formatString, hours, minutes, seconds)
         }
-
-//        let formatter = DateComponentsFormatter()
-//        formatter.allowedUnits = [.minute, .second]
-//        formatter.unitsStyle = .positional
-//
-//        return formatter.string(from: interval)!
     }
 
     var body: some View {
@@ -204,17 +203,12 @@ struct WorkOutForHollyView: View {
                     .font(.title)
             }
 
-            ProgressBar(value: viewModel.progress)
+            ProgressBar(value: viewModel.progress, foregroundColor: viewModel.state.isHot ? Color.red : Color.blue)
                 .frame(height: 80)
 
             InfoBarView()
-            HStack {
-                Image(systemName: "heart")
-                    .font(.title)
-                Text("\(String(format: "%0.0f", heartRate.value))")
-                    .font(.title)
-            }
-            .padding(.horizontal)
+            HeartRateView()
+                .padding(.horizontal)
 
             Spacer()
             Text(viewModel.state.asString)
@@ -239,6 +233,8 @@ struct WorkOutForHollyView: View {
                 }
             }
             .buttonStyle(.borderedProminent)
+
+            BackButton()
         }
         .padding(.top, 35)
         .padding(.bottom, 45)
@@ -254,7 +250,15 @@ struct WorkOutForHollyView_Previews: PreviewProvider {
 }
 
 struct ProgressBar: View {
+    internal init(value: Double,
+                  foregroundColor: Color = Color(UIColor.systemBlue))
+    {
+        self.value = value
+        self.foregroundColor = foregroundColor
+    }
+
     let value: Double
+    let foregroundColor: Color
 
     var body: some View {
         GeometryReader { geometry in
@@ -264,8 +268,7 @@ struct ProgressBar: View {
                     .foregroundColor(Color(UIColor.systemTeal))
 
                 Rectangle().frame(width: min(CGFloat(self.value) * geometry.size.width, geometry.size.width), height: geometry.size.height)
-                    .foregroundColor(Color(UIColor.systemBlue))
-//                    .animation(.linear)
+                    .foregroundColor(foregroundColor)
             }
             .cornerRadius(min(20, geometry.size.height / 2))
         }

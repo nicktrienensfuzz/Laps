@@ -5,8 +5,6 @@
 //  Created by Nicholas Trienens on 7/26/22.
 //
 
-import SwiftUI
-
 import Base
 import Combine
 import CoreLocation
@@ -14,6 +12,7 @@ import DependencyContainer
 import FuzzCombine
 import Logger
 import MapKit
+import NavigationStack
 import SwiftUI
 
 extension RecordTrackView {
@@ -23,24 +22,62 @@ extension RecordTrackView {
         @ObservedObject var sliderValue = BoundReference<Double>(value: 0.5)
         @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
         @ObservedObject var regions = BoundReference<[CircularPOI]>(value: [])
+        @ObservedObject var points = BoundReference<[TrackPoint]>(value: [])
+        @ObservedObject var location: Reference<CLLocation?>
 
-        @ObservedObject var isRecording = Reference<Bool>(value: Location.shared.isRecording)
+        @ObservedObject var isRecording = Location.shared.isTracking
         @ObservedObject var name = Reference<String>(value: "")
+        var region = Reference<MKCoordinateRegion>(value: .boulder)
+        var followsUserLocation = Reference<Bool>(value: false)
 
         var objectWillChange: AnyPublisher<Void, Never> {
-            circleTriggerRegions.objectWillChange
+            points.objectWillChange
+                .merge(with: isRecording.objectWillChange)
+                .throttle(for: 0.4, scheduler: RunLoop.main, latest: true)
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
         }
 
         init() {
             Location.shared.allRegions()
+            location = Location.shared.location
+
+            location.currentValueWithUpdates
+                .filterNil()
+                .combineLatest(region.currentValueWithUpdates,
+                               followsUserLocation.currentValueWithUpdates)
+                .map { location, lastRegion, following -> MKCoordinateRegion in
+                    if lastRegion == .boulder {
+                        return MKCoordinateRegion(
+                            center: location.coordinate,
+                            span: MKCoordinateSpan(
+                                latitudeDelta: 0.0016923261917511923,
+                                longitudeDelta: 0.0022739952207047054
+                            )
+                        )
+                    }
+                    guard following else {
+                        return lastRegion
+                    }
+                    let newRegion = MKCoordinateRegion(
+                        center: location.coordinate,
+                        span: lastRegion.span
+                    )
+                    osLog("updating region based on user location")
+                    return newRegion
+                }
+                .assign(to: \.value, on: region)
+                .store(in: &publisherStorage)
+
+            points.bind(to:
+                Location.shared.points()
+                    .receive(on: RunLoop.main)
+                    .eraseToAnyPublisher())
 
             regions.didUpdate
                 .sink { r in
-                    self.circleTriggerRegions.value = r.map {
-                        MKCircle(center: $0.coordinate, radius: $0.radius)
-                    }
+                    osLog(r.count)
+                    self.circleTriggerRegions.value = r.map(\.circle)
                 }
                 .store(in: &publisherStorage)
 
@@ -97,75 +134,76 @@ extension RecordTrackView {
                 }
             }
         }
+
+        func userUpdatedRegion(_ region: MKCoordinateRegion) {
+            if followsUserLocation.value {
+                self.region.value.span = region.span
+            } else {
+                self.region.value = region
+            }
+        }
     }
 }
 
 struct RecordTrackView: View {
     @StateObject private var viewModel = ViewModel()
 
-    @ObservedObject var location: Reference<CLLocation?>
-    @ObservedObject var points = BoundReference<[TrackPoint]>(value: [])
-
-    init() {
-        location = Location.shared.location
-
-        points.bind(to:
-            Location.shared.points()
-                .receive(on: RunLoop.main)
-                .eraseToAnyPublisher())
-    }
-
     var body: some View {
-        VStack {
-            if let location = location.value {
-                VStack(spacing: 0) {
-                    HStack {
-                        Button("Clear All") {
-                            viewModel.clearRegions()
-                        }.padding(.leading)
-                        Spacer()
-                    }
-                    .padding(4)
+        Screen {
+            VStack {
+                BackButton()
+                if viewModel.location.value != nil {
+                    InfoBarView()
+                    HeartRateView()
+                        .padding(.horizontal)
 
-                    MapView(
-                        region: MKCoordinateRegion(
-                            center: location.coordinate,
-                            span: MKCoordinateSpan(latitudeDelta: 0.0032, longitudeDelta: 0.0032)
-                        ),
+                    VStack(spacing: 0) {
+                        HStack {
+                            Button("Clear All Triggers ") {
+                                viewModel.clearRegions()
+                            }.padding(.leading)
+                            Spacer()
+                            Text("Points: \(viewModel.points.value.count)")
 
-                        lineCoordinates: points.value.map(\.coordinate),
-                        circleTriggerRegions: viewModel.circleTriggerRegions.value,
-                        tappedAt: { location in
-                            viewModel.addRegion(location)
+                            Spacer()
+                            Toggle(isOn: viewModel.followsUserLocation.asBinding()) {
+                                Text("follow")
+                            }
+                            .fixedSize()
                         }
-                    )
-                    .frame(height: 250)
+                        .padding(4)
 
-                    CustomDraggableComponent {
-                        viewModel.sliderValue.value = $0
+                        MapView3(sliderValue: viewModel.sliderValue)
+                            .frame(minHeight: 250, maxHeight: 350)
+
+                        CustomDraggableComponent {
+                            viewModel.sliderValue.value = $0
+                        }
+                    }
+                    .neumorphicStyle()
+                } else {
+                    WaitingDots()
+                }
+
+                Spacer()
+//            TextField("Name", text: viewModel.name.asBinding())
+//                .padding(6)
+//                .background {
+//                    RoundedRectangle(cornerRadius: 6)
+//                        .foregroundColor(Color.gray.opacity(0.24))
+//                }
+//                .padding()
+
+                Button {
+                    viewModel.toggleRecording()
+                } label: {
+                    if !viewModel.isRecording.value {
+                        Text("Start Recording").font(.title)
+                    } else {
+                        Text("Pause Recording").font(.title)
                     }
                 }
-                .neumorphicStyle()
-            } else {
-                WaitingDots()
-            }
-        }
-
-        TextField("Name", text: viewModel.name.asBinding())
-            .padding(6)
-            .background {
-                RoundedRectangle(cornerRadius: 6)
-                    .foregroundColor(Color.gray.opacity(0.24))
-            }
-            .padding()
-
-        Button {
-            viewModel.toggleRecording()
-        } label: {
-            if !viewModel.isRecording.value {
-                Text("Start Recording")
-            } else {
-                Text("Pause Recording")
+                .buttonStyle(.borderedProminent)
             }
         }
     }

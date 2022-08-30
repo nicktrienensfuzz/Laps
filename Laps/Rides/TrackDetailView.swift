@@ -19,14 +19,18 @@ struct TrackDetailView: View {
     }
 
     var body: some View {
-        osLog("points: \(points.count)")
-        return VStack {
-            MapView(
-                region: MKCoordinateRegion(fittingCoordinates: points.map(\.coordinate)) ?? MKCoordinateRegion.washington,
-                lineCoordinates: points.map(\.coordinate),
-                circleTriggerRegions: []
-            ) { loc in
-                osLog(loc)
+        // osLog("points: \(points.count)")
+        VStack {
+            if !points.isEmpty {
+                MapView(
+                    region: points.region2(),
+                    lineCoordinates: points.map(\.coordinate),
+                    circleTriggerRegions: []
+                ) { loc in
+                    osLog(loc)
+                }
+            } else {
+                WaitingDots()
             }
         }
         .onReceive(track.points.removeDuplicates(), perform: { newTracks in

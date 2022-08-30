@@ -34,6 +34,8 @@ let package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.37.0"),
         .package(url: "https://github.com/omaralbeik/Drops.git", from: "1.5.0"),
         .package(url: "https://github.com/KaneCheshire/Communicator.git", from: "4.1.0"),
+        .package(url: "https://github.com/malcommac/SwiftSimplify.git", from: "1.1.0"),
+        .package(url: "https://github.com/matteopuc/swiftui-navigation-stack.git", from: "1.0.0"),
     ],
     targets: [
         .target(
@@ -55,11 +57,13 @@ let package = Package(
                 "Drops",
                 "Logger",
                 "Communicator",
+                .product(name: "NavigationStack", package: "swiftui-navigation-stack"),
                 .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
                 .product(name: "GRDB", package: "GRDB.swift"),
                 .product(name: "FuzzCombine", package: "fuzz-combine-iosmodule"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "DependencyContainer",
+                "SwiftSimplify",
             ]
         ),
         .target(

@@ -8,16 +8,40 @@
 import Base
 import Combine
 import CoreLocation
+import FuzzCombine
 import Logger
 import MapKit
 import SwiftUI
 
 struct MapView: UIViewRepresentable {
+    public init(region: MKCoordinateRegion,
+                shouldUpdateToFollow: Bool = false,
+                lineCoordinates: [CLLocationCoordinate2D],
+                circleTriggerRegions: [MKCircle],
+                tappedAt: @escaping (CLLocationCoordinate2D) -> Void,
+                regionUpdated: @escaping (MKCoordinateRegion) -> Void = { _ in })
+    {
+        signPost()
+        self.region = region
+        self.shouldUpdateToFollow = shouldUpdateToFollow
+        self.lineCoordinates = lineCoordinates
+        self.circleTriggerRegions = circleTriggerRegions
+        self.tappedAt = tappedAt
+        self.regionUpdated = regionUpdated
+        // self.lastRegion = lastRegion
+    }
+
+    @State fileprivate var mapView = MKMapView()
+
     let region: MKCoordinateRegion
+    var shouldUpdateToFollow: Bool
     var lineCoordinates: [CLLocationCoordinate2D]
     let circleTriggerRegions: [MKCircle]
-    let mapView = MKMapView()
     let tappedAt: (CLLocationCoordinate2D) -> Void
+    let regionUpdated: (MKCoordinateRegion) -> Void
+
+    @StateObject private var lastRegion = Reference<MKCoordinateRegion?>(value: nil)
+    @StateObject var act = Reference<Throttler>(value: .init(interval: 1.0))
 
     // Create the MKMapView using UIKit.
     func makeUIView(context: Context) -> MKMapView {
@@ -26,8 +50,8 @@ struct MapView: UIViewRepresentable {
         mapView.showsBuildings = true
         mapView.showsCompass = true
         mapView.showsUserLocation = true
+        mapView.userTrackingMode = .followWithHeading
         mapView.showsScale = true
-
         mapView.mapType = .hybrid
 
         #if targetEnvironment(simulator)
@@ -50,16 +74,22 @@ struct MapView: UIViewRepresentable {
         return mapView
     }
 
-    let act = Throttler(interval: 0.5)
     func updateUIView(_ view: MKMapView, context _: Context) {
         // osLog(context)
-        // osLog("draw line: \(lineCoordinates.count)")
-        if act.canPerform() {
+
+        if act.value.canPerform() {
             DispatchQueue.main.async {
+//                if let lastRegionValue = lastRegion.value, shouldUpdateToFollow, region != lastRegionValue {
+//                    mapView.region = region
+//                    lastRegion.value = region
+//                }
+
                 for overlay in view.overlays {
                     view.removeOverlay(overlay)
                 }
-                let polyline = MKPolyline(coordinates: lineCoordinates, count: lineCoordinates.count)
+                osLog("draw line: \(lineCoordinates.count)")
+                let polyline = MKPolyline(coordinates: lineCoordinates,
+                                          count: lineCoordinates.count)
                 view.addOverlay(polyline)
 
                 circleTriggerRegions.forEach { region in
@@ -71,12 +101,15 @@ struct MapView: UIViewRepresentable {
 
     // Link it to the coordinator which is defined below.
     func makeCoordinator() -> Coordinator {
-        Coordinator(self)
+        let c = Coordinator(self)
+
+        return c
     }
 }
 
 class Coordinator: NSObject, MKMapViewDelegate {
     var parent: MapView
+
     var circularRegions = [CircularPOI]()
     private var publisherStorage = Set<AnyCancellable>()
 
@@ -89,6 +122,10 @@ class Coordinator: NSObject, MKMapViewDelegate {
                 self?.circularRegions = update
             }
             .store(in: &publisherStorage)
+    }
+
+    deinit {
+        signPost()
     }
 
     @objc func tapHandler(_ gRecognizer: UITapGestureRecognizer) {
@@ -139,6 +176,11 @@ class Coordinator: NSObject, MKMapViewDelegate {
         // Return it
         return annotationView
     }
+
+    func mapViewDidChangeVisibleRegion(_ mapView: MKMapView) {
+        osLog(mapView.region)
+        parent.regionUpdated(mapView.region)
+    }
 }
 
 struct MapView_Previews: PreviewProvider {
@@ -158,5 +200,12 @@ struct MapView_Previews: PreviewProvider {
         ) { location in
             print(location)
         }
+    }
+}
+
+extension MKCoordinateRegion: Equatable {
+    public static func == (lhs: MKCoordinateRegion, rhs: MKCoordinateRegion) -> Bool {
+        lhs.center == rhs.center &&
+            lhs.span == rhs.span
     }
 }

@@ -16,14 +16,16 @@ import Foundation
 /// - Returns () -> Void
 open class Throttler {
     let interval: Double
-    var lastFired: Date? // track the last fire time
+    var lastFired: Date = .distantPast // track the last fire time
 
     public init(interval: Double) {
         self.interval = interval
     }
 
     public func canPerform() -> Bool {
-        guard abs(lastFired?.timeIntervalSinceNow ?? interval) >= interval else { return false }
+        guard abs(lastFired.timeIntervalSinceNow) >= interval else {
+            return false
+        }
         lastFired = Date()
         return true
     }

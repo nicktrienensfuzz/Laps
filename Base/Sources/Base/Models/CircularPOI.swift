@@ -8,11 +8,16 @@
 import CoreLocation
 import Foundation
 import GRDB
+import MapKit
 import OrderedCollections
 
 public extension CircularPOIInterface {
     var coordinate: CLLocationCoordinate2D {
         CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    var circle: MKCircle {
+        MKCircle(center: coordinate, radius: radius)
     }
 }
 
