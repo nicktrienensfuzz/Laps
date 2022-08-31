@@ -16,5 +16,11 @@
 	<array>
 		<string>workout-processing</string>
 	</array>
+	<key>NSHealthUpdateUsageDescription</key>
+	<string>Activity tracking</string>
+	<key>NSHealthClinicalHealthRecordsShareUsageDescription</key>
+	<string>Activity tracking</string>
+	<key>NSHealthShareUsageDescription</key>
+	<string>Activity tracking</string>
 </dict>
 </plist>

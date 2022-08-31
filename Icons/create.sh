@@ -34,6 +34,18 @@ sips -z 48 48 --out $OUTDIR/AppIcon-48x48.png icon.png
 sips -z 55 55 --out $OUTDIR/AppIcon-55.png icon.png
 sips -z 66 66 --out $OUTDIR/AppIcon-66.png icon.png
 sips -z 88 88 --out $OUTDIR/AppIcon-88.png icon.png
+sips -z 82 82 --out $OUTDIR/AppIcon-82.png icon.png
+sips -z 92 92 --out $OUTDIR/AppIcon-92.png icon.png
+sips -z 100 100 --out $OUTDIR/AppIcon-100.png icon.png
+sips -z 102 102 --out $OUTDIR/AppIcon-102.png icon.png
+sips -z 90 90 --out $OUTDIR/AppIcon-90.png icon.png
+sips -z 172 172 --out $OUTDIR/AppIcon-172.png icon.png
+sips -z 196 196 --out $OUTDIR/AppIcon-196.png icon.png
+sips -z 172 172 --out $OUTDIR/AppIcon-172.png icon.png
+
+sips -z 216 216 --out $OUTDIR/AppIcon-216.png icon.png
+sips -z 234 234 --out $OUTDIR/AppIcon-234.png icon.png
+
 sips -z 87 87 --out $OUTDIR/AppIcon-29x29@3x.png icon.png
 sips -z 40 40 --out $OUTDIR/AppIcon-40x40@1x.png icon.png
 sips -z 80 80 --out $OUTDIR/AppIcon-40x40@2x.png icon.png

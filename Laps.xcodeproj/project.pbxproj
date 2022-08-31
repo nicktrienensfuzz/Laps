@@ -152,7 +152,6 @@
 		C028F40328B8451D004A17AD /* LapsWatchUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LapsWatchUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C028F40728B8451D004A17AD /* LapsWatchUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsWatchUITests.swift; sourceTree = "<group>"; };
 		C028F40928B8451D004A17AD /* LapsWatchUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsWatchUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C02BCBFF28B8686600D84BF2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		C03532C828BD48ED00875ECA /* MapView2.0.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView2.0.swift; sourceTree = "<group>"; };
 		C03532CA28BD556200875ECA /* MapView3.0.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MapView3.0.swift; sourceTree = "<group>"; };
 		C03532CF28BDD10D00875ECA /* HeartRateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateView.swift; sourceTree = "<group>"; };
@@ -252,7 +251,6 @@
 		C028F3D828B8451B004A17AD /* LapsWatch */ = {
 			isa = PBXGroup;
 			children = (
-				C02BCBFF28B8686600D84BF2 /* Info.plist */,
 				C028F3D928B8451C004A17AD /* Assets.xcassets */,
 			);
 			path = LapsWatch;
