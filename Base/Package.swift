@@ -29,8 +29,8 @@ let package = Package(
         .package(url: "git@github.com:nerdsupremacist/FancyScrollView.git", from: "0.1.4"),
         .package(url: "https://github.com/AsyncSwift/AsyncLocationKit.git", from: "1.0.5"),
         //.package(url: "git@github.com:fuzz-productions/tuva-core-iosmodule.git", branch: "master"),
-        .package(path: "tuva-core-iosmodule-master")
-        .package(path: "fuzz-combine-iosmodule-master")
+        .package(path: "../Dependencies/TuvaCore"),
+        .package(path: "../Dependencies/FuzzCombine"),
         //.package(url: "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git", branch: "master"),
         .package(url: "https://github.com/groue/GRDB.swift.git", exact: "5.25.0"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.37.0"),
@@ -46,7 +46,8 @@ let package = Package(
         .target(
             name: "Logger",
             dependencies: [
-                .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
+                "TuvaCore"
+                //.product(name: "TuvaCore", package: "tuva-core-iosmodule"),
             ]
 
         ),
@@ -60,9 +61,9 @@ let package = Package(
                 "Logger",
                 "Communicator",
                 .product(name: "NavigationStack", package: "swiftui-navigation-stack"),
-                .product(name: "TuvaCore", package: "tuva-core-iosmodule-master"),
+                "TuvaCore",
                 .product(name: "GRDB", package: "GRDB.swift"),
-                .product(name: "FuzzCombine", package: "fuzz-combine-iosmodule-master"),
+                "FuzzCombine",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "DependencyContainer",
                 "SwiftSimplify",
@@ -74,8 +75,8 @@ let package = Package(
                 "Communicator",
                 "Logger",
                 .product(name: "GRDB", package: "GRDB.swift"),
-                .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
-                .product(name: "FuzzCombine", package: "fuzz-combine-iosmodule"),
+                "TuvaCore",
+                "FuzzCombine",
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 "DependencyContainer",
             ]
