@@ -134,6 +134,7 @@
 		C00D22A22873584300B9A65F /* IntervalBuilderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalBuilderView.swift; sourceTree = "<group>"; };
 		C00D22A62876AAC200B9A65F /* TrackListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackListView.swift; sourceTree = "<group>"; };
 		C00D22A82876AE2100B9A65F /* TrackDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrackDetailView.swift; sourceTree = "<group>"; };
+		C0188DDD28BFF737008D6868 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = Helpers/Info.plist; sourceTree = "<group>"; };
 		C028F36628B34811004A17AD /* InfoBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBarView.swift; sourceTree = "<group>"; };
 		C028F3D728B8451B004A17AD /* LapsWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapsWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C028F3D928B8451C004A17AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -160,7 +161,7 @@
 		C03532D528BE9EE300875ECA /* TwoHandledSliderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TwoHandledSliderView.swift; sourceTree = "<group>"; };
 		C0411C1F288E4B1200D328C6 /* SelectedPlaylist.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedPlaylist.swift; sourceTree = "<group>"; };
 		C0411C23288ECCCD00D328C6 /* CustomDraggableComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDraggableComponent.swift; sourceTree = "<group>"; };
-		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		C046D5662867529D0056B7E8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Laps/Info.plist; sourceTree = "<group>"; };
 		C046D5672867549D0056B7E8 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C046D56A2867571B0056B7E8 /* Throttler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Throttler.swift; sourceTree = "<group>"; };
 		C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkOutForHolly.swift; sourceTree = "<group>"; };
@@ -252,6 +253,7 @@
 			isa = PBXGroup;
 			children = (
 				C028F3D928B8451C004A17AD /* Assets.xcassets */,
+				C046D5662867529D0056B7E8 /* Info.plist */,
 			);
 			path = LapsWatch;
 			sourceTree = "<group>";
@@ -382,8 +384,8 @@
 				C0843CD2289039E20041AFC6 /* Rides */,
 				C0A36D8E288CFA930038B341 /* Components */,
 				C00D229F287352EE00B9A65F /* Laps.entitlements */,
+				C0188DDD28BFF737008D6868 /* Info.plist */,
 				C046D5692867570B0056B7E8 /* Helpers */,
-				C046D5662867529D0056B7E8 /* Info.plist */,
 				C0A8159A28617FC6004DF61F /* LapsApp.swift */,
 				C046D5672867549D0056B7E8 /* AppDelegate.swift */,
 				C0A8159C28617FC6004DF61F /* ContentView.swift */,
@@ -863,7 +865,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity Tracking and competions";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -898,7 +900,7 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity Tracking and competions";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -932,7 +934,7 @@
 				IBSC_MODULE = LapsWatch_WatchKit_Extension;
 				INFOPLIST_FILE = LapsWatch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LapsWatch;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
@@ -964,7 +966,7 @@
 				IBSC_MODULE = LapsWatch_WatchKit_Extension;
 				INFOPLIST_FILE = LapsWatch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LapsWatch;
-				INFOPLIST_KEY_LSApplicationCategoryType = "";
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";

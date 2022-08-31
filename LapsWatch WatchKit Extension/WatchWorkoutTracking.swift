@@ -51,10 +51,10 @@ class WorkoutTracking: NSObject {
             let startOfDay = Calendar.current.startOfDay(for: Date())
             let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
 
-            let query = HKStatisticsQuery(quantityType: stepCounts, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, _ in
-                guard let weakSelf = self else {
-                    return
-                }
+            let query = HKStatisticsQuery(quantityType: stepCounts, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+//                guard let weakSelf = self else {
+//                    return
+//                }
                 var resultCount = 0.0
                 guard let result = result else {
                     osLog("Failed to fetch steps rate")
@@ -63,6 +63,7 @@ class WorkoutTracking: NSObject {
 
                 if let sum = result.sumQuantity() {
                     resultCount = sum.doubleValue(for: HKUnit.count())
+                    osLog(resultCount)
                 } else {
                     osLog("Failed to fetch steps rate 2")
                 }
@@ -153,10 +154,10 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
         let startOfDay = Calendar.current.startOfDay(for: Date())
         let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: Date(), options: .strictStartDate)
 
-        let query = HKStatisticsQuery(quantityType: stepCounts, quantitySamplePredicate: predicate, options: .cumulativeSum) { [weak self] _, result, _ in
-            guard let weakSelf = self else {
-                return
-            }
+        let query = HKStatisticsQuery(quantityType: stepCounts, quantitySamplePredicate: predicate, options: .cumulativeSum) { _, result, _ in
+//            guard let weakSelf = self else {
+//                return
+//            }
             var resultCount = 0.0
             guard let result = result else {
                 osLog("Failed to fetch steps rate")
@@ -165,6 +166,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
 
             if let sum = result.sumQuantity() {
                 resultCount = sum.doubleValue(for: HKUnit.count())
+                osLog(resultCount)
             } else {
                 osLog("Failed to fetch steps rate 2")
             }
