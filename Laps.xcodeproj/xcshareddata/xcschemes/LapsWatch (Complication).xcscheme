@@ -55,8 +55,10 @@
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
       launchAutomaticallySubstyle = "32">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/LapsWatch">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C028F3D628B8451B004A17AD"
@@ -64,7 +66,7 @@
             BlueprintName = "LapsWatch"
             ReferencedContainer = "container:Laps.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -73,8 +75,10 @@
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES"
       launchAutomaticallySubstyle = "32">
-      <BuildableProductRunnable
-         runnableDebuggingMode = "0">
+      <RemoteRunnable
+         runnableDebuggingMode = "2"
+         BundleIdentifier = "com.apple.Carousel"
+         RemotePath = "/LapsWatch">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "C028F3D628B8451B004A17AD"
@@ -82,7 +86,16 @@
             BlueprintName = "LapsWatch"
             ReferencedContainer = "container:Laps.xcodeproj">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </RemoteRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C028F3D628B8451B004A17AD"
+            BuildableName = "LapsWatch.app"
+            BlueprintName = "LapsWatch"
+            ReferencedContainer = "container:Laps.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
