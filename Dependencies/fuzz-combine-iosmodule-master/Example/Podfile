@@ -1,0 +1,33 @@
+use_frameworks!
+platform :ios, '13.0'
+
+target 'FuzzCombine_Example' do
+  pod 'FuzzCombine', :path => '../'
+
+  pod 'SVProgressHUD'
+  pod 'TuvaCore', :git => 'git@github.com:fuzz-productions/tuva-core-iosmodule.git'
+
+  #linters
+  pod 'SwiftFormat/CLI'
+  pod 'SwiftLint'
+
+  script_phase :name => 'Swiftformat', :script => ' ./Pods/SwiftFormat/CommandLineTool/swiftformat .', :execution_position => :before_compile
+  script_phase :name => 'SwiftLint', :script => ' ./Pods/SwiftLint/swiftlint', :execution_position => :before_compile
+
+  target 'FuzzCombine_Tests' do
+    inherit! :search_paths
+
+    pod 'Quick'
+    pod 'Nimble'
+  end
+end
+
+post_install do |installer|
+  installer.pods_project.targets.each do |target|
+    target.build_configurations.each do |config|
+      if Gem::Version.new('9.0') > Gem::Version.new(config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'])
+        config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '9.0'
+      end
+    end
+  end
+end

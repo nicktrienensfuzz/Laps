@@ -1,0 +1,80 @@
+PODS:
+  - FuzzCombine (0.1.20):
+    - FuzzCombine/All (= 0.1.20)
+  - FuzzCombine/All (0.1.20):
+    - FuzzCombine/Client
+    - FuzzCombine/Core
+    - FuzzCombine/Result
+    - FuzzCombine/Store
+    - FuzzCombine/UIBindings
+  - FuzzCombine/Client (0.1.20):
+    - FuzzCombine/Core
+  - FuzzCombine/Core (0.1.20)
+  - FuzzCombine/Result (0.1.20):
+    - FuzzCombine/Core
+  - FuzzCombine/Store (0.1.20):
+    - FuzzCombine/Core
+  - FuzzCombine/UIBindings (0.1.20):
+    - FuzzCombine/Core
+  - Nimble (9.2.0)
+  - Quick (4.0.0)
+  - SVProgressHUD (2.2.5)
+  - SwiftFormat/CLI (0.48.1)
+  - SwiftLint (0.43.1)
+  - TuvaCore (0.0.14):
+    - TuvaCore/All (= 0.0.14)
+  - TuvaCore/All (0.0.14):
+    - TuvaCore/Core
+    - TuvaCore/Foundation
+    - TuvaCore/Image
+    - TuvaCore/UIKit
+  - TuvaCore/Core (0.0.14)
+  - TuvaCore/Foundation (0.0.14):
+    - TuvaCore/Core
+  - TuvaCore/Image (0.0.14):
+    - TuvaCore/Core
+    - TuvaCore/Foundation
+    - TuvaCore/UIKit
+  - TuvaCore/UIKit (0.0.14):
+    - TuvaCore/Core
+
+DEPENDENCIES:
+  - FuzzCombine (from `../`)
+  - Nimble
+  - Quick
+  - SVProgressHUD
+  - SwiftFormat/CLI
+  - SwiftLint
+  - "TuvaCore (from `git@github.com:fuzz-productions/tuva-core-iosmodule.git`)"
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+    - SVProgressHUD
+    - SwiftFormat
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  FuzzCombine:
+    :path: "../"
+  TuvaCore:
+    :git: "git@github.com:fuzz-productions/tuva-core-iosmodule.git"
+
+CHECKOUT OPTIONS:
+  TuvaCore:
+    :commit: 0e90ddd100ed72ca8fc74a510c91a0977bf5dfd3
+    :git: "git@github.com:fuzz-productions/tuva-core-iosmodule.git"
+
+SPEC CHECKSUMS:
+  FuzzCombine: a54c9cee667a4075c3b067427c50ea2110829c94
+  Nimble: 4f4a345c80b503b3ea13606a4f98405974ee4d0b
+  Quick: 6473349e43b9271a8d43839d9ba1c442ed1b7ac4
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  SwiftFormat: 094c5e2e6c36dafdd128d04cff4a0a7d87492e73
+  SwiftLint: 99f82d07b837b942dd563c668de129a03fc3fb52
+  TuvaCore: 7bcba4a6c327ec074f65651175f499e8eecff3cf
+
+PODFILE CHECKSUM: 7b3ef48612d83faba4994e118056854aa4362609
+
+COCOAPODS: 1.10.1

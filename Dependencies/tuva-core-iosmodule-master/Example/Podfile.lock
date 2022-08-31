@@ -1,0 +1,50 @@
+PODS:
+  - Nimble (8.0.9)
+  - Quick (2.2.0)
+  - SwiftFormat/CLI (0.44.10)
+  - SwiftLint (0.39.2)
+  - TuvaCore (0.0.11):
+    - TuvaCore/All (= 0.0.11)
+  - TuvaCore/All (0.0.11):
+    - TuvaCore/Core
+    - TuvaCore/Foundation
+    - TuvaCore/Image
+    - TuvaCore/UIKit
+  - TuvaCore/Core (0.0.11)
+  - TuvaCore/Foundation (0.0.11):
+    - TuvaCore/Core
+  - TuvaCore/Image (0.0.11):
+    - TuvaCore/Core
+    - TuvaCore/Foundation
+    - TuvaCore/UIKit
+  - TuvaCore/UIKit (0.0.11):
+    - TuvaCore/Core
+
+DEPENDENCIES:
+  - Nimble
+  - Quick
+  - SwiftFormat/CLI
+  - SwiftLint
+  - TuvaCore (from `../`)
+
+SPEC REPOS:
+  trunk:
+    - Nimble
+    - Quick
+    - SwiftFormat
+    - SwiftLint
+
+EXTERNAL SOURCES:
+  TuvaCore:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Nimble: 98b888285a615fd34f20e61753cf58ea1402bde4
+  Quick: 7fb19e13be07b5dfb3b90d4f9824c855a11af40e
+  SwiftFormat: b72e592ea0979aeee53f6052abff291181364933
+  SwiftLint: 22ccbbe3b8008684be5955693bab135e0ed6a447
+  TuvaCore: d58660f29df6e98d01e529364c660da7a2258eec
+
+PODFILE CHECKSUM: 30deb4b129431485aa0b0bffc55df331681f2698
+
+COCOAPODS: 1.10.0
