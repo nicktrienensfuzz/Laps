@@ -7,11 +7,5 @@
 		<string>location</string>
 		<string>processing</string>
 	</array>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>tracking</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>tracking</string>
-	<key>NSHealthShareUsageDescription</key>
-	<string>activity tracking</string>
 </dict>
 </plist>

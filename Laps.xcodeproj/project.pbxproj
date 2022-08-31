@@ -865,9 +865,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity Tracking and competions";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -900,9 +901,10 @@
 				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
 				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
 				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "Activity Tracking and competions";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
 				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

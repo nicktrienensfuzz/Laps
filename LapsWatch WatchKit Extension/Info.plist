@@ -13,14 +13,6 @@
 		<string>com.apple.watchkit</string>
 	</dict>
 	<key>WKBackgroundModes</key>
-	<array>
-		<string>workout-processing</string>
-	</array>
-	<key>NSHealthShareUsageDescription</key>
-	<string>activity tracking</string>
-	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-	<string>tracking</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>tracking</string>
+	<array/>
 </dict>
 </plist>
