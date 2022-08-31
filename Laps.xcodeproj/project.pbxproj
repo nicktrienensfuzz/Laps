@@ -733,7 +733,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nif test -f /opt/homebrew/bin/swiftformat then:\n/opt/homebrew/bin/swiftformat Laps --swiftversion 5.6\n/opt/homebrew/bin/swiftformat Base --swiftversion 5.6\n/opt/homebrew/bin/swiftformat LapsWatch\\ WatchKit\\ Extension --swiftversion 5.6\nfi\n";
+			shellScript = "\n#if test -f /opt/homebrew/bin/swiftformat then:\n#/opt/homebrew/bin/swiftformat Laps --swiftversion 5.6\n#/opt/homebrew/bin/swiftformat Base --swiftversion 5.6\n#/opt/homebrew/bin/swiftformat LapsWatch\\ WatchKit\\ Extension --swiftversion 5.6\n#fi\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
