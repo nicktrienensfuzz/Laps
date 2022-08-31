@@ -28,10 +28,10 @@ let package = Package(
         .package(url: "https://github.com/rryam/MusadoraKit.git", from: "1.7.2"),
         .package(url: "git@github.com:nerdsupremacist/FancyScrollView.git", from: "0.1.4"),
         .package(url: "https://github.com/AsyncSwift/AsyncLocationKit.git", from: "1.0.5"),
-        //.package(url: "git@github.com:fuzz-productions/tuva-core-iosmodule.git", branch: "master"),
+        // .package(url: "git@github.com:fuzz-productions/tuva-core-iosmodule.git", branch: "master"),
         .package(path: "../Dependencies/TuvaCore"),
         .package(path: "../Dependencies/FuzzCombine"),
-        //.package(url: "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git", branch: "master"),
+        // .package(url: "git@github.com:fuzz-productions/fuzz-combine-iosmodule.git", branch: "master"),
         .package(url: "https://github.com/groue/GRDB.swift.git", exact: "5.25.0"),
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", from: "0.37.0"),
         .package(url: "https://github.com/omaralbeik/Drops.git", from: "1.5.0"),
@@ -46,8 +46,8 @@ let package = Package(
         .target(
             name: "Logger",
             dependencies: [
-                "TuvaCore"
-                //.product(name: "TuvaCore", package: "tuva-core-iosmodule"),
+                "TuvaCore",
+                // .product(name: "TuvaCore", package: "tuva-core-iosmodule"),
             ]
 
         ),
