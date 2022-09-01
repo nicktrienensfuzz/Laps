@@ -95,6 +95,7 @@ extension WorkOutForHollyView {
         var objectWillChange: AnyPublisher<Void, Never> {
             state.objectWillChange
                 .merge(with: timeRemaining.objectWillChange)
+                .merge(with: isRunning.objectWillChange)
                 .receive(on: RunLoop.main)
                 .eraseToAnyPublisher()
         }
@@ -149,11 +150,14 @@ extension WorkOutForHollyView {
         func toggleRecording() {
             isRunning.value.toggle()
             Location.shared.isTracking.value = isRunning.value
+            
             if isRunning.value {
+                Location.shared.startMonitoringSignificantLocationChanges()
                 Task {
                     await Music.shared.resume()
                 }
             } else {
+                Location.shared.stopMonitoringSignificantLocationChanges()
                 Task {
                     await Music.shared.pause()
                 }

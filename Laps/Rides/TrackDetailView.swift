@@ -21,6 +21,7 @@ struct TrackDetailView: View {
     var body: some View {
         // osLog("points: \(points.count)")
         VStack {
+            BackButton()
             if !points.isEmpty {
                 MapView(
                     region: points.region2(),

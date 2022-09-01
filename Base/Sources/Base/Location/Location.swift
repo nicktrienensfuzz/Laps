@@ -123,6 +123,8 @@
                     osLog(error)
                 }
             }
+            
+            stopMonitoringAllRegions()
         }
 
         public func updateIsTracking(_ tracking: Bool) {
@@ -132,11 +134,13 @@
         public func startMonitoringSignificantLocationChanges() {
             locationManager.startMonitoringSignificantLocationChanges()
             isMonitoringSignificantLocation = true
+            locationManager.allowsBackgroundLocationUpdates = true
         }
 
         public func stopMonitoringSignificantLocationChanges() {
             locationManager.stopMonitoringSignificantLocationChanges()
             isMonitoringSignificantLocation = false
+            locationManager.allowsBackgroundLocationUpdates = false
         }
 
         public func request() async throws {
@@ -166,17 +170,18 @@
         }
 
         public func monitorRegionAtLocation(center: CLLocationCoordinate2D, radius: Double, identifier: String) {
-            if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
-                // Register the region.
-                let region = CLCircularRegion(center: center,
-                                              radius: radius,
-                                              identifier: identifier)
-                region.notifyOnEntry = true
-                region.notifyOnExit = true
-                locationManager.startMonitoring(for: region)
-            } else {
-                osLog("Error")
-            }
+            return
+//            if CLLocationManager.isMonitoringAvailable(for: CLCircularRegion.self) {
+//                // Register the region.
+//                let region = CLCircularRegion(center: center,
+//                                              radius: radius,
+//                                              identifier: identifier)
+//                region.notifyOnEntry = true
+//                region.notifyOnExit = true
+//                locationManager.startMonitoring(for: region)
+//            } else {
+//                osLog("Error")
+//            }
         }
 
         public func stopMonitoringAllRegions() {
@@ -285,6 +290,7 @@
                             )
                             try point.save(db)
                             // osLog("saved point")
+                            if self.isTracking.value {
                             let sql = """
                             Select * from CircularPOI_table
                                 ORDER BY ABS(latitude - \(location.coordinate.latitude)) + ABS(longitude - \(location.coordinate.longitude))
@@ -312,6 +318,7 @@
                                         Drops.show(.init(title: "Exited"))
                                     }
                                 }
+                            }
                             }
                         }
                     }
