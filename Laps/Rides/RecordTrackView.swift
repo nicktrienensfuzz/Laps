@@ -14,6 +14,7 @@ import Logger
 import MapKit
 import NavigationStack
 import SwiftUI
+import ComposableArchitecture
 
 extension RecordTrackView {
     class ViewModel: ObservableObject {
@@ -23,7 +24,7 @@ extension RecordTrackView {
         @ObservedObject var circleTriggerRegions = Reference<[MKCircle]>(value: [])
         @ObservedObject var regions = BoundReference<[CircularPOI]>(value: [])
         @ObservedObject var points = BoundReference<[TrackPoint]>(value: [])
-        @ObservedObject var location: Reference<CLLocation?>
+        @ObservedObject var location: FuzzCombine.Reference<CLLocation?>
 
         @ObservedObject var isRecording = Location.shared.isTracking
         @ObservedObject var name = Reference<String>(value: "")
@@ -147,6 +148,7 @@ extension RecordTrackView {
 
 struct RecordTrackView: View {
     @StateObject private var viewModel = ViewModel()
+    let store = Store(initialState: IntervalFeature.State(), reducer: IntervalFeature())
 
     var body: some View {
         Screen {
@@ -154,7 +156,7 @@ struct RecordTrackView: View {
                 BackButton()
                 if viewModel.location.value != nil {
                     InfoBarView()
-                    HeartRateView()
+                    HeartRateView(store: store)
                         .padding(.horizontal)
 
                     VStack(spacing: 0) {

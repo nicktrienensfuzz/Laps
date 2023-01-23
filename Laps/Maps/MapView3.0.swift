@@ -61,7 +61,7 @@ class Coordinator3: NSObject, MKMapViewDelegate {
     var circularRegions = [CircularPOI]()
     private var publisherStorage = Set<AnyCancellable>()
     var points = BoundReference<[TrackPoint]>(value: [])
-    var location: Reference<CLLocation?>
+    var location: FuzzCombine.Reference<CLLocation?>
     var region = Reference<MKCoordinateRegion>(value: .boulder)
     var followsUserLocation = Reference<Bool>(value: false)
     var lastRegion = Reference<MKCoordinateRegion?>(value: nil)

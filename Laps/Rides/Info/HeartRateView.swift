@@ -13,27 +13,40 @@ import CoreLocation
 import DependencyContainer
 import FuzzCombine
 import SwiftUI
+import Base
+import ComposableArchitecture
 
 struct HeartRateView: View {
-    @State var heartRate = BoundReference<[HeartRatePoint]>(value: [])
-    init() {
-        heartRate.bind(to:
-            WorkoutTracking.shared.lastReadings()
-        )
-    }
+    let store: StoreOf<IntervalFeature>
+
+//
+//    @State var heartRate = BoundReference<[HeartRatePoint]>(value: [])
+//    init() {
+//        heartRate.bind(to:
+//            WorkoutTracking.shared.lastReadings()
+//        )
+//    }
 
     var body: some View {
-        HStack {
-            Image(systemName: "heart")
-                .font(.title)
-            Text("\(String(format: "%0.0f", heartRate.value.first?.heartRate ?? 0))")
-                .font(.title)
+        WithViewStore(store) { viewStore in
+            HStack {
+                Image(systemName: "heart")
+                    .font(.title)
+                if let hr = viewStore.heartRate {
+                    Text("\(String(format: "%0.0f", viewStore.heartRate?.heartRate ?? 0 ))")
+                        .font(.title)
+                    Text(hr.timestamp, style: .relative)
+                    //Text("\(String(format: "%0.0f", hr.timestamp.timeIntervalToNow ))")
+                      //  .font(.body)
+                }
+                
+            }
         }
     }
 }
 
 struct HeartRate_Previews: PreviewProvider {
     static var previews: some View {
-        HeartRateView()
+        HeartRateView(store: Store(initialState: IntervalFeature.State(), reducer: IntervalFeature()))
     }
 }

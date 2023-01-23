@@ -19,7 +19,15 @@ extension ContentView {
     class ViewModel: ObservableObject {
         private var publisherStorage = Set<AnyCancellable>()
 
-        init() {}
+        init() {
+            do {
+             let db = try DependencyContainer.resolve(key: ContainerKeys.database)
+                //db.dbPool
+                let string = try db.exportDatabaseContent(from: db.dbPool)
+                print(string)
+            }catch {
+            }
+        }
     }
 }
 
@@ -60,6 +68,20 @@ struct ContentView: View {
                         .neumorphicStyle()
 
                     Spacer()
+                    
+                    Button {
+                        do {
+                         let db = try DependencyContainer.resolve(key: ContainerKeys.database)
+                            let string = try db.exportDatabaseContent(from: db.dbPool)
+                            let AV = UIActivityViewController(activityItems: [URL(fileURLWithPath: string)], applicationActivities: nil)
+                 
+                            UIApplication.shared.currentUIWindow()?.rootViewController?.present(AV, animated: true, completion: nil)
+                        }catch {
+                        }
+                           }
+                           label: {
+                               Text("export db")
+                           }
                 }
             }
         }
@@ -69,5 +91,22 @@ struct ContentView: View {
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
+    }
+}
+
+
+public extension UIApplication {
+    func currentUIWindow() -> UIWindow? {
+        let connectedScenes = UIApplication.shared.connectedScenes
+            .filter({
+                $0.activationState == .foregroundActive})
+            .compactMap({$0 as? UIWindowScene})
+        
+        let window = connectedScenes.first?
+            .windows
+            .first { $0.isKeyWindow }
+
+        return window
+        
     }
 }

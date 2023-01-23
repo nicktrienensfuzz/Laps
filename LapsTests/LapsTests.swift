@@ -7,6 +7,8 @@
 
 import XCTest
 @testable import Laps
+import FuzzCombine
+import Combine
 
 class LapsTests: XCTestCase {
 
@@ -18,19 +20,104 @@ class LapsTests: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    func testExample() async throws {
+        func t() async throws {
+            let test: Laps.Reference<String?> = Laps.Reference<String?>(value: "test")
+            
+            Task{
+                try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+                test.value = nil
+            }
+            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+            let v = try await test.currentValueWithUpdates.async()
+            
+            debugPrint(v)
+            XCTAssertNil(v)
+        }
+
+        try await t()
+        try await t()
+
+    }
+    
+    func testMapExample() async throws {
+        
+        let test: Laps.Reference<String?> = Laps.Reference<String?>(value: "test")
+        
+        Task{
+            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+            test.value = nil
+        }
+        try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+        let v = try await test.didUpdate.async()
+            
+        print(v)
+        XCTAssertNil(v)
+    }
+    
+    
+    func testCurrentExample() async throws {
+        func t() async throws {
+            let test: FuzzCombine.Reference<String?> = FuzzCombine.Reference<String?>(value: "test")
+            
+            Task{
+                try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+                test.value = nil
+            }
+            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+            let v = try await test.currentValueWithUpdates.async()
+            
+            debugPrint(v)
+            XCTAssertNil(v)
+        }
+
+        try await t()
+        try await t()
+
+    }
+    func testFuzzCombineExample() async throws {
+        
+        let test: FuzzCombine.Reference<String?> = FuzzCombine.Reference<String?>(value: "test")
+        
+        Task{
+            try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+            test.value = nil
+        }
+        try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
+        let v = try await test.currentValueWithUpdates.async()
+        
+        print(v)
+        XCTAssertNil(v)
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+
+}
+
+
+extension AnyPublisher {
+    enum ExpectedValueError: Error {
+        case publisherFinishedBeforeProducingAValue
+    }
+    func async() async throws -> Output {
+        try await withCheckedThrowingContinuation { continuation in
+            var cancellable: AnyCancellable?
+            var valueProduced = false
+            
+            cancellable = first()
+                .sink { result in
+                    switch result {
+                    case .finished:
+                        if !valueProduced {
+                            continuation.resume(throwing: ExpectedValueError.publisherFinishedBeforeProducingAValue)
+                        }
+                    case let .failure(error):
+                        continuation.resume(throwing: error)
+                    }
+                    cancellable?.cancel()
+                } receiveValue: { value in
+                    valueProduced = true
+                    continuation.resume(with: .success(value))
+                }
         }
     }
-
 }

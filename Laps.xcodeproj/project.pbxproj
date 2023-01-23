@@ -13,7 +13,6 @@
 		C00D22A92876AE2100B9A65F /* TrackDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00D22A82876AE2100B9A65F /* TrackDetailView.swift */; };
 		C028F36728B34811004A17AD /* InfoBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F36628B34811004A17AD /* InfoBarView.swift */; };
 		C028F3DA28B8451C004A17AD /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C028F3D928B8451C004A17AD /* Assets.xcassets */; };
-		C028F3E028B8451C004A17AD /* LapsWatch WatchKit Extension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = C028F3DF28B8451C004A17AD /* LapsWatch WatchKit Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		C028F3E528B8451C004A17AD /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F3E428B8451C004A17AD /* LapsApp.swift */; };
 		C028F3E728B8451C004A17AD /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F3E628B8451C004A17AD /* ContentView.swift */; };
 		C028F3E928B8451C004A17AD /* NotificationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C028F3E828B8451C004A17AD /* NotificationController.swift */; };
@@ -44,6 +43,10 @@
 		C063B3A728B85630006B05B6 /* BaseWatch in Frameworks */ = {isa = PBXBuildFile; productRef = C063B3A628B85630006B05B6 /* BaseWatch */; };
 		C063B3AA28B856B4006B05B6 /* HealthKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C063B3A928B856B4006B05B6 /* HealthKit.framework */; };
 		C0843CD128900E3C0041AFC6 /* RecordTrackView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */; };
+		C09FCD7A297CEF2900E04E9D /* SparkLine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD79297CEF2900E04E9D /* SparkLine.swift */; };
+		C09FCD7E297CFC6500E04E9D /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */; };
+		C09FCD7F297CFC6500E04E9D /* RoundingMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */; };
+		C09FCD80297CFC6500E04E9D /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */; };
 		C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A36D8F288CFAA80038B341 /* WaitingDots.swift */; };
 		C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159A28617FC6004DF61F /* LapsApp.swift */; };
 		C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159C28617FC6004DF61F /* ContentView.swift */; };
@@ -56,23 +59,11 @@
 		C0A815CB286208B0004DF61F /* PlaylistView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A815CA286208B0004DF61F /* PlaylistView.swift */; };
 		C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A815CC28625A5B004DF61F /* PlaylistDetailsView.swift */; };
 		C0A815CF2862C47A004DF61F /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A815CE2862C47A004DF61F /* MapView.swift */; };
+		C0AAD632297BA77D00E08851 /* IntervalFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AAD631297BA77D00E08851 /* IntervalFeature.swift */; };
+		C0E3660128E78B8E001CAB62 /* ReferenceRevised.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E3660028E78B8E001CAB62 /* ReferenceRevised.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
-		C028F3E128B8451C004A17AD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C0A8158F28617FC6004DF61F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C028F3DE28B8451C004A17AD;
-			remoteInfo = "LapsWatch WatchKit Extension";
-		};
-		C028F3FA28B8451D004A17AD /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C0A8158F28617FC6004DF61F /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C028F3DE28B8451C004A17AD;
-			remoteInfo = "LapsWatch WatchKit Extension";
-		};
 		C028F40428B8451D004A17AD /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C0A8158F28617FC6004DF61F /* Project object */;
@@ -81,6 +72,13 @@
 			remoteInfo = LapsWatch;
 		};
 		C028F40B28B8451D004A17AD /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = C0A8158F28617FC6004DF61F /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C028F3D628B8451B004A17AD;
+			remoteInfo = LapsWatch;
+		};
+		C09FCD84297D01AF00E04E9D /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C0A8158F28617FC6004DF61F /* Project object */;
 			proxyType = 1;
@@ -104,17 +102,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C028F41128B8451D004A17AD /* Embed App Extensions */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 13;
-			files = (
-				C028F3E028B8451C004A17AD /* LapsWatch WatchKit Extension.appex in Embed App Extensions */,
-			);
-			name = "Embed App Extensions";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C028F41528B8451D004A17AD /* Embed Watch Content */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -138,7 +125,6 @@
 		C028F36628B34811004A17AD /* InfoBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBarView.swift; sourceTree = "<group>"; };
 		C028F3D728B8451B004A17AD /* LapsWatch.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LapsWatch.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C028F3D928B8451C004A17AD /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		C028F3DF28B8451C004A17AD /* LapsWatch WatchKit Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "LapsWatch WatchKit Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C028F3E428B8451C004A17AD /* LapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsApp.swift; sourceTree = "<group>"; };
 		C028F3E628B8451C004A17AD /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		C028F3E828B8451C004A17AD /* NotificationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationController.swift; sourceTree = "<group>"; };
@@ -169,6 +155,10 @@
 		C063B3A828B856B4006B05B6 /* LapsWatch WatchKit Extension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "LapsWatch WatchKit Extension.entitlements"; sourceTree = "<group>"; };
 		C063B3A928B856B4006B05B6 /* HealthKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = HealthKit.framework; path = Platforms/WatchOS.platform/Developer/SDKs/WatchOS8.5.sdk/System/Library/Frameworks/HealthKit.framework; sourceTree = DEVELOPER_DIR; };
 		C0843CD028900E3C0041AFC6 /* RecordTrackView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordTrackView.swift; sourceTree = "<group>"; };
+		C09FCD79297CEF2900E04E9D /* SparkLine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SparkLine.swift; sourceTree = "<group>"; };
+		C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
+		C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundingMask.swift; sourceTree = "<group>"; };
+		C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
 		C0A36D8F288CFAA80038B341 /* WaitingDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingDots.swift; sourceTree = "<group>"; };
 		C0A8159728617FC6004DF61F /* Laps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A8159A28617FC6004DF61F /* LapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsApp.swift; sourceTree = "<group>"; };
@@ -184,6 +174,8 @@
 		C0A815CA286208B0004DF61F /* PlaylistView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistView.swift; sourceTree = "<group>"; };
 		C0A815CC28625A5B004DF61F /* PlaylistDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaylistDetailsView.swift; sourceTree = "<group>"; };
 		C0A815CE2862C47A004DF61F /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		C0AAD631297BA77D00E08851 /* IntervalFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntervalFeature.swift; sourceTree = "<group>"; };
+		C0E3660028E78B8E001CAB62 /* ReferenceRevised.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReferenceRevised.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -245,6 +237,7 @@
 			children = (
 				C028F36628B34811004A17AD /* InfoBarView.swift */,
 				C03532CF28BDD10D00875ECA /* HeartRateView.swift */,
+				C0AAD631297BA77D00E08851 /* IntervalFeature.swift */,
 			);
 			path = Info;
 			sourceTree = "<group>";
@@ -323,6 +316,10 @@
 			children = (
 				C04D2BA328AA023300653B06 /* WorkOutForHolly.swift */,
 				C03532D128BE3B2900875ECA /* Announcer.swift */,
+				C09FCD79297CEF2900E04E9D /* SparkLine.swift */,
+				C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */,
+				C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */,
+				C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */,
 			);
 			path = WorkOut;
 			sourceTree = "<group>";
@@ -371,7 +368,6 @@
 				C0A815A728617FC8004DF61F /* LapsTests.xctest */,
 				C0A815B128617FC8004DF61F /* LapsUITests.xctest */,
 				C028F3D728B8451B004A17AD /* LapsWatch.app */,
-				C028F3DF28B8451C004A17AD /* LapsWatch WatchKit Extension.appex */,
 				C028F3F928B8451D004A17AD /* LapsWatchTests.xctest */,
 				C028F40328B8451D004A17AD /* LapsWatchUITests.xctest */,
 			);
@@ -395,6 +391,7 @@
 				C0A815D02862C597004DF61F /* Maps */,
 				C0A8159E28617FC8004DF61F /* Assets.xcassets */,
 				C0A815A028617FC8004DF61F /* Preview Content */,
+				C0E3660028E78B8E001CAB62 /* ReferenceRevised.swift */,
 			);
 			path = Laps;
 			sourceTree = "<group>";
@@ -461,42 +458,23 @@
 			buildConfigurationList = C028F41228B8451D004A17AD /* Build configuration list for PBXNativeTarget "LapsWatch" */;
 			buildPhases = (
 				C028F3D528B8451B004A17AD /* Resources */,
-				C028F41128B8451D004A17AD /* Embed App Extensions */,
+				C028F3DB28B8451C004A17AD /* Sources */,
+				C028F3DC28B8451C004A17AD /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
-				C028F3E228B8451C004A17AD /* PBXTargetDependency */,
 			);
 			name = LapsWatch;
 			packageProductDependencies = (
 				C063B3A128B84F8D006B05B6 /* Communicator */,
+				C09FCD81297D01AE00E04E9D /* DependencyContainer */,
+				C09FCD82297D01AE00E04E9D /* Communicator */,
+				C09FCD83297D01AE00E04E9D /* BaseWatch */,
 			);
 			productName = LapsWatch;
 			productReference = C028F3D728B8451B004A17AD /* LapsWatch.app */;
-			productType = "com.apple.product-type.application.watchapp2";
-		};
-		C028F3DE28B8451C004A17AD /* LapsWatch WatchKit Extension */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C028F40E28B8451D004A17AD /* Build configuration list for PBXNativeTarget "LapsWatch WatchKit Extension" */;
-			buildPhases = (
-				C028F3DB28B8451C004A17AD /* Sources */,
-				C028F3DC28B8451C004A17AD /* Frameworks */,
-				C028F3DD28B8451C004A17AD /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "LapsWatch WatchKit Extension";
-			packageProductDependencies = (
-				C063B39E28B84E88006B05B6 /* DependencyContainer */,
-				C063B3A228B84F9C006B05B6 /* Communicator */,
-				C063B3A628B85630006B05B6 /* BaseWatch */,
-			);
-			productName = "LapsWatch WatchKit Extension";
-			productReference = C028F3DF28B8451C004A17AD /* LapsWatch WatchKit Extension.appex */;
-			productType = "com.apple.product-type.watchkit2-extension";
+			productType = "com.apple.product-type.application";
 		};
 		C028F3F828B8451D004A17AD /* LapsWatchTests */ = {
 			isa = PBXNativeTarget;
@@ -509,7 +487,7 @@
 			buildRules = (
 			);
 			dependencies = (
-				C028F3FB28B8451D004A17AD /* PBXTargetDependency */,
+				C09FCD85297D01AF00E04E9D /* PBXTargetDependency */,
 			);
 			name = LapsWatchTests;
 			productName = LapsWatchTests;
@@ -603,17 +581,14 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 1340;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1420;
 				TargetAttributes = {
 					C028F3D628B8451B004A17AD = {
 						CreatedOnToolsVersion = 13.4.1;
 					};
-					C028F3DE28B8451C004A17AD = {
-						CreatedOnToolsVersion = 13.4.1;
-					};
 					C028F3F828B8451D004A17AD = {
 						CreatedOnToolsVersion = 13.4.1;
-						TestTargetID = C028F3DE28B8451C004A17AD;
+						TestTargetID = C028F3D628B8451B004A17AD;
 					};
 					C028F40228B8451D004A17AD = {
 						CreatedOnToolsVersion = 13.4.1;
@@ -653,7 +628,6 @@
 				C0A815A628617FC8004DF61F /* LapsTests */,
 				C0A815B028617FC8004DF61F /* LapsUITests */,
 				C028F3D628B8451B004A17AD /* LapsWatch */,
-				C028F3DE28B8451C004A17AD /* LapsWatch WatchKit Extension */,
 				C028F3F828B8451D004A17AD /* LapsWatchTests */,
 				C028F40228B8451D004A17AD /* LapsWatchUITests */,
 			);
@@ -665,16 +639,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C028F3DA28B8451C004A17AD /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C028F3DD28B8451C004A17AD /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 				C028F3F228B8451D004A17AD /* Preview Assets.xcassets in Resources */,
 				C028F3EF28B8451D004A17AD /* Assets.xcassets in Resources */,
+				C028F3DA28B8451C004A17AD /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -775,6 +742,7 @@
 				C00D22A72876AAC200B9A65F /* TrackListView.swift in Sources */,
 				C046D5682867549D0056B7E8 /* AppDelegate.swift in Sources */,
 				C0843CD128900E3C0041AFC6 /* RecordTrackView.swift in Sources */,
+				C0E3660128E78B8E001CAB62 /* ReferenceRevised.swift in Sources */,
 				C03532D228BE3B2900875ECA /* Announcer.swift in Sources */,
 				C0411C20288E4B1200D328C6 /* SelectedPlaylist.swift in Sources */,
 				C0411C24288ECCCD00D328C6 /* CustomDraggableComponent.swift in Sources */,
@@ -787,11 +755,16 @@
 				C046D56B2867571B0056B7E8 /* Throttler.swift in Sources */,
 				C03532CB28BD556300875ECA /* MapView3.0.swift in Sources */,
 				C00D22A32873584300B9A65F /* IntervalBuilderView.swift in Sources */,
+				C09FCD80297CFC6500E04E9D /* View+isHidden.swift in Sources */,
 				C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */,
+				C0AAD632297BA77D00E08851 /* IntervalFeature.swift in Sources */,
+				C09FCD7F297CFC6500E04E9D /* RoundingMask.swift in Sources */,
+				C09FCD7A297CEF2900E04E9D /* SparkLine.swift in Sources */,
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,
 				C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */,
 				C0A815CD28625A5B004DF61F /* PlaylistDetailsView.swift in Sources */,
 				C03532D428BE3CAD00875ECA /* TimeIntervalFormatter.swift in Sources */,
+				C09FCD7E297CFC6500E04E9D /* IndexedCollection.swift in Sources */,
 				C03532D028BDD10D00875ECA /* HeartRateView.swift in Sources */,
 				C0A815CF2862C47A004DF61F /* MapView.swift in Sources */,
 			);
@@ -817,16 +790,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
-		C028F3E228B8451C004A17AD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C028F3DE28B8451C004A17AD /* LapsWatch WatchKit Extension */;
-			targetProxy = C028F3E128B8451C004A17AD /* PBXContainerItemProxy */;
-		};
-		C028F3FB28B8451D004A17AD /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C028F3DE28B8451C004A17AD /* LapsWatch WatchKit Extension */;
-			targetProxy = C028F3FA28B8451D004A17AD /* PBXContainerItemProxy */;
-		};
 		C028F40528B8451D004A17AD /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = C028F3D628B8451B004A17AD /* LapsWatch */;
@@ -836,6 +799,11 @@
 			isa = PBXTargetDependency;
 			target = C028F3D628B8451B004A17AD /* LapsWatch */;
 			targetProxy = C028F40B28B8451D004A17AD /* PBXContainerItemProxy */;
+		};
+		C09FCD85297D01AF00E04E9D /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C028F3D628B8451B004A17AD /* LapsWatch */;
+			targetProxy = C09FCD84297D01AF00E04E9D /* PBXContainerItemProxy */;
 		};
 		C0A815A928617FC8004DF61F /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
@@ -850,95 +818,34 @@
 /* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
-		C028F40F28B8451D004A17AD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "LapsWatch WatchKit Extension/LapsWatch WatchKit Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"LapsWatch WatchKit Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = 69UX76ERZ8;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LapsWatch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
-				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.5;
-			};
-			name = Debug;
-		};
-		C028F41028B8451D004A17AD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
-				CODE_SIGN_ENTITLEMENTS = "LapsWatch WatchKit Extension/LapsWatch WatchKit Extension.entitlements";
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_ASSET_PATHS = "\"LapsWatch WatchKit Extension/Preview Content\"";
-				DEVELOPMENT_TEAM = 69UX76ERZ8;
-				ENABLE_PREVIEWS = YES;
-				GENERATE_INFOPLIST_FILE = YES;
-				INFOPLIST_FILE = "LapsWatch WatchKit Extension/Info.plist";
-				INFOPLIST_KEY_CFBundleDisplayName = "LapsWatch WatchKit Extension";
-				INFOPLIST_KEY_CLKComplicationPrincipalClass = LapsWatch_WatchKit_Extension.ComplicationController;
-				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
-				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
-				INFOPLIST_KEY_NSHumanReadableCopyright = "";
-				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-					"@executable_path/../../Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps.watchkitapp.watchkitextension;
-				PRODUCT_NAME = "${TARGET_NAME}";
-				SDKROOT = watchos;
-				SKIP_INSTALL = YES;
-				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = 4;
-				WATCHOS_DEPLOYMENT_TARGET = 8.5;
-			};
-			name = Release;
-		};
 		C028F41328B8451D004A17AD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "LapsWatch WatchKit Extension/LapsWatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
 				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = LapsWatch_WatchKit_Extension;
 				INFOPLIST_FILE = LapsWatch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LapsWatch;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.geckogalleries.Laps;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -956,18 +863,29 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_COMPLICATION_NAME = Complication;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = "LapsWatch WatchKit Extension/LapsWatch WatchKit Extension.entitlements";
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 69UX76ERZ8;
 				GENERATE_INFOPLIST_FILE = YES;
-				IBSC_MODULE = LapsWatch_WatchKit_Extension;
 				INFOPLIST_FILE = LapsWatch/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = LapsWatch;
+				INFOPLIST_KEY_CLKComplicationPrincipalClass = "$(PRODUCT_MODULE_NAME).ComplicationController";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.lifestyle";
+				INFOPLIST_KEY_NSHealthClinicalHealthRecordsShareUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "activity tracking";
+				INFOPLIST_KEY_NSHealthUpdateUsageDescription = "Activity tracking";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "";
+				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = tracking;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				INFOPLIST_KEY_WKCompanionAppBundleIdentifier = com.geckogalleries.Laps;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.geckogalleries.Laps.watchkitapp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -996,7 +914,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LapsWatch WatchKit Extension.appex/LapsWatch WatchKit Extension";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LapsWatch.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LapsWatch";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Debug;
@@ -1017,7 +935,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 4;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LapsWatch WatchKit Extension.appex/LapsWatch WatchKit Extension";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/LapsWatch.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/LapsWatch";
 				WATCHOS_DEPLOYMENT_TARGET = 8.5;
 			};
 			name = Release;
@@ -1200,6 +1118,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1240,6 +1159,7 @@
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UIUserInterfaceStyle = Light;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1333,15 +1253,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C028F40E28B8451D004A17AD /* Build configuration list for PBXNativeTarget "LapsWatch WatchKit Extension" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C028F40F28B8451D004A17AD /* Debug */,
-				C028F41028B8451D004A17AD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C028F41228B8451D004A17AD /* Build configuration list for PBXNativeTarget "LapsWatch" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -1451,6 +1362,19 @@
 			productName = Communicator;
 		};
 		C063B3A628B85630006B05B6 /* BaseWatch */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BaseWatch;
+		};
+		C09FCD81297D01AE00E04E9D /* DependencyContainer */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = DependencyContainer;
+		};
+		C09FCD82297D01AE00E04E9D /* Communicator */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C063B3A028B84F8D006B05B6 /* XCRemoteSwiftPackageReference "Communicator" */;
+			productName = Communicator;
+		};
+		C09FCD83297D01AE00E04E9D /* BaseWatch */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BaseWatch;
 		};

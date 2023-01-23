@@ -15,8 +15,22 @@ public class WorkoutTracking {
     public static let shared = WorkoutTracking()
     public let healthStore = HKHealthStore()
     public var observerQuery: HKObserverQuery?
+    public var isAuthorized: Bool = false
 
-    public init() {}
+    public init() {
+        
+        Timer.scheduledTimer(withTimeInterval: 5.0, repeats: true) { _  in
+            if self.isAuthorized {
+                self.fetchLatestHeartRateSample { sample in
+                    guard let sample = sample else {
+                        return
+                    }
+                    Self.addDataPoint(sample)
+                }
+            }
+        }
+        
+    }
 }
 
 extension WorkoutTracking: WorkoutTrackingProtocol {
@@ -57,6 +71,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                         }
                     }
                 }
+                self.isAuthorized = authorized
                 return authorized
             } catch {
                 osLog("HealthKit not available: \(error)")
@@ -166,6 +181,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
     }
 
     public func observerHeartRateSamples() {
+        osLog("reading")
         guard let heartRateSampleType = HKObjectType.quantityType(forIdentifier: .heartRate) else {
             return
         }
@@ -184,27 +200,7 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
                 guard let sample = sample else {
                     return
                 }
-
-                DispatchQueue.main.async {
-                    let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
-                    let heartRate = sample.quantity.doubleValue(for: heartRateUnit)
-                    let timeStamp = sample.startDate
-                    osLog("Heart Rate Sample: \(heartRate) @ \(timeStamp.toFormat("hh:mm:ss a"))")
-
-                    let trackId = Location.shared.track.value?.id
-                    Task {
-                        try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
-
-                            let point = HeartRatePoint(
-                                timestamp: timeStamp,
-                                heartRate: heartRate,
-                                trackId: trackId
-                            )
-                            try point.save(db)
-                            // osLog("Saved HeartRate: \(point.toSwift())")
-                        }
-                    }
-                }
+                Self.addDataPoint(sample)
             }
         }
 
@@ -217,19 +213,56 @@ extension WorkoutTracking: WorkoutTrackingProtocol {
             }
         }
     }
+    
+    private static func addDataPoint(_ sample: HKQuantitySample) {
+        DispatchQueue.main.async {
+            let heartRateUnit = HKUnit.count().unitDivided(by: HKUnit.minute())
+            let heartRate = sample.quantity.doubleValue(for: heartRateUnit)
+            let timeStamp = sample.startDate
+
+            let trackId = Location.shared.track.value?.id
+            Task {
+                try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
+
+                    let existing = try HeartRatePoint
+                        .order(Column("timestamp").desc)
+                        .fetchOne(db)
+                    
+                    if let lastRecord = existing {
+                        // osLog(" \(lastRecord.timestamp) === \(timeStamp),   \(abs( lastRecord.timestamp.timeIntervalSince(timeStamp)))")
+                        if abs( lastRecord.timestamp.timeIntervalSince(timeStamp)) < 1.2 {
+                            return
+                        }
+                    }
+                    
+                    osLog("Write Heart Rate Sample: \(heartRate) @ \(timeStamp.toFormat("hh:mm:ss a"))")
+
+                    let point = HeartRatePoint(
+                        timestamp: timeStamp,
+                        heartRate: heartRate,
+                        trackId: trackId
+                    )
+                    try point.save(db)
+                    // osLog("Saved HeartRate: \(point.toSwift())")
+                }
+            }
+        }
+    }
+    
 }
 
 extension WorkoutTracking {
     private func fetchLatestHeartRateSample(completionHandler: @escaping (_ sample: HKQuantitySample?) -> Void) {
+        osLog("actually query for HR")
         guard let sampleType = HKObjectType.quantityType(forIdentifier: HKQuantityTypeIdentifier.heartRate) else {
             completionHandler(nil)
             return
         }
 
-        let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
+        //let predicate = HKQuery.predicateForSamples(withStart: Date.distantPast, end: Date(), options: .strictEndDate)
         let sortDescriptor = NSSortDescriptor(key: HKSampleSortIdentifierStartDate, ascending: false)
         let query = HKSampleQuery(sampleType: sampleType,
-                                  predicate: predicate,
+                                  predicate: nil,
                                   limit: Int(HKObjectQueryNoLimit),
                                   sortDescriptors: [sortDescriptor]) { _, results, error in
             if let error = error {

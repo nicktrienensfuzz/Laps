@@ -35,6 +35,8 @@
         func clearAll() throws
 
         var dbPool: DatabaseWriter { get }
+        
+        func exportDatabaseContent(from dbPool: DatabaseWriter) throws -> String
     }
 
     public protocol AppDatabaseSynchronousInterface {

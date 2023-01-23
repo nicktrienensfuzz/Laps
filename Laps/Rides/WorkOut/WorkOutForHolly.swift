@@ -18,6 +18,7 @@ import MusadoraKit
 import MusicKit
 import SwiftUI
 import TuvaCore
+import ComposableArchitecture
 
 extension WorkOutForHollyView {
     enum State: Equatable {
@@ -168,29 +169,45 @@ extension WorkOutForHollyView {
 
 struct WorkOutForHollyView: View {
     @StateObject private var viewModel = ViewModel()
+    let store = Store(initialState: IntervalFeature.State(), reducer: IntervalFeature())
 
-    @ObservedObject var location: Reference<CLLocation?>
+    @ObservedObject var location: FuzzCombine.Reference<CLLocation?>
     init() {
         location = Location.shared.location
+        UIApplication.shared.isIdleTimerDisabled = true
     }
 
     var body: some View {
+        
         VStack {
-            HStack {
-                Text("Segment Time left:")
-                    .font(.title)
-                Spacer()
-                Text(viewModel.timeRemaining.value.runTime)
-                    .font(.title)
+            WithViewStore(store) { store in
+                HStack {
+                    Text("Segment Time left:")
+                        .font(.title)
+                    Spacer()
+                    Text(viewModel.timeRemaining.value.runTime)
+                        .font(.title)
+                }
+                .onReceive(WorkoutTracking.shared.lastReadings()) {
+                    if let newest  = $0.first {
+                        store.send(.heartRate(newest))
+                        store.send(.heartRates($0.prefix(15).asArray))
+
+                    }
+                }
+                
+                
+                ProgressBar(
+                    value: viewModel.progress,
+                    foregroundColor: viewModel.state.isHot ? Color.red : Color.blue)
+                    .frame(height: 80)
+                
+                InfoBarView()
+                HeartRateView(store: self.store)
+                    .padding(.horizontal)
+                
+                Sparkline(data: store.heartRateRecent.map{ Int($0.heartRate) })
             }
-
-            ProgressBar(value: viewModel.progress, foregroundColor: viewModel.state.isHot ? Color.red : Color.blue)
-                .frame(height: 80)
-
-            InfoBarView()
-            HeartRateView()
-                .padding(.horizontal)
-
             Spacer()
             Text(viewModel.state.asString)
                 .font(.title)
@@ -217,6 +234,7 @@ struct WorkOutForHollyView: View {
 
             BackButton()
         }
+        
         .padding(.top, 35)
         .padding(.bottom, 45)
         .padding(.horizontal, 12)
