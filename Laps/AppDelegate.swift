@@ -27,16 +27,27 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
         Comms.shared.heartRateValue.didUpdate
             .asyncMap { hr in
+                
                 try? await DependencyContainer.resolve(key: ContainerKeys.database).dbPool.write { db in
                     let trackId = Location.shared.track.value?.id
+                        let existing = try HeartRatePoint
+                            .order(Column("timestamp").desc)
+                            .fetchOne(db)
+                        
+                        if let lastRecord = existing {
+                            if abs( lastRecord.timestamp.timeIntervalSince(hr.timestamp)) < 1.2 {
+                                return
+                            }
+                        }
+                    osLog("Write Heart Rate Sample: \(hr.heartRate) @ \(hr.timestamp.toFormat("hh:mm:ss a"))")
 
+                     
                     let point = HeartRatePoint(
                         timestamp: hr.timestamp,
                         heartRate: hr.heartRate,
                         trackId: trackId
                     )
                     try point.save(db)
-                    osLog("Saved HeartRate: \(point.toSwift())")
                 }
             }
             .sink { _ in

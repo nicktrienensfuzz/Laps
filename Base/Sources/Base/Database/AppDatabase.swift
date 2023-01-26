@@ -15,7 +15,7 @@ public typealias ValueObservation = GRDB.ValueObservation
 public typealias Column = GRDB.Column
 
 class AppDatabase: AppDatabaseInterface, AppDatabaseSynchronousInterface {
-    static let schemaVersion = 3
+    static let schemaVersion = 4
     var tableList: [TableCreator.Type] {
         [
             TrackPoint.self,

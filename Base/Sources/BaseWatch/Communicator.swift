@@ -28,7 +28,7 @@ public class Comms {
     public let heartRateValue: Reference<HeartRatePoint> = .init(value: HeartRatePoint(timestamp: .distantPast, heartRate: 0))
 
     public init() {
-        osLog("boot watch Comms")
+        osLog("Boot watch Comms")
         Communicator.State.observe { state in
             osLog("state: \(state)")
         }
@@ -45,13 +45,13 @@ public class Comms {
             let replyMessage = ImmediateMessage(identifier: "response", content: ["reply": "message"])
             osLog("Message received! \(message)")
             guard let action = Action(rawValue: message.content["action"] as? String ?? "") else { return }
-            osLog(action)
+            
             self.actions.send(action)
             message.reply(replyMessage)
 
             if let heartRate = message.content["heartRate"] as? Double, let timestamp = message.content["timestamp"] as? Date {
                 let hr = HeartRatePoint(timestamp: timestamp, heartRate: heartRate)
-                osLog(hr)
+                // osLog(hr)
                 self.heartRateValue.value = hr
             }
         }

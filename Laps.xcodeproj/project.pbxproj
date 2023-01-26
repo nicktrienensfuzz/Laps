@@ -47,6 +47,7 @@
 		C09FCD7E297CFC6500E04E9D /* IndexedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */; };
 		C09FCD7F297CFC6500E04E9D /* RoundingMask.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */; };
 		C09FCD80297CFC6500E04E9D /* View+isHidden.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */; };
+		C09FCD87297EC08400E04E9D /* HeartRateZones.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09FCD86297EC08400E04E9D /* HeartRateZones.swift */; };
 		C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A36D8F288CFAA80038B341 /* WaitingDots.swift */; };
 		C0A8159B28617FC6004DF61F /* LapsApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159A28617FC6004DF61F /* LapsApp.swift */; };
 		C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A8159C28617FC6004DF61F /* ContentView.swift */; };
@@ -159,6 +160,7 @@
 		C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IndexedCollection.swift; sourceTree = "<group>"; };
 		C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RoundingMask.swift; sourceTree = "<group>"; };
 		C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "View+isHidden.swift"; sourceTree = "<group>"; };
+		C09FCD86297EC08400E04E9D /* HeartRateZones.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeartRateZones.swift; sourceTree = "<group>"; };
 		C0A36D8F288CFAA80038B341 /* WaitingDots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitingDots.swift; sourceTree = "<group>"; };
 		C0A8159728617FC6004DF61F /* Laps.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Laps.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A8159A28617FC6004DF61F /* LapsApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LapsApp.swift; sourceTree = "<group>"; };
@@ -320,6 +322,7 @@
 				C09FCD7B297CFC6500E04E9D /* IndexedCollection.swift */,
 				C09FCD7C297CFC6500E04E9D /* RoundingMask.swift */,
 				C09FCD7D297CFC6500E04E9D /* View+isHidden.swift */,
+				C09FCD86297EC08400E04E9D /* HeartRateZones.swift */,
 			);
 			path = WorkOut;
 			sourceTree = "<group>";
@@ -758,6 +761,7 @@
 				C09FCD80297CFC6500E04E9D /* View+isHidden.swift in Sources */,
 				C0A36D90288CFAA80038B341 /* WaitingDots.swift in Sources */,
 				C0AAD632297BA77D00E08851 /* IntervalFeature.swift in Sources */,
+				C09FCD87297EC08400E04E9D /* HeartRateZones.swift in Sources */,
 				C09FCD7F297CFC6500E04E9D /* RoundingMask.swift in Sources */,
 				C09FCD7A297CEF2900E04E9D /* SparkLine.swift in Sources */,
 				C0A8159D28617FC6004DF61F /* ContentView.swift in Sources */,

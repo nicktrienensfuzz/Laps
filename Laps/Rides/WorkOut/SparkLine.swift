@@ -91,8 +91,8 @@ struct Sparkline: View {
         self.data = data
          let ymin = data.min() ?? 0
          let ymax = data.max() ?? 10
-         if ymin == ymax {
-             yMarkValues = [ymax]
+         if  ymax - ymin < 5 {
+             yMarkValues = [ymin, ymax].deduplicated()
          } else {
              yMarkValues = stride(from: ymin, to: ymax, by: (ymax - ymin) / 5 ) .map{ $0 }
          }

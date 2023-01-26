@@ -188,10 +188,9 @@ struct WorkOutForHollyView: View {
                     Text(viewModel.timeRemaining.value.runTime)
                         .font(.title)
                 }
-                .onReceive(WorkoutTracking.shared.lastReadings()) {
+                .onReceive(WorkoutTracking.shared.lastReadings().removeDuplicates()) {
                     if let newest  = $0.first {
-                        store.send(.heartRate(newest))
-                        store.send(.heartRates($0.prefix(15).asArray))
+                        store.send(.heartRates($0.prefix(20).asArray))
 
                     }
                 }
